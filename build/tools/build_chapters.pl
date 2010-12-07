@@ -6,6 +6,7 @@ use warnings;
 use File::Path 'mkpath';
 use File::Spec::Functions qw( catfile catdir splitpath );
 
+my $sections_dir = shift || 'sections';
 my $sections_href = get_section_list();
 
 for my $chapter (get_chapter_list())
@@ -21,14 +22,14 @@ exit;
 
 sub get_chapter_list
 {
-    my $glob_path = catfile( 'sections', 'chapter_??.pod' );
+    my $glob_path = catfile( $sections_dir, 'chapter_??.pod' );
     return glob( $glob_path );
 }
 
 sub get_section_list
 {
     my %sections;
-    my $sections_path = catfile( 'sections', '*.pod' );
+    my $sections_path = catfile( $sections_dir, '*.pod' );
 
     for my $section (glob( $sections_path ))
     {
