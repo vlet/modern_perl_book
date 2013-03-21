@@ -1,20 +1,21 @@
-=head0 The Perl Philosophy
+=head0 Философия Perl
 
-Perl gets things done--it's flexible, forgiving, and malleable.  Capable
-programmers use it every day for everything from one-liners and one-off
-automations to multi-year, multi-programmer projects.
+Perl позволяет добиваться результата E<mdash> он гибкий, прощающий и податливый.
+Умелые программисты используют его каждый день для любых задач E<mdash> от
+однострочников и разовых автоматизаций, до многолетних проектов, выполняемых
+множеством программистов.
 
-Perl is pragmatic. You're in charge. You decide how to solve your problems and
-Perl will mold itself to do what you mean, with little frustration and no
-ceremony.
+Perl прагматичен. Вы E<mdash> главный. Вы выбираете, как решать ваши проблемы,
+и Perl действует в соответствии с вашими намерениями, без фрустраций и
+церемоний.
 
-Perl will grow with you. In the next hour, you'll learn enough to write real,
-useful programs--and you'll understand I<how> the language works and I<why> it
-works as it does. Modern Perl takes advantage of this knowledge and the
-combined experience of the global Perl community to help you write working,
-maintainable code.
+Perl будет расти вместе с вами. В течение следующего часа вы узнаете достаточно,
+чтобы писать реальные полезные программы E<mdash> и вы поймёте, I<как> работает
+язык и I<почему> он работает именно так. Modern Perl применяет преимущества
+этого знания и объединённый опыт глобального Perl-сообщества чтобы помочь вам
+писать работающий, поддерживаемый код.
 
-First, you need to know how to learn more.
+Для начала, вы должны знать, как получить больше информации.
 
 L<perldoc>
 
