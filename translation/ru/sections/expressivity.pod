@@ -1,68 +1,73 @@
-=head1 Expressivity
+=head1 Выразительность
 
 Z<expressivity>
 
 X<Wall, Larry>
 X<Larry Wall>
 
-Larry Wall's studies of linguistics and human languages influenced the
-design of Perl. The language allows you tremendous freedom to solve your
-problems, depending on your group style, the available time, the expected
-lifespan of the program, or even how creative you feel. You may write simple,
-straightforward code or integrate into larger, well-defined programs. You may
-select from multiple design paradigms, and you may eschew or embrace advanced
-features.
+Изучение Ларри Уоллом (Larry Wall) лингвистики и естественных языков повлияло на
+дизайн Perl. Язык предоставляет вам потрясающую свободу в решении ваших проблем,
+в зависимости от вашего коллективного стиля, имеющегося времени, ожидаемого
+срока жизни программы или даже вашего чувства вдохновения. Вы можете писать
+простой, прямолинейный код, или интегрировать его в большие, чётко
+структурированные программы. Вы можете выбирать из множества парадигм дизайна,
+можете избегать или приветствовать использование дополнительных возможностей.
 
-Where other languages enforce one best way to write any code, Perl allows
-I<you> to decide what's most readable or useful or fun.
+Там, где другие языки навязывают один оптимальный способ написания кода, Perl
+позволят I<вам> решать, как вариант более читаемый, или полезный, или весёлый.
 
 X<TIMTOWTDI>
 X<Tim Toady>
 
-Perl hackers have a slogan for this: I<TIMTOWTDI>, pronounced "Tim Toady", or
-"There's more than one way to do it!"
+У Perl-хакеров есть девиз для этого: I<TIMTOWTDI>, произносится как E<laquo>Tim
+ToadyE<raquo> (E<laquo>Тим ТоудиE<raquo>), или E<laquo>There's more than one way
+to do it!E<raquo> (E<laquo>Есть более чем один способ сделать это!E<raquo>).
 
-Though this expressivity allows master craftworkers to create amazing programs,
-it allows the unwise or uncautious to make messes. Experience and good taste
-will guide you to write great code. The choice is yours--but be mindful of
-readability and maintainability, especially for those who come after you.
+Хотя эта выразительность позволяет мастерам создавать поразительные программы,
+она же позволяет неблагоразумным и неосторожным устраивать беспорядок. Опыт и
+хороший вкус приведут вас к написанию хорошего кода. Выбор за вами E<mdash> но
+не забывайте о читаемости и поддерживаемости, особенно для тех, кто придёт после
+вас.
 
-Perl novices often may find certain constructs opaque. Many of these idioms
-(L<idioms>) offer great (if subtle) power. It's okay to avoid them until you're
-comfortable with them.
+Новички в Perl зачастую могут найти некоторые конструкции трудными для
+понимания. Многие из этих идиом (L<idioms>) предлагают большую (хотя и
+неочевидную) мощь. Вполне нормально избегать их, пока вы не будете чувствовать
+себя с ними комфортно.
 
-Learning Perl is like learning a new spoken language. You'll learn a few words,
-string together sentences, and soon will enjoy simple conversations.  Mastery
-comes with practice of reading and writing. You don't have to understand every
-detail of Perl to be productive, but the principles in this chapter are vital
-to your growth as a programmer.
+Изучение Perl подобно изучению нового разговорного языка. Вы изучите несколько
+слов, составите предложения и вскоре будете наслаждаться простыми беседами.
+Мастерство приходит с практикой чтения и написания. Вам не обязательно понимать
+каждую деталь Perl чтобы быть продуктивным, но принципы, изложенные в этой
+главе, жизненно важны для вашего роста как программиста.
 
-As another design goal, Perl tries to avoid surprising experienced (Perl)
-programmers.  For example, adding two variables (C<$first_num + $second_num>)
-is obviously a numeric operation (L<numeric_operators>); the addition operator
-must treat both as numeric values to produce a numeric result. No matter the
-contents of C<$first_num> and C<$second_num>, Perl will coerce them to numeric
-values (L<numeric_coercion>). You've expressed your intent to treat them as
-numbers by using a numeric operator. Perl happily does so.
+Ещё одна цель дизайна Perl состоит в том, чтобы пытаться избегать того, что
+может удивить опытных (Perl) программистов. Например, сложение двух переменных
+(C<$first_num + $second_num>) очевидно числовая операция (L<numeric_operators>);
+оператор сложения должен воспринимать обе переменные как числовые значения,
+чтобы получить числовой результат. Независимо от содержимого C<$first_num> и
+C<$second_num>, Perl преобразует их в числовые значения (L<numeric_coercion>).
+Вы выразили своё намерение работать с ними как с числами, использовав числовой
+оператор. Perl с удовольствием сделает это.
 
 X<DWIM>
 X<principle of least astonishment>
 
-Perl adepts often call this principle I<DWIM>, or I<do what I mean>.  Another
-phrasing is that Perl follows the I<principle of least astonishment>.  Given a
-cursory understanding of Perl (especially context; L<context_philosophy>), it
-should be possible to understand the intent of an unfamiliar Perl expression.
-You will develop this skill.
+Адепты Perl часто называют этот принцип I<DWIM>, или I<do what I mean> (I<делай
+то, что я имею ввиду>). Другая формулировка, которой следует Perl E<mdash>
+I<принцип наименьшего удивления>. Имея поверхностное понимание Perl (особенно
+контекста, L<context_philosophy>), должно быть возможно понять смысл незнакомого
+выражения. Вы разовьёте этот навык.
 
 X<baby Perl>
 
-Perl's expressivity also allows novices to write useful programs without having
-to understand everything. The resulting code is often called I<baby Perl>, in
-the sense that most everyone wants to help babies learn to communicate well.
-Everyone begins as a novice. Through practice and learning from more experienced
-programmers, you will understand and adopt more powerful idioms and techniques.
+Кроме того, выразительность Perl позволяет новичкам писать полезные программы
+без необходимости понимать всё. Получающийся код часто называют I<baby Perl>
+(I<детский Perl>), в том смысле, что почти каждый хочет помочь детям научиться
+хорошо говорить. Каждый начинает как новичок. Практикуясь и обучаясь у более
+опытных программистов, вы будете понимать и воспринимать более мощные идиомы и
+техники.
 
-For example, an experienced Perl hacker might triple a list of numbers with:
+Например, опытный Perl-хакер может утроить список числе таким образом:
 
 =begin programlisting
 
@@ -70,7 +75,7 @@ For example, an experienced Perl hacker might triple a list of numbers with:
 
 =end programlisting
 
-... and a Perl adept might write:
+E<hellip>а знаток Perl может написать так:
 
 =begin programlisting
 
@@ -83,7 +88,7 @@ For example, an experienced Perl hacker might triple a list of numbers with:
 
 =end programlisting
 
-... while a novice might try:
+E<hellip>тогда как новичок попытается сделать следующее:
 
 =begin programlisting
 
@@ -96,12 +101,13 @@ For example, an experienced Perl hacker might triple a list of numbers with:
 
 =end programlisting
 
-All three approaches accomplish the same thing, but each uses Perl in a
-different way.
+Все три подхода делают одно и то же, но каждый использует Perl по-свовему.
 
-Experience writing Perl will help you to focus on I<what> you want to do rather
-than I<how> to do it. Even so, Perl will happily run simple programs. You can
-design and refine your programs for clarity, expressivity, reuse, and
-maintainability, in part or in whole. Take advantage of this flexibility and
-pragmatism: it's far better to accomplish your task effectively now than to
-write a conceptually pure and beautiful program next year.
+Опыт в программировании на Perl поможет вам фокусироваться на том, I<что> вам
+нужно, а не на том, I<как> это сделать. В любом случае, Perl с удовольствием
+будет выполнять простые программы. Вы можете разрабатывать и усовершенствовать
+ваши программы для повышения ясности, выразительности, пригодности к повторному
+использованию и поддерживаемости, частично или целиком. Пользуйтесь
+преимуществами этой гибкости и прагматизма: намного лучше выполнить вашу задачу
+эффективно сейчас, чем написать концептуально чистую и красивую программу в
+следующем году.
