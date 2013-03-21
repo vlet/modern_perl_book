@@ -1,13 +1,13 @@
-=head1 Implicit Ideas
+=head1 Неочевидные идеи
 
 Z<implicit_ideas>
 
-Context is only one linguistic shortcut in Perl. Programmers who understand
-these shortcuts can glance at code and instantly understand its most important
-characteristics. Another important linguistic feature is the Perl equivalent of
-pronouns.
+Контекст E<mdash> лишь одна из лингвистических уловок в Perl. Программисты,
+понимающие эти уловки, могут бросив взгляд на код сразу же понять его наиболее
+важные характеристики. Другая важная лингвистическая особенность Perl E<mdash>
+эквивалент местоимений.
 
-=head2 The Default Scalar Variable
+=head2 Переменная-скаляр по умолчанию
 
 Z<default_scalar_variable>
 
@@ -16,10 +16,10 @@ X<default variables; C<$_>>
 X<< variables; C<$_> >>
 X<< C<$_>; default scalar variable >>
 
-The I<default scalar variable> (also called the I<topic variable>), C<$_>, is
-most notable in its I<absence>: many of Perl's builtin operations work on the
-contents of C<$_> in the absence of an explicit variable. You can still use
-C<$_> as the variable, but it's often unnecessary.
+I<Переменная-скаляр по умолчанию> (ещё называемая I<переменная-топик>),
+C<$_>, наиболее примечательна своим I<отсутствием>: многие встроенные операции
+в Perl работают с содержимым C<$_> в отсутствии явно указанной переменной. Вы
+можете использовать C<$_> как переменную, но это зачастую излишне.
 
 X<builtins; C<chomp>>
 X<builtins; C<chr>>
@@ -29,11 +29,11 @@ X<builtins; C<length>>
 X<builtins; C<reverse>>
 X<builtins; C<uc>>
 
-Many of Perl's scalar operators (including C<chr>, C<ord>, C<lc>, C<length>,
-C<reverse>, and C<uc>) work on the default scalar variable if you do not
-provide an alternative. For example, the C<chomp> builtin removes any trailing
-newline sequence from its operandN<See C<perldoc -f chomp> and C<$/> for more
-precise details of its behavior.>:
+Многие скалярные операторы Perl (включая C<chr>, C<ord>, C<lc>, C<length>,
+C<reverse> и C<uc>) работают со переменной-скаляром по умолчанию если вы не
+предоставили  альтернативы. Например, встроенная функция C<chomp> удаляет все
+завершающие последовательности новых строк из своего операндаN<См. C<perldoc
+-f chomp> и C<$/> для более точных деталей её поведения.>:
 
 =begin programlisting
 
@@ -43,10 +43,11 @@ precise details of its behavior.>:
 
 =end programlisting
 
-C<$_> has the same function in Perl as the pronoun I<it> in English. Without an
-explicit variable, C<chomp> removes the trailing newline sequence from C<$_>.
-Perl understands what you mean when you say "C<chomp>"; Perl will always chomp
-I<it>, so these two lines of code are equivalent:
+C<$_> в Perl имеет ту же самую функцию, что и местоимение I<it> (I<это>) в
+английском. Без явно указанной переменной, C<chomp> удаляет все завершающие
+последовательности новых строк из C<$_>. Perl понимает, что вы имеете ввиду
+говоря E<laquo>C<chomp>E<raquo> (E<laquo>обгрызтьE<raquo>); Perl всегда обгрызёт
+I<это>, так что эти две строки кода эквивалентны:
 
 =begin programlisting
 
@@ -58,13 +59,12 @@ I<it>, so these two lines of code are equivalent:
 X<builtins; C<say>>
 X<builtins; C<print>>
 
-Similarly, C<say> and C<print> operate on C<$_> in the absence of other
-arguments:
+Аналогично, C<say> и C<print> оперируют с C<$_> в отстутствие других аргументов:
 
 =begin programlisting
 
-    print;  # prints $_ to the current filehandle
-    say;    # prints "$_\n" to the current filehandle
+    print;  # выводит $_ в текущий дескриптор файла
+    say;    # выводит "$_\n" в текущий дескриптор файла
 
 =end programlisting
 
@@ -72,8 +72,8 @@ X<C<s///>; substitution operator>
 X<C<m//>; match operator>
 X<C<tr//>; transliteration operator>
 
-Perl's regular expression facilities (L<regex>) default to C<$_> to match,
-substitute, and transliterate:
+Средства работы с регулярными выражениями в Perl (L<regex>) по умолчанию
+используют C<$_> для поиска, подстановки и транслитерации:
 
 =begin programlisting
 
@@ -89,8 +89,8 @@ substitute, and transliterate:
 
 X<builtins; C<for>>
 
-Perl's looping directives (L<looping_directives>) default to using C<$_> as the
-iteration variable. Consider C<for> iterating over a list:
+Директивы циклов в Perl (L<looping_directives>) по умолчанию используют C<$_>
+как итерационную переменную. Рассмотрим директиву C<for>, итерирующую по списку:
 
 =begin programlisting
 
@@ -105,7 +105,7 @@ iteration variable. Consider C<for> iterating over a list:
 
 X<builtins; C<while>>
 
-... or C<while>:
+E<hellip>или C<while>:
 
 =begin programlisting
 
@@ -119,7 +119,7 @@ X<builtins; C<while>>
 
 X<builtins; C<map>>
 
-... or C<map> transforming a list:
+E<hellip> или C<map>, преобразовывающую список:
 
 =begin programlisting
 
@@ -130,7 +130,7 @@ X<builtins; C<map>>
 
 X<builtins; C<grep>>
 
-... or C<grep> filtering a list:
+E<hellip> или C<grep>, фильтрующую список:
 
 =begin programlisting
 
@@ -139,14 +139,16 @@ X<builtins; C<grep>>
 
 =end programlisting
 
-As English gets confusing when you have too many pronouns and antecedents, you
-must take care mixing uses of C<$_> implicitly or explicitly. Uncautious
-simultaneous use of C<$_> may lead to one piece of code silently overwriting
-the value written by another. If you write a function which uses C<$_>, you
-may clobber a caller function's use of C<$_>.
+Как английский становится запутанным, если вы используете слишком много
+местоимений и антецедентов, так и со смешанным использованием C<$_>, явным или
+неявным, нужно быть осторожным. Неосмотрительное параллельное использование
+C<$_> может привести к тому, что один кусок кода молча перезапишет значение,
+записанное другим. Если вы пишете функцию, которая использует C<$_>, вы можете
+сломать работу с C<$_> в вызывающей функции.
 
-As of Perl 5.10, you may declare C<$_> as a lexical variable (L<lexical_scope>)
-to prevent this clobbering behavior:
+Начиная с Perl 5.10 появилась возможность объявить C<$_> как лексическую
+переменную (L<lexical_scope>), чтобы предотвратить такое разрушительное
+поведение:
 
 =begin programlisting
 
@@ -154,7 +156,7 @@ to prevent this clobbering behavior:
     {
         chomp;
 
-        # BAD EXAMPLE
+        # ПЛОХОЙ ПРИМЕР
         my $munged = calculate_value( $_ );
         say "Original: $_";
         say "Munged  : $munged";
@@ -162,9 +164,9 @@ to prevent this clobbering behavior:
 
 =end programlisting
 
-If C<calculate_value()> or any other function changed C<$_>, that change would
-persist through that iteration of the loop. Adding a C<my> declaration prevents
-clobbering an existing instance of C<$_>:
+Если I<calculate_value()> или любая другая функция изменит C<$_>, это изменение
+сохранится на протяжении этой итерации цикла. Добавление объявления C<my>
+предотвращает потерю существующего экземпляра C<$_>:
 
 =begin programlisting
 
@@ -175,7 +177,8 @@ clobbering an existing instance of C<$_>:
 
 =end programlisting
 
-Of course, using a named lexical can be just as clear:
+Конечно, использование именованной лексической переменной может быть таким же
+ясным:
 
 =begin programlisting
 
@@ -186,20 +189,22 @@ Of course, using a named lexical can be just as clear:
 
 =end programlisting
 
-Use C<$_> as you would the word "it" in formal writing: sparingly, in small and well-defined scopes.
+Используйте C<$_>, так же, как вы использовали бы слово E<laquo>этоE<raquo>
+в формальном письме: экономно, в разумных и хорошо определённых границах.
 
-=begin tip The C<...> Operator
+=begin tip Оператор C<...>
 
 X<builtins; C<...>>
 
-Perl 5.12 introduced the triple-dot (C<...>) operator as a placeholder for code
-you intend to fill in later. Perl will parse it as a complete statement, but
-will throw an exception that you're trying to run unimplemented code if you try
-to run it. See C<perldoc perlop> for more details.
+В Perl 5.12 появился оператор троеточие (C<...>) как заполнитель для кода,
+который вы намереваетесь поместить позже. Perl будет парсить его как полное
+выражение, но выбросит исключение что вы пытаетесь запустить
+неимплементированный код если вы попытаетесь его запустить. См. C<perldoc
+perlop> для получения подробностей.
 
 =end tip
 
-=head2 The Default Array Variables
+=head2 Переменная-массив по умолчанию
 
 Z<default_array_variables>
 
@@ -208,10 +213,10 @@ X<default variables; C<@_>>
 X<variables; C<@_>>
 X<C<@_>>
 
-Perl also provides two implicit array variables. Perl passes arguments to
-functions (L<functions>) in an array named C<@_>. Array manipulation operations
-(L<arrays>) inside functions affect this array by default, so these two
-snippets of code are equivalent:
+Perl также предоставляет две неявных переменные-массива. Perl передаёт аргументы
+в функции (L<functions>) в массиве C<@_>. Операции манипуляции с массивами
+(L<arrays>) внутри функций по умолчанию воздействуют на эту переменную, поэтому
+два этих фрагмента кода эквивалентны:
 
 =begin programlisting
 
@@ -232,41 +237,45 @@ snippets of code are equivalent:
 X<builtins; C<shift>>
 X<builtins; C<pop>>
 
-Just as C<$_> corresponds to the pronoun I<it>, C<@_> corresponds to the
-pronouns I<they> and I<them>. I<Unlike> C<$_>, Perl automatically localizes
-C<@_> for you when you call other functions. The builtins C<shift> and C<pop>
-operate on C<@_> with no other operands provided.
+Так же как C<$_> соответствует местоимению I<it> (I<это>), C<@_> соответствует
+местоимениям I<they> (I<они>) и I<them> (I<их>). I<В отличие> от C<$_>, Perl
+автоматически локализует для вас C<@_> когда вы вызываете другие функции.
+Встроенные функции C<shift> и C<pop> работают с C<@_>, если отсутствуют другие
+операнды.
 
 X<default variables; C<@ARGV>>
 X<variables; C<@ARGV>>
 X<C<@ARGV>>
 
-Outside of all functions, the default array variable C<@ARGV> contains the
-command-line arguments to the program. Perl's array operations (including
-C<shift> and C<pop>) operate on C<@ARGV> implicitly outside of functions. You
-cannot use C<@_> when you mean C<@ARGV>.
+Снаружи всех функций переменная-массив по умолчанию C<@ARGV> содержит аргументы
+командной строки, переданные в программу. Операции работы с массивами в Perl
+(включая C<shift> и C<pop>) неявно работают с C<@ARGV> за пределами функций. Вы
+не сможете использовать C<@_> когда подразумеваете C<@ARGV>.
 
 =begin tip C<readline>
 
 X<builtins; C<readline>>
 X<builtins; C<glob>>
 
-Perl's C<< <$fh> >> operator is the same as the C<readline> builtin.
-C<readline $fh> does the same thing as C<< <$fh> >>. As of Perl 5.10, a bare
-C<readline> behaves just like C<< <> >>, so you can now use C<readline>
-everywhere. For historic reasons, C<< <> >> is still more common, but consider
-using C<readline> as a more readable alternative. You probably prefer C<glob
-'*.html'> to C<< <*.html> >>, right? It's the same idea.
+Оператор C<< <$fh> >> в Perl E<mdash> то же самое, что встроенная функция
+C<readline>. C<readline $fh> делает то же самое, что и C<< <$fh> >>. Начиная с
+Perl 5.10 голая C<readline> ведёт себя точно так же, как C<< <> >>, так что
+теперь вы можете везде использовать C<readline>. По историческим причинам
+C<< <> >> всё ещё более распространённый вариант, однако рассмотрите
+использование C<readline> как более читаемой альтернативы. Вы возможно
+предпочтёте C<glob '*.html'> варианту C<< <*.html> >>, правда? Здесь та же
+самая идея.
 
 =end tip
 
 X<null filehandle>
 
-C<ARGV> has one special case. If you read from the null filehandle C<< <> >>,
-Perl will treat every element in C<@ARGV> as the I<name> of a file to open for
-reading. (If C<@ARGV> is empty, Perl will read from standard input.) This
-implicit C<@ARGV> behavior is useful for writing short programs, such as this
-command-line filter which reverses its input:
+C<ARGV> имеет один специальный случай. Если вы читаете из пустого дескриптора
+файла C<< <> >>, Perl будет воспринимать каждый элемент в C<@ARGV> как I<имя>
+файла, который нужно открыть для чтения. (Если массив C<@ARGV> пуст, Perl будет
+читать со стандартного ввода.) Это неявное поведение C<@ARGV> полезно при
+написании коротких программ, таких как фильтр для командной строки,
+переворачивающий свои входные данные:
 
 =begin programlisting
 
@@ -278,12 +287,14 @@ command-line filter which reverses its input:
 
 =end programlisting
 
-Why C<scalar>? C<say> imposes list context on its operands. C<reverse> passes
-its context on to its operands, treating them as a list in list context and a
-concatenated string in scalar context. If the behavior of C<reverse> sounds
-confusing, your instincts are correct. Perl 5 arguably should have separated
-"reverse a string" from "reverse a list".
+Почему C<scalar>? C<say> налагает списочный контекст на свои операнды.
+C<reverse> передаёт свой контекст своим операндам, обрабатывая их как список в
+списочном контексте и конкатенированную строку в скалярном контексте. Если
+поведение C<reverse> выглядит сбивающим с толку, ваши инстинкты верны. Perl 5
+вероятно должен быть разделить E<laquo>перевернуть строкуE<raquo> и
+E<laquo>перевернуть списокE<raquo>.
 
+Если вы запустите этот код со списком файлов:
 If you run it with a list of files:
 
 =begin screen
@@ -292,6 +303,7 @@ If you run it with a list of files:
 
 =end screen
 
-... the result will be one long stream of output.  Without any arguments, you
-can provide your own standard input by piping in from another program or typing
-directly. Yet Perl is good for far more than small command-line programs....
+E<hellip>результат будет одним длинным потоком вывода. Не передавая никаких
+аргументов, вы можете задать свой собственный стандартный ввод, передав его
+по конвейеру из другой программы или введя напрямую. Однако, Perl хорош для
+гораздо большего, чем маленькие программы для командной строкиE<hellip>
