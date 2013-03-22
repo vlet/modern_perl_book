@@ -1,17 +1,18 @@
-=head1 Variables
+=head1 Переменные
 
 Z<variables>
 X<variable>
 
-A I<variable> in Perl is a storage location for a value (L<values>). While a
-trivial program can manipulate values directly, most programs work with
-variables to simplify the logic of the code. A variable represents values; it's
-easier to explain the Pythagorean theorem in terms of the variables C<a>, C<b>,
-and C<c> than by intuiting its principle by producing a long list of valid
-values. This concept may seem basic, but effective programming requires you to
-manage the art of balancing the generic and reusable with the specific.
+I<Переменная> в Perl E<mdash> это место хранения значения (L<values>). Хотя
+простая программа может манипулировать значениями напрямую, большинство программ
+работают с переменными для упрощения логики кода. Переменные представляют
+значения; проще объяснить теорему Пифагора в терминах переменных C<a>, C<b> и
+C<c>, чем демонстрируя её принцип длинным списком корректных значений. Эта
+концепция может выглядеть базовой, но эффективное программирование требует от
+вас справляться с искусством балансирования между общим и повторно используемым
+с одной стороны и конкретным E<mdash> с другой.
 
-=head2 Variable Scopes
+=head2 Области видимости переменных
 
 Z<variable_scopes>
 
@@ -19,10 +20,11 @@ X<variables; scope>
 X<scope>
 X<builtins; C<package>>
 
-Variables are visible to portions of your program depending on their scope
-(L<scope>). Most of the variables you will encounter have lexical scope
-(L<lexical_scope>). I<Files> themselves provide their own lexical scopes, such
-that the C<package> declaration on its own does not create a new scope:
+Переменные видимы частям вашей программы в зависимости от их области видимости
+(L<scope>). Большая часть переменных, с которыми вы встретитесь, имеет
+лексическую область видимости (L<lexical_scope>). I<Файлы> сами задают свою
+собственную лексическую область видимости, так что объявление C<package> само по
+себе новую область видимости не создаёт:
 
 =begin programlisting
 
@@ -32,15 +34,15 @@ that the C<package> declaration on its own does not create a new scope:
 
     package Store::Music;
 
-    # $discount still visible
+    # переменная $discount всё ещё видима
     say "Our current discount is $discount!";
 
 =end programlisting
 
 X<builtins; C<package>; BLOCK>
 
-As of Perl 5.14, you may provide a block to the C<package> declaration. This
-syntax I<does> provide a lexical scope:
+Начиная с Perl 5.14, вы можете задать блок для объявления C<package>. Такой
+синтаксис I<создаёт> лексическую область видимости:
 
 =begin programlisting
 
@@ -51,62 +53,67 @@ syntax I<does> provide a lexical scope:
 
     package Store::Music
     {
-        # $discount not available
+        # переменная $discount не доступна
     }
 
     package Store::BoardGame;
 
-    # $discount still not available
+    # переменная $discount всё ещё не доступна
 
 =end programlisting
 
-=head2 Variable Sigils
+=head2 Сигилы переменных
 
 Z<sigils>
 
 X<variables; sigils>
 X<sigils>
 
-The sigil of the variable in a declaration determines the type of the variable:
-scalar, array, or hash. The sigil used when accessing a variable varies
-depending on what you do to the variable. For example, you declare an array as
-C<@values>. Access the first element--a single value--of the array with
-C<$values[0]>. Access a list of values from the array with C<@values[ @indices
-]>.
+Сигил переменно в объявлении определяет тип переменной: скаляр, массив или хеш.
+Сигил, используемый при доступе к переменной, варьируется в зависимости от того,
+что вы делаете с переменной. Например, вы объявляете массив как C<@values>.
+C<$values[0]> E<mdash> доступ к первому элементу массива E<mdash> единственному
+значению. C<@values[ @indices ]> E<mdash> доступ к списку значений из массива.
 
-=head2 Anonymous Variables
+=head2 Анонимные переменные
 
 X<anonymous variables>
 X<variables; anonymous>
 
+Переменные в Perl не I<требуют> имён. Имена существуют чтобы помочь вам,
+программисту, следить за C<$appl>, C<@barrels> или C<%cheap_meals>. Переменные,
+созданные в вашем программном коде I<без> литеральных имён, называются
+I<анонимными> переменными. Единственный способ обратиться к анонимной переменной
+E<mdash> по ссылке (L<references>).
 Perl variables do not I<require> names. Names exist to help you, the
 programmer, keep track of an C<$apple>, C<@barrels>, or C<%cheap_meals>.
 Variables created I<without> literal names in your source code are I<anonymous>
 variables. The only way to access anonymous variables is by reference
 (L<references>).
 
-=head2 Variables, Types, and Coercion
+=head2 Переменные, типы и преобразование
 
 X<variables; types>
 X<variables; container type>
 X<variables; value type>
 
-A variable in Perl 5 represents both a value (a dollar cost, available pizza
-toppings, guitar shops with phone numbers) and the container which stores that
-value. Perl's type system deals with I<value types> and I<container types>.
-While a variable's I<container type>--scalar, array, or hash--cannot change,
-Perl is flexible about a variable's value type. You may store a string in a
-variable in one line, append to that variable a number on the next, and
-reassign a reference to a function (L<function_references>) on the third.
+Переменная в Perl 5 представляет как значение (курс доллара, доступные начинки
+для пиццы, гитарные магазины с телефонными номерами), так и контейнер, в котором
+хранится это значение. Система типов Perl имеет дело с I<типами значений> и
+I<типами контейнеров>. Тогда как I<тип контейнера> переменной E<mdash> скаляр,
+массив или хеш E<mdash> не может измениться, относительно типа значения
+переменной Perl проявляет гибкость. Вы можете сохранить строку в переменной в
+одной строке кода, добавить к этой переменной число в следующей и переназначить
+ей ссылку на функцию (L<function_references>) в третье.
 
-Performing an operation on a variable which imposes a specific value type may
-cause coercion (L<coercion>) from the variable's existing value type.
+Выполнение над переменной операции, требующей конкретный тип значения, может
+вызвать преобразование (L<coercion>) из текущего типа значения переменной.
 
-For example, the documented way to determine the number of entries in an array
-is to evaluate that array in scalar context (L<context_philosophy>). Because a
-scalar variable can only ever contain a scalar, assigning an array to a scalar
-imposes scalar context on the operation, and an array evaluated in scalar
-context returns the number of elements in the array:
+Например, документированный способ определить количество элементов в массиве
+E<mdash> обратиться к нему в скалярном контексте (L<context_philosophy>). Так
+как скалярная переменная может содержать только скаляр, присвоение массива
+скаляру налагает на операцию скалярный контекст, и массив, вычисленный в
+скалярном контексте, возвращает количество элементов в этом массиве:
 
 =begin programlisting
 
@@ -114,4 +121,5 @@ context returns the number of elements in the array:
 
 =end programlisting
 
-This relationship between variable types, sigils, and context is essential.
+Отношения между типами переменных, сигилами и контекстом имеют первостепенную
+важность.
