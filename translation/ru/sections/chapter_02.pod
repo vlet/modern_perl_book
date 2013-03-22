@@ -1,20 +1,20 @@
-=head0 Perl and Its Community
+=head0 Perl и его сообщество
 
-Perl 5's greatest accomplishment is the huge amount of reusable libraries
-developed for it. Where Perl 4 had forks to connect to databases such as Oracle
-and Sybase, for example, Perl 5 had a real extension mechanism. Larry wanted
-people to create and maintain their own extensions without fragmenting Perl
-into thousands of incompatible pidgins--and it worked.
+Наибольшее достижение Perl 5 E<mdash> это огромное количество повторно
+используемых библиотек, разработанных для него. Тогда как для Perl 4 приходилось
+делать форки, например, для подключения к базам данных, таким как Oracle или
+Sybase, Perl 5 обладает настоящим механизмом расширений. Ларри хотел, чтобы люди
+создавали и поддерживали свои собственные расширения вместо того, чтобы
+разбивать Perl на тысячи несовместимых диалектов E<mdash> и это сработало.
 
-That technical accomplishment was almost as important as the growth of a
-community around Perl 5. I<People> write libraries. I<People> build on the work
-of other people. I<People> make a community worth joining and preserving and
-expanding.
+Это техническое достижение почти так же важно, как рост сообщества вокруг
+Perl 5. I<Люди> пишут библиотеки. I<Люди> строят свою работу на работе других
+людей. I<Люди> делают сообщество стоящим вступления, сохранения и расширения.
 
-The Perl community is strong and healthy. It welcomes willing participants at
-all levels, from novices to core developers. Take advantage of the knowledge
-and experience of countless other Perl programmers, and you'll become a better
-programmer.
+У Perl сильное и здоровое сообщество. Оно приветствует желающих стать его
+участниками, на всех уровнях, от новичков до разработчиков ядра. Воспользуйтесь
+знаниями и опытом бесчисленного Perl-программистов, и вы сами станете лучше как
+программист.
 
 L<cpan>
 
