@@ -1,4 +1,4 @@
-=head1 Scalars
+=head1 Скаляры
 
 Z<scalars>
 
@@ -6,26 +6,29 @@ X<scalars>
 X<C<$>; sigil>
 X<sigils; C<$>>
 
-Perl 5's fundamental data type is the I<scalar>, a single, discrete value.
-That value may be a string, an integer, a floating point value, a filehandle,
-or a reference--but it is always a single value. Scalars may be lexical,
-package, or global (L<globals>) variables. You may only declare lexical or
-package variables. The names of scalar variables must conform to standard
-variable naming guidelines (L<names>). Scalar variables always use the leading
-dollar-sign (C<$>) sigil (L<sigils>).
+Основной тип данных Perl 5 E<mdash> это I<скаляр>, одиночное, отдельное
+значение. Значение может быть строкой, целым числом, значением с плавающей
+точкой, дескриптором файла или ссылкой E<mdash> но это всегда одиночное
+значение. Скалярны могут быть лексическими переменными, переменными пакета или
+глобальными (L<globals>) переменными. Вы можете объявлять только лексические
+переменные и переменные пакетов. Имена скалярных переменных должны
+соответствовать стандартным правилам именования переменных (L<names>). Скалярные
+переменные всегда начинаются с сигила (L<sigils>) в виде знака доллара (C<$>).
 
-=begin tip Variant Sigils and Context
+=begin tip Вариантные сигилы и контекст
 
-Scalar values and scalar context have a deep connection; assigning to a scalar
-provides scalar context. Using the scalar sigil with an aggregate variable
-imposes scalar context to access a single element of the hash or array.
+Скалярные значения и скалярный контекст имеют глубокую связь; присвоение скаляру
+создаёт скалярный контекст. Использование скалярного сигила с агрегатной
+переменной налагает скалярный контекст на доступ к единственному элементу хеша
+или массива.
 
 =end tip
 
-=head2 Scalars and Types
+=head2 Скаляры и типы
 
-A scalar variable can contain any type of scalar value without special
-conversions or casts, and the type of value stored in a variable can change:
+Скалярная переменная может содержать любой тип скалярного значения без
+специальной конвертации или приведения типов, а кроме того, тип значения,
+сохранённого в переменной, может меняться:
 
 =begin programlisting
 
@@ -37,12 +40,12 @@ conversions or casts, and the type of value stored in a variable can change:
 
 =end programlisting
 
-Even though this code is I<legal>, changing the type of data stored in a scalar
-is a sign of confusion.
+Хотя этот код I<допустим>, изменение типа данных, сохраняемых в скаляре,
+E<mdash> признак беспорядка.
 
-This flexibility of type often leads to value coercion (L<coercion>). For
-example, you may treat the contents of a scalar as a string, even if you didn't
-explicitly assign it a string:
+Эта гибкость типов часто приводит к преобразованию значения (L<coercion>).
+Например, вы можете обращаться с содержимым скаляра как со строкой, даже если
+вы явно не назначали ему строку:
 
 =begin programlisting
 
@@ -51,7 +54,7 @@ explicitly assign it a string:
 
 =end programlisting
 
-You may also use mathematical operations on strings:
+Также вы можете производить математические операции над строками:
 
 =begin programlisting
 
@@ -70,25 +73,26 @@ You may also use mathematical operations on strings:
 
 X<increment; string>
 
-=begin tip One-Way Increment Magic
+=begin tip Односторонняя магия инкремента
 
-This magical string increment behavior has no corresponding magical decrement
-behavior. You can't get the previous string value by writing C<$call_sign-->.
+Это магическое поведение инкремента строки не имеет соответствующего магического
+поведения декремента. Вы не сможете получить предыдущее значение строки, написав
+C<$call_sign-->.
 
 =end tip
 
-This string increment operation turns C<a> into C<b> and C<z> into C<aa>,
-respecting character set and case. While C<ZZ9> becomes C<AAA0>, C<ZZ09>
-becomes C<ZZ10>--numbers wrap around while there are more significant places to
-increment, as on a vehicle odometer.
+Эта операция инкремента строки превращает C<a> в C<b> и C<z> в C<aa>, учитывая
+набор символов и регистр. В то время как C<ZZ9> становится C<AAA0>, C<ZZ09>
+становится C<ZZ10> E<mdash> числа проворачиваются до тех пор, пока есть большие
+значащие цифры для инкремента, как на автомобильном одометре.
 
 X<stringification>
 X<numification>
 
-Evaluating a reference (L<references>) in string context produces a string.
-Evaluating a reference in numeric context produces a number. Neither operation
-modifies the reference in place, but you cannot recreate the reference from
-either result:
+Вычисление ссылки (L<references>) в строковом контексте возвращает строку.
+Вычисление ссылки в числовом контексте возвращает число. Ни одна из этих
+операций не модифицирует ссылку, но вы не сможете восстановить ссылку из любого
+из результатов:
 
 =begin programlisting
 
@@ -98,20 +102,20 @@ either result:
 
 =end programlisting
 
-C<$authors> is still useful as a reference, but C<$stringy_ref> is a string
-with no connection to the reference and C<$numeric_ref> is a number with no
-connection to the reference.
+C<$authors> всё ещё пригодная к употреблению ссылка, но C<$stringy_ref> E<mdash>
+строка, не имеющая никакой связи со ссылкой, и C<$numeric_ref> E<mdash> число,
+также не имеющее никакой связи со ссылкой.
 
 X<C<Scalar::Util>>
 X<dualvars>
 X<C<dualvar()>>
 
-To allow coercion without data loss, Perl 5 scalars can contain both numeric
-and string components. The internal data structure which represents a scalar in
-Perl 5 has a numeric slot and a string slot. Accessing a string in a numeric
-context produces a scalar with both string and numeric values. The C<dualvar()>
-function within the core C<Scalar::Util> module allows you to manipulate both
-values directly within a single scalar.
+Чтобы обеспечить возможность преобразования без потери данных, скаляры Perl 5
+могут вмещать и числовой, и строковый компоненты. Внутренняя структура данных,
+представляющая скаляр в Perl 5, имеет числовой слот и строковый слот. Доступ к
+строке в числовом контексте производит скаляр и со строковым, и с числовым
+значениями. Функция C<dualvar()> встроенного модуля C<Scalar::Util> позволяет
+вам манипулировать обоими значениями напрямую в одном скаляре.
 
 X<boolean>
 X<scalars; boolean values>
@@ -122,20 +126,20 @@ X<strings; false>
 X<numbers; true>
 X<numbers; false>
 
-Scalars do not contain a separate slot for boolean values. In boolean context,
-the empty string (C<''>) and C<'0'> are false. All other strings are true. In
-boolean context, numbers which evaluate to zero (C<0>, C<0.0>, and C<0e0>) are
-false. All other numbers are true.
+Скаляры не имеют отдельного слота для булевых значений. В булевом контексте
+пустая строка (C<''>) и C<'0'> E<mdash> ложны. Все остальные строки E<mdash>
+истинны. В булевом контексте числа, равные нулю (C<0>, C<0.0> и C<0e0>), ложны.
+Все остальные числа E<mdash> истинны.
 
-=begin tip What is Truth?
+=begin tip Что есть истина?
 
-Be careful that the I<strings> C<'0.0'> and C<'0e0'> are true; this is one
-place where Perl 5 makes a distinction between what looks like a number and
-what really is a number.
+Обратите внимание, что I<строки> C<'0.0'> и C<'0e0'> истинны; это одно из
+мест, где Perl 5 делает различие между тем, что выглядит как число, и что на
+самом деле число.
 
 =end tip
 
 X<C<undef>>
 
-One other value is always false: C<undef>. This is the value of uninitialized
-variables as well as a value in its own right.
+Ещё одно значение всегда ложно: C<undef>. Это значение неинициализированных
+переменных, кроме того, оно может быть и самостоятельным значением.
