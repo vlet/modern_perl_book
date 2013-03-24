@@ -1,11 +1,11 @@
-=head1 Control Flow
+=head1 Поток управления
 
 Z<control_flow>
 
 X<control flow>
 
-Perl's basic I<control flow> is straightforward. Program execution starts at
-the beginning (the first line of the file executed) and continues to the end:
+Базовый I<поток управления> в Perl E<mdash> прямой. Выполнение программы
+начинается с начала (первая строка исполняемого файла) и продолжается до конца:
 
 =begin programlisting
 
@@ -17,15 +17,15 @@ the beginning (the first line of the file executed) and continues to the end:
 
 X<control flow directives>
 
-Perl's I<control flow directives> change the order of execution--what happens
-next in the program--depending on the values of their expressions.
+I<Директивы потока управления> в Perl изменяют порядок выполнения E<mdash> что
+в программе произойдёт следущим E<mdash> в зависимости от значений их выражений.
 
-=head2 Branching Directives
+=head2 Директивы ветвления
 
 X<control flow directives; C<if>>
 
-The C<if> directive performs the associated action only when its conditional
-expression evaluates to a I<true> value:
+Директива C<if> выполняет связанное действие только если её условное выражение
+возвращает I<истинное> значение:
 
 =begin programlisting
 
@@ -33,8 +33,8 @@ expression evaluates to a I<true> value:
 
 =end programlisting
 
-This postfix form is useful for simple expressions. A block form groups
-multiple expressions into a single unit:
+Эта постфиксная форма удобна для простых выражений. Блочная форма группирует
+несколько выражений в воедино:
 
 =begin programlisting
 
@@ -46,11 +46,11 @@ multiple expressions into a single unit:
 
 =end programlisting
 
-While the block form requires parentheses around its condition, the postfix
-form does not.
+Блочная форма требует скобок вокруг своего условия, постфиксная же форма
+E<mdash> нет:
 
-The conditional expression may consist of multiple subexpressions, as long as
-it evaluates to a single top-level expression:
+Условное выражение может состоять из нескольких подвыражений, до тех пор пока
+оно вычисляется в одно выражение верхнего уровня:
 
 =begin programlisting
 
@@ -62,8 +62,8 @@ it evaluates to a single top-level expression:
 
 =end programlisting
 
-In the postfix form, adding parentheses can clarify the intent of the code at
-the expense of visual cleanliness:
+В постфиксной форме добавление скобок может прояснить замысел кода ценой
+визуальной чистоты:
 
 =begin programlisting
 
@@ -73,8 +73,8 @@ the expense of visual cleanliness:
 
 X<control flow directives; C<unless>>
 
-The C<unless> directive is a negated form of C<if>. Perl will perform the
-action when the conditional expression evaluates to I<false>:
+Директива C<unless> E<mdash> отрицательная форма C<if>. Perl выполнит действие
+в случае, если условное выражение возвращает I<ложь>:
 
 =begin programlisting
 
@@ -82,8 +82,9 @@ action when the conditional expression evaluates to I<false>:
 
 =end programlisting
 
-Like C<if>, C<unless> also has a block form, though many programmers avoid it,
-as it rapidly becomes difficult to read with complex conditionals:
+Как и C<if>, C<unless> тоже имеет блочную форму, хотя многие программисты
+избегают её, потому что со сложными условиями она очень быстро становится
+сложной для чтения:
 
 =begin programlisting
 
@@ -95,8 +96,8 @@ as it rapidly becomes difficult to read with complex conditionals:
 
 =end programlisting
 
-C<unless> works very well for postfix conditionals, especially parameter
-validation in functions (L<postfix_parameter_validation>):
+C<unless> очень хорошо работает для постфиксных условий, особенно для валидации
+параметров в функциях (L<postfix_parameter_validation>):
 
 =begin programlisting
 
@@ -111,9 +112,9 @@ validation in functions (L<postfix_parameter_validation>):
 
 X<control flow directives; C<else>>
 
-The block forms of C<if> and C<unless> both work with the C<else> directive,
-which provides code to run when the conditional expression does not evaluate to
-true (for C<if>) or false (for C<unless>):
+Блочные формы как C<if>, так и C<unless>, работают с директивой C<else>,
+предоставляющей код для выполнения в случае, если условное выражение не
+возвращает истину (для C<if>) или ложь (для C<unless>):
 
 =begin programlisting
 
@@ -130,8 +131,8 @@ true (for C<if>) or false (for C<unless>):
 
 =end programlisting
 
-C<else> blocks allow you to rewrite C<if> and C<unless> conditionals in terms
-of each other:
+Блоки C<else> позволяют переписать условия C<if> и C<unless> в терминах друг
+друга:
 
 =begin programlisting
 
@@ -148,12 +149,13 @@ of each other:
 
 =end programlisting
 
-However, the implied double negative of using C<unless> with an C<else> block
-can be confusing. This example may be the only place you ever see it.
+Однако, подразумеваемое двойное отрицание при использовании C<unless> с блоком
+C<else> может сбивать с толку. Этот пример, возможно, единственное место, где вы
+его когда-либо увидите.
 
-Just as Perl provides both C<if> and C<unless> to allow you to phrase your
-conditionals in the most readable way, you can choose between positive and
-negative conditional operators:
+Perl не только предоставляет вам и C<if>, и C<unless>, чтобы дать возможность
+выразить ваши условия наиболее читаемым способом, вы также можете выбирать между
+положительными и отрицательными условными операторами:
 
 =begin programlisting
 
@@ -170,13 +172,13 @@ negative conditional operators:
 
 =end programlisting
 
-... though the double negative implied by the presence of the C<else> block
-suggests inverting the conditional.
+E<hellip>хотя двойное отрицание, создаваемое присутствием блока C<else>, наводит
+на мысль инвертировать условие.
 
 X<control flow directives; C<elsif>>
 
-One or more C<elsif> directives may follow an C<if> block form and may precede
-any single C<else>:
+Одна или более директив C<elsif> может следовать за блочной формой C<if> и
+предшествовать одной директиве C<else>:
 
 =begin programlisting
 
@@ -198,11 +200,11 @@ any single C<else>:
 
 =end programlisting
 
-An C<unless> chain may also use an C<elsif> blockN<Good luck deciphering
-that!>. There is no C<elseunless>.
+Цепочка C<unless> тоже может использовать блок C<elsif>N<Удачи с расшифровкой
+этого!>. Однако не существует директивы C<elseunless>.
 
-Writing C<else if> is a syntax errorN<Larry prefers C<elsif> for aesthetic
-reasons, as well the prior art of the Ada programming language.>:
+Написание C<else if> E<mdash> синтаксическая ошибкаN<Ларри предпочитает C<elsif>
+по эстетическим причинам, как и прежнее искусство языка программирования Ada.>:
 
 =begin programlisting
 
@@ -211,7 +213,7 @@ reasons, as well the prior art of the Ada programming language.>:
         say 'Hi, cousin!';
     }
 
-    # warning; syntax error
+    # внимание, синтаксическая ошибка
     else if ($name eq 'Kristen')
     {
         say 'Hi, cousin-in-law!';
@@ -219,13 +221,13 @@ reasons, as well the prior art of the Ada programming language.>:
 
 =end programlisting
 
-=head2 The Ternary Conditional Operator
+=head2 Тернарный условный оператор
 
 X<ternary conditional>
 X<control flow directives; ternary conditional>
 
-The I<ternary conditional> operator evaluates a conditional expression and
-produces one of two alternatives:
+I<Тернарный условный> оператор вычисляет условное выражение и возвращает одну из
+двух альтернатив:
 
 =begin programlisting
 
@@ -235,15 +237,14 @@ produces one of two alternatives:
 
 =end programlisting
 
-The conditional expression precedes the question mark character (C<?>) and the
-colon character (C<:>) separates the alternatives. The alternatives are
-expressions of arbitrary complexity--including other ternary conditional
-expressions.
+Условное выражение предшествует символу вопроса (C<?>), а символ двоеточия
+(C<:>) разделяет альтернативы. Альтернативы E<mdash> это выражения произвольной
+сложности E<mdash> включая другие тернарные условные выражения.
 
 =begin sidebar
 
-An interesting, though obscure, idiom is to use the ternary conditional to
-select between alternative I<variables>, not only values:
+Интересная, хотя и малоизвестная, идиому E<mdash> использование тернарного
+условия для выбора между альтернативными I<переменными>, а не только значениями:
 
 =begin programlisting
 
@@ -252,20 +253,19 @@ select between alternative I<variables>, not only values:
 
 =end programlisting
 
-Again, weigh the benefits of clarity versus the benefits of conciseness.
+И снова, взвесьте выгоды ясности против выгод краткости.
 
 =end sidebar
 
-=head3 Short Circuiting
+=head3 Короткое замыкание
 
 Z<short_circuiting>
 X<short-circuiting>
 
-Perl exhibits I<short-circuiting> behavior when it encounters complex
-conditional expressions. When Perl can determine that a complex expression
-would succeed or fail as a whole without evaluating every subexpression, it
-will not evaluate subsequent subexpressions. This is most obvious with an
-example:
+Perl проявляет поведение, называемое I<коротким замыканием>, когда встречается
+со сложными условными выражениями. Если Perl может определить, будет ли сложное
+выражение истинно или ложно, не вычисляя каждое подвыражение, он не будет
+вычислять последующие подвыражения. Это наиболее очевидно на примере:
 
 =begin programlisting
 
@@ -276,8 +276,8 @@ example:
 
 =end programlisting
 
-The return value of C<ok()> (L<testing>) is the boolean value obtained by
-evaluating the first argument, so this code prints:
+Возвращаемое значение C<ok()> (L<testing>) E<mdash> это булево значение,
+полученное при вычислении первого аргумента, поэтому этот код выведет:
 
 =begin screen
 
@@ -287,10 +287,10 @@ evaluating the first argument, so this code prints:
 
 =end screen
 
-When the first subexpression--the first call to C<ok>--evaluates to a true
-value, Perl must evaluate the second subexpression. If the first subexpression
-had evaluated to a false value, there would be no need to check subsequent
-subexpressions, as the entire expression could not succeed:
+Если первое подвыражение E<mdash> первый вызов C<ok> E<mdash> возвращает
+истинное значение, Perl должен будет вычислить второе подвыражение. Если первое
+подвыражение вернуло ложь, то нет необходимости проверять последующие
+подвыражения, так как всё выражение уже не может быть истинным:
 
 =begin programlisting
 
@@ -299,7 +299,7 @@ subexpressions, as the entire expression could not succeed:
 
 =end programlisting
 
-This example prints:
+Этот пример выводит:
 
 =begin screen
 
@@ -307,9 +307,8 @@ This example prints:
 
 =end screen
 
-Even though the second subexpression would obviously succeed, Perl never
-evaluates it. The same short-circuiting behavior is evident for logical-or
-operations:
+Хотя второе подвыражение очевидно вернёт истину, Perl никогда не вычислит его.
+То же самое короткое замыкание очевидно для операций логического или:
 
 =begin programlisting
 
@@ -318,7 +317,7 @@ operations:
 
 =end programlisting
 
-This example prints:
+Этот пример выводит:
 
 =begin screen
 
@@ -327,14 +326,13 @@ This example prints:
 
 =end screen
 
-With the success of the first subexpression, Perl can avoid evaluating the
-second subexpression. If the first subexpression were false, the result of
-evaluating the second subexpression would dictate the result of evaluating the
-entire expression.
+В случае истинности первого подвыражения, Perl может избежать вычисления второго
+подвыражения. Если бы первое подвыражение было ложным, результат вычисления
+второго подвыражения определил бы результат вычисления всего выражения.
 
-Besides allowing you to avoid potentially expensive computations, short
-circuiting can help you to avoid errors and warnings, as in the case where
-using an undefined value might raise a warning:
+Короткое замыкание позволяет вам не только избежать потенциально дорогих
+вычислений, но и избежать ошибок и предупреждений, как в случае, когда
+использование неопределённого значения может вызвать предупреждение:
 
 =begin programlisting
 
@@ -343,53 +341,55 @@ using an undefined value might raise a warning:
 
 =end programlisting
 
-=head2 Context for Conditional Directives
+=head2 Контекст в условных директивах
 
 X<context; conditional>
 X<boolean; true>
 X<true>
 X<false>
 
-The conditional directives--C<if>, C<unless>, and the ternary conditional
-operator--all evaluate an expression in boolean context
-(L<context_philosophy>). As comparison operators such as C<eq>, C<==>, C<ne>,
-and C<!=> all produce boolean results when evaluated, Perl coerces the results
-of other expressions--including variables and values--into boolean forms.
+Все условные директивы E<mdash> C<if>, C<unless> и тернарный условный оператор
+E<mdash> вычисляют выражение в булевом контексте (L<context_philosophy>). В то
+время как операторы сравнения, такие как C<eq>, C<==>, C<ne> и C<!=>, возвращают
+булевы результаты при их вычислении, результаты других выражений E<mdash>
+включая переменные и значения E<mdash> Perl преобразует в булевы формы.
 
-Perl 5 has no single true value, nor a single false value. Any number which
-evaluates to 0 is false. This includes C<0>, C<0.0>, C<0e0>, C<0x0>, and so on.
-The empty string (C<''>) and C<'0'> evaluate to a false value, but the strings
-C<'0.0'>, C<'0e0'>, and so on do not. The idiom C<'0 but true'> evaluates to 0
-in numeric context but true in boolean context, thanks to its string contents.
+В Perl 5 нет единого истинного значения, как и единого ложного. Любое число,
+преобразуемое в 0, ложно. Это относится к C<0>, C<0.0>, C<0e0>, C<0x0> и т. д.
+Пустая строка (C<''>) и C<'0'> преобразуются в ложное значение, но строки
+C<'0.0'>, C<'0e0'> и т. д. E<mdash> нет. Идиома C<'0 but true'> преобразуется
+в 0 в числовом контексте, но истинно в булевом контексте, благодаря своему
+строковому содержанию.
 
-Both the empty list and C<undef> evaluate to a false value. Empty arrays and
-hashes return the number 0 in scalar context, so they evaluate to a false value
-in boolean context. An array which contains a single element--even
-C<undef>--evaluates to true in boolean context. A hash which contains any
-elements--even a key and a value of C<undef>--evaluates to a true value in
-boolean context.
+Пустой список и C<undef> преобразуются в ложное значение. Пустые массивы и хеши
+возвращают число 0 в скалярном контексте, поэтому в булевом контексте
+преобразуются в ложь. Массив, содержащий хотя бы один элемент, пусть даже
+C<undef> E<mdash> преобразуется в истину в булевом контексте. Хеш, содержащий
+хотя бы один элемент, даже если и ключ, и значение E<mdash> C<undef>,
+преобразуется в истинное значение в булевом контексте.
 
-=begin tip Greater Control Over Context
+=begin tip Более глубокий контроль контекста
 
 X<CPAN; C<Want>>
 X<pragmas; C<overloading>>
 
-The C<Want> module from the CPAN allows you to detect boolean context within
-your own functions. The core C<overloading> pragma (L<overloading>) allows you
-to specify what your own data types produce when evaluated in various contexts.
+Модуль C<Want> из CPAN позволяет вам определять булев контекст с помощью своих
+собственных функций. Встроенная прагма C<overloading> (L<overloading>) позволяет
+вам указать, что ваши собственные типы данных возвращают при вычислении в разных
+контекстах.
 
 =end tip
 
-=head2 Looping Directives
+=head2 Директивы циклов
 
 Z<looping_directives>
 
 X<looping directives; C<for>>
 X<looping directives; C<foreach>>
 
-Perl provides several directives for looping and iteration. The
-I<foreach>-style loop evaluates an expression which produces a list and
-executes a statement or block until it has consumed that list:
+Perl предоставляет несколько директив для организации циклов и итераций. Цикл
+в стиле I<foreach> вычисляет выражение, возвращающее список, и выполняет блок
+операцию или блок, пока не израсходует весь этот список:
 
 =begin programlisting
 
@@ -400,23 +400,23 @@ executes a statement or block until it has consumed that list:
 
 =end programlisting
 
-This example uses the range operator to produce a list of integers from one to
-ten inclusive. The C<foreach> directive loops over them, setting the topic
-variable C<$_> (L<default_scalar_variable>) to each in turn. Perl executes the
-block for each integer and prints the squares of the integers.
+Этот пример использует оператор диапазона для генерации списка целых чисел от
+единицы до десяти включительно. Директива C<foreach> циклически проходит по ним,
+устанавливая переменную-топик C<$_> (L<default_scalar_variable>) на каждом шаге.
+Perl выполняет блок для каждого целого числа и выводит их квадраты.
 
 =begin tip C<foreach> versus C<for>
 
 X<builtins; C<for>>
 X<builtins; C<foreach>>
 
-Many Perl programmers refer to iteration as C<foreach> loops, but Perl treats
-the names C<foreach> and C<for> interchangeably. The subsequent code determines
-the type and behavior of the loop.
+Многие Perl-программисты подразумевают под итерациями циклы C<foreach>, но Perl
+считает имена C<foreach> и C<for> взаимозаменяемыми. Последующий код определяет
+тип и поведение цикла.
 
 =end tip
 
-Like C<if> and C<unless>, this loop has a postfix form:
+Как и C<if> и C<unless>, этот цикл имеет постфиксную форму:
 
 =begin programlisting
 
@@ -424,7 +424,7 @@ Like C<if> and C<unless>, this loop has a postfix form:
 
 =end programlisting
 
-A C<for> loop may use a named variable instead of the topic:
+Цикл C<for> может использовать именованную переменную вместо переменной-топика:
 
 =begin programlisting
 
@@ -435,11 +435,11 @@ A C<for> loop may use a named variable instead of the topic:
 
 =end programlisting
 
-When a C<for> loop uses an iterator variable, the variable scope is I<within>
-the loop. Perl will set this lexical to the value of each item in the
-iteration. Perl will not modify the topic variable (C<$_>). If you have
-declared a lexical C<$i> in an outer scope, its value will persist outside the
-loop:
+Когда цикл C<for> использует переменную-итератор, область видимости этой
+переменной E<mdash> I<внутри> цикла. Perl будет назначать этой лексической
+переменной значение каждого элемента итерации. Perl не будет модифицировать
+переменную-топик (C<$_>). Если вы объявили лексическую переменную C<$i> во
+внешней области видимости, её значение сохранится снаружи цикла:
 
 =begin programlisting
 
@@ -454,9 +454,9 @@ loop:
 
 =end programlisting
 
-This localization occurs even if you do not redeclare the iteration variable as
-a lexicalN<... but I<do> declare your iteration variables as lexicals to reduce
-their scope.>:
+Эта локализация происходит даже если вы не переобъявляли переменную итерации как
+лексическуюN<E<mdash>но I<объявляйте> ваши переменные итераций как лексические,
+чтобы уменьшить их область видимости.>:
 
 =begin programlisting
 
@@ -471,15 +471,15 @@ their scope.>:
 
 =end programlisting
 
-=head2 Iteration and Aliasing
+=head2 Итерации и псевдонимы
 
 X<iteration; aliasing>
 X<aliasing>
 X<aliasing; iteration>
 
-The C<for> loop I<aliases> the iterator variable to the values in the iteration
-such that any modifications to the value of the iterator modifies the iterated
-value in place:
+Цикл C<for> создаёт переменную-итератор как I<псевдоним> для значения в
+итерации, так что любые модификации значения итератор сразу же изменяют исходное
+значение:
 
 =begin programlisting
 
@@ -496,7 +496,7 @@ value in place:
 
 =end programlisting
 
-This aliasing also works with the block style C<for> loop:
+Создание псевдонимов также работает с блочным стилем цикла C<for>:
 
 =begin programlisting
 
@@ -507,7 +507,7 @@ This aliasing also works with the block style C<for> loop:
 
 =end programlisting
 
-... as well as iteration with the topic variable:
+E<hellip>как и в итерациях с переменной-топиком:
 
 =begin programlisting
 
@@ -518,7 +518,7 @@ This aliasing also works with the block style C<for> loop:
 
 =end programlisting
 
-You cannot use aliasing to modify I<constant> values, however:
+Однако, вы не можете использовать псевдонимы для изменения значения I<констант>:
 
 =begin programlisting
 
@@ -530,34 +530,35 @@ You cannot use aliasing to modify I<constant> values, however:
 
 =end programlisting
 
-Instead Perl will produce an exception about modification of read-only values.
+Вместо этого Perl выбросит исключение о модификации значения, предназначенного
+только для чтения.
 
-You may occasionally see the use of C<for> with a single scalar variable to
-alias C<$_> to the variable:
+Иногда вы можете увидеть использование цикла C<for> с единственной скалярной
+переменной, для создания в псевдонима этой переменной в C<$_>:
 
 =begin programlisting
 
     for ($user_input)
     {
-        s/\A\s+//;      # trim leading whitespace
-        s/\s+\z//;      # trim trailing whitespace
+        s/\A\s+//;      # удалить ведущие пробелы
+        s/\s+\z//;      # удалить завершающие пробелы
 
-        $_ = quotemeta; # escape non-word characters
+        $_ = quotemeta; # экранировать символы, не являющиеся символами слов
     }
 
 =end programlisting
 
-=head2 Iteration and Scoping
+=head2 Итерации и область видимости
 
 X<iteration; scoping>
 X<scope; iterator>
 X<C<my $_>>
 X<C<$_>; lexical>
 
-Iterator scoping with the topic variable provides one common source of
-confusion. Consider a function C<topic_mangler()> which modifies C<$_> on
-purpose. If code iterating over a list called C<topic_mangler()> without
-protecting C<$_>, debugging fun would ensue:
+Учёт области видимости итератора в случае переменной-топика E<mdash> общий
+источник путаницы. Рассмотрим функцию C<topic_mangler()>, целенаправленно
+модифицирующую C<$_>. Если код, итерирующий по списку, вызывает
+C<topic_mangler()>, не защитив C<$_>, весёлая отладка гарантированна:
 
 =begin programlisting
 
@@ -573,8 +574,8 @@ protecting C<$_>, debugging fun would ensue:
 
 =end programlisting
 
-If you I<must> use C<$_> rather than a named variable, make the topic variable
-lexical with C<my $_>:
+Если вам I<приходится> использовать C<$_> вместо именованной переменной,
+сделайте переменную-топик лексической с помощью объявления C<my $_>:
 
 =begin programlisting
 
@@ -591,14 +592,14 @@ lexical with C<my $_>:
 
 =end programlisting
 
-Using a named iteration variable also prevents undesired aliasing behavior
-through C<$_>.
+Использование именованной переменной итерации также предотвращает нежелательное
+создание псевдонима в C<$_>.
 
-=head2 The C-Style For Loop
+=head2 Цикл for в стиле C
 
 X<loops; C<for>>
 
-The C-style I<for loop> requires you to manage the conditions of iteration:
+Цикл C<for> в стиле C требует управления условиями итерации:
 
 =begin programlisting
 
@@ -609,11 +610,11 @@ The C-style I<for loop> requires you to manage the conditions of iteration:
 
 =end programlisting
 
-You must explicitly assign to an iteration variable in the looping construct,
-as this loop performs neither aliasing nor assignment to the topic variable.
-While any variable declared in the loop construct is scoped to the lexical
-block of the loop, there is no lexicalization of a variable declared outside of
-the loop construct:
+Вы должны явно назначать значение итерационной переменной в конструкции цикла,
+так как этот цикл не выполняет ни создания псевдонима, ни присвоения
+переменной-топику. Хотя все переменные, объявленные в конструкции цикла, имеют
+лексическую область видимости в блоке цикла, переменные, объявленные снаружи
+конструкции цикла, не локализуются:
 
 =begin programlisting
 
@@ -628,23 +629,24 @@ the loop construct:
 
 =end programlisting
 
-The looping construct may have three subexpressions. The first
-subexpression--the initialization section--executes only once, before the loop
-body executes.  Perl evaluates the second subexpression--the conditional
-comparison--before each iteration of the loop body. When this evaluates to a
-true value, iteration proceeds. When it evaluates to a false value, iteration
-stops. The final subexpression executes after each iteration of the loop body.
+Конструкция цикла может иметь три подвыражения. Первое подвыражение E<mdash>
+секция инициализации E<mdash> выполняется только один раз, перед выполнением
+тела цикла. Perl вычисляет второе подвыражение E<mdash> условное сравнение
+E<mdash> перед каждой итерацией тела цикла. Если оно возвращает истинное
+значение, выполняется итерация. Если оно возвращает ложное значение, итерация
+прекращается. Последнее подвыражение выполняется после каждой итерации тела
+цикла.
 
 =begin programlisting
 
     for (
-        # loop initialization subexpression
+        # подвыражение инициализации цикла
         say 'Initializing', my $i = 0;
 
-        # conditional comparison subexpression
+        # подвыражение условного сравнения
         say "Iteration: $i" and $i < 10;
 
-        # iteration ending subexpression
+        # подвыражение завершения итерации
         say 'Incrementing ' . $i++
     )
     {
@@ -653,11 +655,12 @@ stops. The final subexpression executes after each iteration of the loop body.
 
 =end programlisting
 
-Note the lack of a semicolon after the final subexpression as well as the use
-of the comma operator and low-precedence C<and>; this syntax is surprisingly
-finicky. When possible, prefer the C<foreach>-style loop to the C<for> loop.
+Обратите внимание на отсутствие точки с запятой после последнего подвыражения, а
+также на использование оператора запятая и низкоприоритетного C<and>; этот
+синтаксис на удивление требователен. По возможности, предпочтительнее
+использовать цикл в стиле C<foreach>, а не C<for>.
 
-All three subexpressions are optional. An infinite C<for> loop might be:
+Все три подвыражения необязательны. Бесконечный цикл C<for> может выглядеть так:
 
 =begin programlisting
 
@@ -665,12 +668,12 @@ All three subexpressions are optional. An infinite C<for> loop might be:
 
 =end programlisting
 
-=head2 While and Until
+=head2 While и Until
 
 X<loops; C<while>>
 
-A I<while> loop continues until the loop conditional expression evaluates to a
-boolean false value. An idiomatic infinite loop is:
+Цикл I<while> продолжается до тех пор, пока условие цикла возвращает ложное
+булево значение. Идиоматический бесконечный цикл выглядит так:
 
 =begin programlisting
 
@@ -678,9 +681,9 @@ boolean false value. An idiomatic infinite loop is:
 
 =end programlisting
 
-Unlike the iteration C<foreach>-style loop, the C<while> loop's condition has
-no side effects by itself. That is, if C<@values> has one or more elements,
-this code is also an infinite loop:
+В отличие от итерации в цикле стиля C<foreach>, условие цикла C<while> само по
+себе не имеет побочных эффектов. То есть, если C<@values> содержит один или
+несколько элементов, этот код тоже будет бесконечным циклом:
 
 =begin programlisting
 
@@ -693,8 +696,9 @@ this code is also an infinite loop:
 
 X<destructive update>
 
-To prevent such an infinite C<while> loop, use a I<destructive update> of the
-C<@values> array by modifying the array with each loop iteration:
+Чтобы предотвратить подобный бесконечный цикл C<while>, используйте
+I<деструктивное изменение> массива C<@values>, модифицируя массив на каждой
+итерации цикла:
 
 =begin programlisting
 
@@ -706,8 +710,8 @@ C<@values> array by modifying the array with each loop iteration:
 
 =end programlisting
 
-Modifying C<@values> inside of the C<while> condition check also works, but it
-has some subtleties related to the truthiness of each value.
+Модификация C<@values> внутри условия C<while> тоже работает, но имеет ряд
+тонкостей, связанных истинностью каждого значения.
 
 =begin programlisting
 
@@ -718,15 +722,14 @@ has some subtleties related to the truthiness of each value.
 
 =end programlisting
 
-This loop will exit as soon as it reaches an element that evaluates to a false
-value, not necessarily when it has exhausted the array. That may be the desired
-behavior, but is often surprising to novices.
+Этот цикл прекратится, как только он достигнет элемента, являющегося ложным
+значением, а не обязательно, когда весь массив будет израсходован. Это может
+быть ожидаемым поведением, но оно часто удивляет новичков.
 
 X<loops; C<until>>
 
-The I<until> loop reverses the sense of the test of the C<while> loop.
-Iteration continues while the loop conditional expression evaluates to a false
-value:
+Цикл I<until> меняет на противоположный смысл проверки цикла C<while>. Итерация
+продолжается, пока условное выражение цикла возвращает ложное значение:
 
 =begin programlisting
 
@@ -737,8 +740,8 @@ value:
 
 =end programlisting
 
-The canonical use of the C<while> loop is to iterate over input from a
-filehandle:
+Каноническое использование цикла C<while> E<mdash> итерация по входным данным из
+дескриптора файла:
 
 =begin programlisting
 
@@ -753,7 +756,7 @@ filehandle:
 
 =end programlisting
 
-Perl 5 interprets this C<while> loop as if you had written:
+Perl 5 интерпретирует этот цикл C<while> как если бы вы написали:
 
 =begin programlisting
 
@@ -764,25 +767,25 @@ Perl 5 interprets this C<while> loop as if you had written:
 
 =end programlisting
 
-Without the implicit C<defined>, any line read from the filehandle which
-evaluated to a false value in a scalar context--a blank line or a line which
-contained only the character C<0>--would end the loop. The C<readline> (C<< <>
->>) operator returns an undefined value only when it has reached the end of the
-file.
+Без явного C<defined>, любая строка, прочитанная из дескриптора файла, которая в
+скалярном контексте даёт ложное значение E<mdash> пустая строка, или строка,
+содержащая один только символ C<0> E<mdash> завершит цикл. Оператор C<readline>
+(C<< <> >>) возвращает неопределённое значение только когда достигает конца
+файла.
 
-=begin tip C<chomp> Your Lines
+=begin tip Обкусывайте ваши строчки
 
 X<builtins; C<chomp>>
 
-Use the C<chomp> builtin to remove line-ending characters from each line. Many
-novices forget this.
+Используйте встроенную функцию C<chomp> для удаления символов конца строки из
+каждой строчки. Многие новички забывают это делать.
 
 =end tip
 
-Both C<while> and C<until> have postfix forms, such as the infinite loop C<1
-while 1;>. Any single expression is suitable for a postfix C<while> or
-C<until>, including the classic "Hello, world!" example from 8-bit computers of
-the early 1980s:
+И C<while>, и C<until> имеют постфиксные формы, такие как бесконечный цикл
+C<1 while 1;>. Любое единственное выражение годится для постфиксной формы
+C<while> или C<until>, включая классический пример E<laquo>Hello, world!E<raquo>
+из 8-битных компьютеров ранних 1980-ых:
 
 =begin programlisting
 
@@ -790,8 +793,9 @@ the early 1980s:
 
 =end programlisting
 
-Infinite loops are more useful than they seem, especially for event loops in
-GUI programs, program interpreters, or network servers:
+Бесконечные циклы более полезны, чем кажется на первый взгляд, особенно для
+циклов событий в программах с графическим интерфейсом, интерпретаторах или
+сетевых серверах:
 
 =begin programlisting
 
@@ -801,7 +805,7 @@ GUI programs, program interpreters, or network servers:
 
 X<loops; C<do>>
 
-Use a C<do> block to group several expressions into a single unit:
+Используйте блок C<do> чтобы сгруппировать несколько выражений воедино:
 
 =begin programlisting
 
@@ -815,16 +819,17 @@ Use a C<do> block to group several expressions into a single unit:
 
 =end programlisting
 
-A C<do> block parses as a single expression which may contain several
-expressions. Unlike the C<while> loop's block form, the C<do> block with a
-postfix C<while> or C<until> will execute its body at least once. This
-construct is less common than the other loop forms, but no less powerful.
+Блок C<do> воспринимается парсером как единое выражение, которое может содержать
+несколько других выражений. В отличие от блочной формы цикла C<while>, блок
+C<do> с постфиксным C<while> или C<until> выполнит своё тело хотя бы раз. Эта
+конструкция менее распространена, чем другие формы циклов, но не менее
+действенна.
 
-=head2 Loops within Loops
+=head2 Циклы внутри циклов
 
 X<loops; nested>
 
-You may nest loops within other loops:
+Вы можете вкладывать циклы друг в друга:
 
 =begin programlisting
 
@@ -835,11 +840,12 @@ You may nest loops within other loops:
 
 =end programlisting
 
-When you do so, declare named iteration variables! The potential for confusion
-with the topic variable and its scope is too great otherwise.
+Когда вы это делаете, объявляйте именованные итерационные переменные! В
+противном случае вероятность возникновения путаницы с переменной-топиком слишком
+высока.
 
-A common mistake with nesting C<foreach> and C<while> loops is that it is easy
-to exhaust a filehandle with a C<while> loop:
+Распространённая ошибка при вложении циклов C<foreach> и C<while> заключается в
+том, что легко израсходовать дескриптор файла в цикле C<while>:
 
 =begin programlisting
 
@@ -858,13 +864,13 @@ to exhaust a filehandle with a C<while> loop:
 
 =end programlisting
 
-Opening the filehandle outside of the C<for> loop leaves the file position
-unchanged between each iteration of the C<for> loop. On its second iteration,
-the C<while> loop will have nothing to read and will not execute. To solve this
-problem, re-open the file inside the C<for> loop (simple to understand, but not
-always a good use of system resources), slurp the entire file into memory
-(which may not work if the file is large), or C<seek> the filehandle back to
-the beginning of the file for each iteration (an often overlooked option):
+Открытие дескриптора файла снаружи цикла C<for> сохраняет позицию в файле между
+итерациями цикла C<for>. На его второй итерации, циклу C<while> будет нечего
+читать и он не будет выполнен. Чтобы разрешить эту проблему, переоткрывайте файл
+внутри цикла C<for> (просто для понимания, но не всегда хорошее использование
+системных ресурсов), считайте весь файл в память (что может не сработать, если
+файл большой) или сбрасывайте дескриптор файла назад к началу файла на каждой
+итерации с помощью функции C<seek> (опция, которую зачастую упускают):
 
 =begin programlisting
 
@@ -884,19 +890,19 @@ the beginning of the file for each iteration (an often overlooked option):
 
 =end programlisting
 
-=head2 Loop Control
+=head2 Контроль циклов
 
 X<loops; control>
 
-Sometimes you need to break out of a loop before you have exhausted the
-iteration conditions. Perl 5's standard control mechanisms--exceptions and
-C<return>--work, but you may also use I<loop control> statements.
+Иногда вам нужно разорвать цикл раньше, чем условия итерации будут исчерпаны.
+Стандартный механизм управления Perl 5 E<mdash> исключения и C<return> E<mdash>
+работает, но также вы можете использовать операции I<контроля цикла>.
 
 X<loops; C<next>>
 
-The I<next> statement restarts the loop at its next iteration. Use it when
-you've done all you need to in the current iteration. To loop over lines in a
-file but skip everything that starts with the comment character C<#>, write:
+Операция I<next> перезапускает цикл со следующей его итерации. Используйте её,
+если вы сделали всё, что нужно, в текущей итерации. Для цикла по строкам в файле
+с пропуском любой строки, начинающейся с символа комментария C<#>, напишите:
 
 =begin programlisting
 
@@ -908,19 +914,19 @@ file but skip everything that starts with the comment character C<#>, write:
 
 =end programlisting
 
-=begin tip Multiple Exits versus Nested Ifs
+=begin tip Несколько выходов против вложенных условий
 
-Compare the use of C<next> with the alternative: wrapping the rest of the body
-of the block in an C<if>. Now consider what happens if you have multiple
-conditions which could cause you to skip a line. Loop control modifiers with
-postfix conditionals can make your code much more readable.
+Сравните использование C<next> с альтернативой: заворачивание оставшейся части
+тела блока в C<if>. Представьте, что произойдёт, если у вас есть несколько
+условий, которые могут вызвать пропуск строки. Модификатры контроля цикла с
+постфиксными условиями могут сделать ваш код намного более читабельным.
 
 =end tip
 
 X<loops; C<last>>
 
-The I<last> statement ends the loop immediately. To finish processing a file
-once you've seen the ending token, write:
+Операция I<last> немедленно завершает цикл. Чтобы закончить обработку файла, как
+только вы достигли признака завершения, напишите:
 
 =begin programlisting
 
@@ -935,11 +941,11 @@ once you've seen the ending token, write:
 
 X<loops; C<redo>>
 
-The I<redo> statement restarts the current iteration without evaluating the
-conditional again. This can be useful in those few cases where you want to
-modify the line you've read in place, then start processing over from the
-beginning without clobbering it with another line. To implement a silly file
-parser that joins lines which end with a backslash:
+Операция I<redo> перезапускает текущую итерацию без повторного вычисления
+условия. Это может быть полезно в тех немногих случаях, когда вы хотите
+сразу же изменить прочитанную строку, а затем начать обработку с начала не
+затирая её следующей строкой. Так можно реализовать простой парсер файла,
+который объединяет строки, завершающиеся обратным слешем:
 
 =begin programlisting
 
@@ -947,7 +953,7 @@ parser that joins lines which end with a backslash:
     {
         chomp $line;
 
-        # match backslash at the end of a line
+        # поиск обратного слеша в конце строки
         if ($line =~ s{\\$}{})
         {
             $line .= <$fh>;
@@ -962,9 +968,9 @@ parser that joins lines which end with a backslash:
 
 X<loops; labels>
 
-Using loop control statements in nested loops can be confusing. If you cannot
-avoid nested loops--by extracting inner loops into named functions--use a
-I<loop label> to clarify:
+Использование операций контроля цикла во вложенных списках может сбивать с
+толку. Если вы не можете избежать вложенных циклов E<mdash> выделив внутренние
+циклы в именованные функции E<mdash> используйте I<метку цикла> для прояснения:
 
 =begin programlisting
 
@@ -978,7 +984,7 @@ I<loop label> to clarify:
         {
             next LINE unless $prefix;
             say "$prefix: $_";
-            # next PREFIX is implicit here
+            # здесь подразумевается next PREFIX
         }
     }
 
@@ -988,13 +994,14 @@ I<loop label> to clarify:
 
 X<loops; C<continue>>
 
-The C<continue> construct behaves like the third subexpression of a C<for>
-loop; Perl executes its block before subsequent iterations of a loop, whether
-due to normal loop repetition or premature re-iteration from C<next>N<The Perl
-equivalent to C's C<continue> is C<next>.>. You may use it with a C<while>,
-C<until>, C<when>, or C<for> loop. Examples of C<continue> are rare, but it's
-useful any time you want to guarantee that something occurs with every
-iteration of the loop regardless of how that iteration ends:
+Конструкция C<continue> ведёт себя как третье подвыражение цикла C<for>; Perl
+выполняет её блок перед следующей итерацией цикла, как при нормальном повторении
+цикла, так и при преждевременном повторе итерации с помощью C<next>N<Эквивален
+C<continue> языка C в Perl E<mdash> это C<next>.>. Вы можете использовать её с
+циклами C<while>, C<until>, C<when> или C<for>. Примеры употребления <continue>
+редки, но она полезна если, вам нужна гарантия того, что что-то происходит на
+каждой итерации цикла, независимо от того, как заканчивается итерация:
+
 
 =begin programlisting
 
@@ -1011,17 +1018,17 @@ iteration of the loop regardless of how that iteration ends:
 
 =end programlisting
 
-Be aware that a C<continue> block does I<not> execute when control flow leaves
-a loop due to C<last> or C<redo>.
+Имейте ввиду, что блок C<continut> I<не> выполянется, когда поток управления
+выходит из цикла вследствие срабатывания C<last> или C<redo>.
 
-=head2 Given/When
+=head2 given/when
 
 Z<given_when>
 
 X<builtins; C<given>>
 
-The C<given> construct is a feature new to Perl 5.10.  It assigns the value of
-an expression to the topic variable and introduces a block:
+Конструкция C<given> E<mdash> новая возможность Perl 5.10. Она присваивает
+значение выражения переменной-топику и предваряет блок:
 
 =begin programlisting
 
@@ -1029,8 +1036,8 @@ an expression to the topic variable and introduces a block:
 
 =end programlisting
 
-Unlike C<for>, it does not iterate over an aggregate. It evaluates its
-expression in scalar context, and always assigns to the topic variable:
+В отличие от C<for>, она не итерирует по множеству. Она вычисляет своё выражение
+в скалярном контексте и всегда осуществляет присваивание переменной-топику:
 
 =begin programlisting
 
@@ -1041,7 +1048,7 @@ expression in scalar context, and always assigns to the topic variable:
 
 =end programlisting
 
-C<given> also lexicalizes the topic variable:
+C<given> также локализует переменную-топик:
 
 =begin programlisting
 
@@ -1059,10 +1066,11 @@ C<given> also lexicalizes the topic variable:
 X<builtins; C<when>>
 X<topicalization>
 
-C<given> is most useful when combined with C<when> (L<smart_match>). C<given>
-I<topicalizes> a value within a block so that multiple C<when> statements can
-match the topic against expressions using I<smart-match> semantics. To write
-the Rock, Paper, Scissors game:
+C<given> наиболее полезна при использовании совместно с C<when>
+(L<smart_match>). C<given> I<топикализирует> значение внутри блока, так что
+несколько операций C<when> могут проверять соответствие топика выражениям,
+используя семантику I<умного сравнения>. Так можно написать игру E<laquo>камень,
+ножницы, бумагаE<raquo>.
 
 =begin programlisting
 
@@ -1118,25 +1126,25 @@ the Rock, Paper, Scissors game:
 
 =end programlisting
 
-Perl executes the C<default> rule when none of the other conditions match.
+Perl выполняет правило C<default>, если ни одно из других условий не подошло.
 
-=begin tip Simplified Dispatch with Multimethods
+=begin tip Упрощённая диспетчеризация с Multimethods
 
 X<CPAN; C<MooseX::MultiMethods>>
 
-The CPAN module C<MooseX::MultiMethods> provides another technique to simplify
-this code.
+CPAN-модуль C<MooseX::MultiMethods> предоставляет другую технику для упрощения
+этого кода.
 
 =end tip
 
-=head2 Tailcalls
+=head2 Хвостовые вызовы
 
 Z<tailcalls>
 X<tailcalls>
 
-A I<tailcall> occurs when the last expression within a function is a call to
-another function--the outer function's return value is the inner function's
-return value:
+I<Хвостовой вызов> происходит, когда последнее выражение в функции E<mdash>
+вызов другой функции E<mdash> возвращаемое значение внутренней функции будет
+возвращаемым значением внешней функции:
 
 =begin programlisting
 
@@ -1150,24 +1158,24 @@ return value:
 
 =end programlisting
 
-Returning from C<greet_person()> directly to the caller of
-C<log_and_greet_person()> is more efficient than returning I<to>
-C<log_and_greet_person()> and immediately I<from> C<log_and_greet_person()>.
-Returning directly I<from> C<greet_person()> to the caller of
-C<log_and_greet_person()> is a I<tailcall optimization>.
+Возврат из C<green_person()> напрямую в код, вызывающий
+C<log_and_greet_person()>, более эффективен, чем возврат I<в>
+C<log_and_greet_person()> и сразу же возврат I<из> C<log_and_greet_person()>.
+Возврат напрямую I<из> C<greet_person()> в код, вызывающий
+C<log_and_greet_person()> E<mdash> I<оптимизация хвостового вызова>.
 
-Heavily recursive code (L<recursion>), especially mutually recursive code, can
-consume a lot of memory. Tailcalls reduce the memory needed for internal
-bookkeeping of control flow and can make expensive algorithms tractable.
-Unfortunately, Perl 5 does not automatically perform this optimization; you
-have to do it yourself when it's necessary.
+Код с тяжёлой рекурсией (L<recursion>), особенно взаимнорекурсивный код, может
+потреблять много памяти. Хвостовые вызовы уменьшают количество памяти, требуемое
+для внутренней организации потока управления, и делают дорогие алгоритмы легко
+обрабатываемыми. К сожалению, Perl 5 не выполняет эту автоматизацию
+автоматически; вы должны сделать это сами, если необходимо.
 
 X<builtins; C<goto>>
 
-The builtin C<goto> operator has a form which calls a function as if the
-current function were never called, essentially erasing the bookkeeping for the
-new function call. The ugly syntax confuses people who've heard "Never use
-C<goto>", but it works:
+Встроенный оператор C<goto> имеет форму, которая вызывает функцию как если бы
+текущая функция никогда не была вызвана, по существу, обнуляя управление
+ресурсами для вызова новой функции. Уродливый синтаксис смущает людей, на слуху
+у которых E<laquo>никогда не используйте C<goto>E<raquo>, но это работает:
 
 =begin programlisting
 
@@ -1181,13 +1189,15 @@ C<goto>", but it works:
 
 =end programlisting
 
-This example has two important features. First, C<goto &function_name> or
-C<goto &$function_reference> requires the use of the function sigil (C<&>) so
-that the parser knows to perform a tailcall instead of jumping to a label.
-Second, this form of function call passes the contents of C<@_> implicitly to
-the called function. You may modify C<@_> to change the passed arguments.
+Этот пример имеет две важных особенности. Во-первых, C<goto &function_name> или
+C<goto &$function_reference> требует использования сигила функции (C<&>), чтобы
+парсер знал, что нужно выполнить хвостовой вызов вместо перехода к метке.
+Во-вторых, эта форма вызова функции неявно передаёт содержимое C<@_> в
+вызываемую функцию. Вы можете модифицировать C<@_> для изменения передаваемых
+аргументов.
 
-This technique is relatively rare; it's most useful when you want to hijack
-control flow to get out of the way of other functions inspecting C<caller>
-(such as when you're implementing special logging or some sort of debugging
-feature), or when using an algorithm which requires a lot of recursion.
+Эта техника относительно редка; она наиболее полезна, когда вы хотите вмешаться
+в поток управления, чтобы убраться с пути других функций, проверяющих C<caller>
+(например, если вы реализуете специальное логирование или какую-нибудь
+возможность отладки), или когда используете алгоритм, требующий большого
+количества рекурсии.
