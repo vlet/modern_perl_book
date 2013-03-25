@@ -1,21 +1,22 @@
-=head1 Packages
+=head1 Пакеты
 
 Z<packages>
 X<packages>
 X<namespaces>
 
-A Perl I<namespace> associates and encapsulates various named entities within a
-named category, like your family name or a brand name. Unlike a real-world
-name, a namespace implies no direct relationship between entities. Such
-relationships may exist, but do not have to.
+I<Пространство имён> в Perl объединяет и инкапсулирует разные именованные
+сущности в одной именованной категории, как ваша фамилия или название бренда. В
+отличие от имён в реальном мире, пространство имён не подразумевает никаких
+непосредственных взаимосвязей между сущностями. Такие взаимосвязи могут
+существовать, но не обязаны.
 
-A I<package> in Perl 5 is a collection of code in a single namespace. The
-distinction is subtle: the package represents the source code and the namespace
-represents the entity created when Perl parses that code.
+I<Пакет> в Perl 5 E<mdash> это набор кода в едином пространстве имён. Имеется
+тонкое различие: пакет представляет собой исходный код, а пространство имён
+E<mdash> сущность, создаваемую, когда Perl парсит этот код.
 
 X<builtins; C<package>>
 
-The C<package> builtin declares a package and a namespace:
+Встроенная директива C<package> объявляет пакет и пространство имён:
 
 =begin programlisting
 
@@ -29,19 +30,19 @@ The C<package> builtin declares a package and a namespace:
 
 X<namespaces; fully qualified>
 
-All global variables and functions declared or referred to after the package
-declaration refer to symbols within the C<MyCode> namespace. You can refer to
-the C<@boxes> variable from the C<main> namespace only by its I<fully
-qualified> name of C<@MyCode::boxes>. A fully qualified name includes a
-complete package name, so you can call the C<add_box()> function only by
-C<MyCode::add_box()>.
+Все глобальные переменные, которые объявлены или на которые сделаны ссылки после
+объявления пакета, ссылаются на символы в пространстве имён C<MyCode>. Вы можете
+ссылаться на переменную C<@boxes> из пространства имён C<main> только по её
+I<полностью определённому> имени C<@MyCode::boxes>. Полностью определённое имя
+включает полное имя пакета, так что вы можете вызвать функцию C<add_box()>
+только как C<MyCode::add_box()>.
 
 X<scope; packages>
 
-The scope of a package continues until the next C<package> declaration or the
-end of the file, whichever comes first. Perl 5.14 enhanced C<package> so that
-you may provide a block which explicitly delineates the scope of the
-declaration:
+Область видимости пакета продолжается до следующего объявления C<package> или до
+конца файла, что будет достигнуто раньше. Perl 5.14 усовершенствовал C<package>,
+так что теперь вы можете добавить блок, который явно очертить область видимости
+объявления:
 
 =begin programlisting
 
@@ -52,26 +53,27 @@ declaration:
 
 =end programlisting
 
-The default package is the C<main> package. Without a package declaration, the
-current package is C<main>. This rule applies to one-liners, standalone
-programs, and even F<.pm> files.
+Пакет по умолчанию E<mdash> C<main>. Без объявления пакета текущий пакет
+E<mdash> C<main>. Это правило распространяется на однострочники, автономные
+программы и даже файлы F<.pm>.
 
 X<packages; versions>
 X<C<$VERSION>>
 
-Besides a name, a package has a version and three implicit methods, C<import()>
-(L<importing>), C<unimport()>, and C<VERSION()>. C<VERSION()> returns the
-package's version number. This number is a series of numbers contained in a
-package global named C<$VERSION>. By rough convention, versions tend to be a
-series of integers separated by dots, as in C<1.23> or C<1.1.10>, where each
-segment is an integer.
+Кроме имени пакет имеет версию и три неявных метода, C<import()>
+(L<importing>), C<unimport()> и C<VERSION()>. C<VERSION()> возвращает
+номер версии пакета. Этот номер представляет собой последовательность чисел,
+содержащуюся в глобальной переменной пакета с именем C<$VERSION>. По грубому
+соглашению, версии имеют тенденцию быть последовательностью целых чисел,
+разделённых точками, как в C<1.23> или C<1.1.10>, где каждый сегмент E<mdash>
+целое число.
 
 X<version numbers>
 
-Perl 5.12 introduced a new syntax intended to simplify version numbers, as
-documented in C<perldoc version::Internals>. These stricter version numbers
-must have a leading C<v> character and at least three integer components
-separated by periods:
+Perl 5.12 представил новый синтаксис, предназначенный для упрощения номеров
+версий, как документировано в C<perldoc version::Intervals>. Эти более строгие
+номера версий должны начинаться с символа C<v> и иметь как минимум три
+целочисленных компонента, разделённых точками:
 
 =begin programlisting
 
@@ -79,7 +81,7 @@ separated by periods:
 
 =end programlisting
 
-With Perl 5.14, the optional block form of a C<package> declaration is:
+В Perl 5.14 опциональная блочная форма объявления C<package> выглядит так:
 
 =begin programlisting
 
@@ -90,7 +92,7 @@ With Perl 5.14, the optional block form of a C<package> declaration is:
 
 =end programlisting
 
-In 5.10 and earlier, the simplest way to declare the version of a package is:
+В 5.10 и раньше, самым простым способом объявить версию пакета был следующий:
 
 =begin programlisting
 
@@ -103,9 +105,9 @@ In 5.10 and earlier, the simplest way to declare the version of a package is:
 X<C<UNIVERSAL>>
 X<C<VERSION()>>
 
-Every package inherits a C<VERSION()> method from the C<UNIVERSAL> base class.
-You may override C<VERSION()>, though there are few reasons to do so. This
-method returns the value of C<$VERSION>:
+Каждый пакет наследует метод C<VERSION()> от базового класса C<UNIVERSAL>. Вы
+можете переопределить C<VERSION()>, хотя есть не так много причин это делать.
+Этот метод возвращает значение C<$VERSION>:
 
 =begin programlisting
 
@@ -113,13 +115,12 @@ method returns the value of C<$VERSION>:
 
 =end programlisting
 
-If you provide a version number as an argument, this method will throw an
-exception unless the version of the module is equal to or greater than the
-argument:
+Если вы укажете номер версии в качестве аргумента, этот метод выбросит
+исключение если версия модуля меньше указанного аргумента:
 
 =begin programlisting
 
-    # require at least 2.1
+    # Требует как минимум 2.1
     Some::Plugin->VERSION( 2.1 );
 
     die "Your plugin $version is too old"
@@ -127,19 +128,19 @@ argument:
 
 =end programlisting
 
-=head2 Packages and Namespaces
+=head2 Пакеты и пространства имён
 
 X<namespaces>
 X<packages; namespaces>
 
-Every C<package> declaration creates a new namespace if necessary and causes
-the parser to put all subsequent package global symbols (global variables and
-functions) into that namespace.
+Каждое объявление C<package> создаёт новое пространство имён, если необходимо, и
+заставляет парсер разместить все глобальные символы следующего затем пакета
+(глобальные переменные и функции) в этом пространстве имён.
 
 X<namespaces; open>
 
-Perl has I<open namespaces>. You can add functions or variables to a namespace
-at any point, either with a new package declaration:
+В Perl I<открытые пространства имён>. Вы можете добавлять функции или переменные
+в это пространство имён в любом месте, как с новым объявлением пакета:
 
 =begin programlisting
 
@@ -159,40 +160,42 @@ at any point, either with a new package declaration:
 
 =end programlisting
 
-... or by fully qualifying function names at the point of declaration:
+E<hellip>так и с помощью указания полностью определённых имён функций в местах
+объявления:
 
 
 =begin programlisting
 
-    # implicit
+    # подразумевается
     package main;
 
     sub Pack::third_sub { ... }
 
 =end programlisting
 
-You can add to a package at any point during compilation or runtime, regardless
-of the current file, though building up a package from multiple separate
-declarations can make code difficult to spelunk.
+Вы можете делать добавления в пакет в любой точке во время компиляции или
+выполнения, независимо от текущего файла, хотя сборка пакета из нескольких
+отдельных объявлений может сделать код трудным для исследования.
 
 X<namespaces; multi-level>
 
-Namespaces can have as many levels as your organizational scheme requires,
-though namespaces are not hierarchical. The only relationship between packages
-is semantic, not technical. Many projects and businesses create their own
-top-level namespaces. This reduces the possibility of global conflicts and
-helps to organize code on disk. For example:
+Пространства имён могут иметь так много уровней, как требует ваша
+организационная схема, хотя пространства имён не иерархические. Единственная
+взаимосвязть между пакетами E<mdash> семантическая, не техническая. Многие
+проекты и бизнесы создают свои собственные пространства имён верхнего уровня.
+Это уменьшает вероятность глобальных конфликтов и помогает организовать код на
+диске. Например:
 
 =over 4
 
-=item * C<StrangeMonkey> is the project name
+=item * C<StrangeMonkey> E<mdash> имя проекта
 
-=item * C<StrangeMonkey::UI> contains top-level user interface code
+=item * C<StrangeMonkey::UI> содержит код верхнего уровня для пользовательского интерфейса
 
-=item * C<StrangeMonkey::Persistence> contains top-level data management code
+=item * C<StrangeMonkey::Persistence> содержит код верхнего уровня для управления данными
 
-=item * C<StrangeMonkey::Test> contains top-level testing code for the project
+=item * C<StrangeMonkey::Test> содержит код верхнего уровня для тестирования проекта
 
 =back
 
-... and so on.
+E<hellip>и т. д.
