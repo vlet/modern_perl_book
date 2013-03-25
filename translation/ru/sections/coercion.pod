@@ -1,4 +1,4 @@
-=head1 Coercion
+=head1 Приведение типов
 
 Z<coercion>
 
@@ -6,44 +6,45 @@ X<DWIM>
 X<dwimmery>
 X<coercion>
 
-A Perl variable can hold at various times values of different types--strings,
-integers, rational numbers, and more. Rather than attaching type information to
-variables, Perl relies on the context provided by operators (L<value_contexts>)
-to know what to do with values. By design, Perl attempts to do what you
-meanN<Called I<DWIM> for I<do what I mean> or I<dwimmery>.>, though you must be
-specific about your intentions. If you treat a variable which happens to
-contain a number as a string, Perl will do its best to I<coerce> that number
-into a string.
+Переменная в Perl может содержать в разное время значения разных типов E<mdash>
+строки, целые и рациональные числа и т. д. Вместо присоединения информации о
+типе к переменным, Perl полагается на контекст, устанавливаемый операторами
+(L<value_contexts>) для понимания того, что делать со значениями. По своему
+дизайну, Perl пытается делать то, что вы имеете ввидуN<Это называется I<DWIM>,
+I<do what i mean> (I<делай то, что я имею ввиду>), или I<DWIM-ность>.>, хотя вы
+должны чётко выражать свои намерения. Если вы обращаетесь с переменной,
+содержащей число, как со строкой, Perl сделает всё, что сможет, для I<приведения
+типа> этого числа к строке.
 
-=head2 Boolean Coercion
+=head2 Булево приведение типов
 
 Z<boolean_coercion>
 X<coercion; boolean>
 X<truthiness>
 
-Boolean coercion occurs when you test the I<truthiness> of a value, such as in
-an C<if> or C<while> condition. Numeric 0, C<undef>, the empty string, and the
-string C<'0'> all evaluate as false. All other values--including strings which
-may be I<numerically> equal to zero (such as C<'0.0'>, C<'0e'>, and C<'0 but
-true'>)--evaluate as true.
+Булево приведение типов происходит, когда вы проверяете I<истинность> значения,
+как например в условиях C<if> или C<while>. Числовой 0, <undef>, пустая строка и
+строка C<'0'> являются ложными значениями. Все остальные значения E<mdash>
+включая строки, которые могут быть I<численно> равными нулю (такие как C<'0.0'>,
+C<'0e'> и C<'0 but true'>) E<mdash> являются ложными.
 
-When a scalar has I<both> string and numeric components (L<dualvars>), Perl 5
-prefers to check the string component for boolean truth. C<'0 but true'>
-evaluates to zero numerically, but it is not an empty string, thus it evaluates
-to a true value in boolean context.
+Если скаляр имет I<оба> компонента (L<dualvars>), и строковый, и числовой,
+Perl 5 предпочтёт проверить на булеву истину строковый компонент.
+C<'0 but true'> численно вычисляется в ноль, но это не пустая строка, поэтому в
+булевом контексте она вычисляется в истинное значение.
 
-=head2 String Coercion
+=head2 Строковое приведение типов
 
 X<coercion; string>
 X<stringification>
 
-String coercion occurs when using string operators such as comparisons (C<eq>
-and C<cmp>), concatenation, C<split>, C<substr>, and regular expressions, as
-well as when using a value as a hash key. The undefined value stringifies to an
-empty string, produces a "use of uninitialized value" warning. Numbers
-I<stringify> to strings containing their values, such that the value C<10>
-stringifies to the string C<10>. You can even C<split> a number into individual
-digits with:
+Строковое приведение типов происходит при использовании строковых операторов,
+таких как сравнение (C<eq> и C<cmp>), конкатенация, C<split>, C<substr> и
+регулярные выражения, а также при использовании значения как ключа хеша.
+Неопределённое значение преобразуется в пустую строку, выдавая предупреждение
+E<laquo>use of uninitialized valueE<raquo>. Числа I<преобразуются> в строки,
+содержащие их значения, то есть значение C<10> преобразуется в строку C<10>. Вы
+можете даже разделить число на отдельные цифры с помощью C<split>:
 
 =begin programlisting
 
@@ -51,44 +52,48 @@ digits with:
 
 =end programlisting
 
-=head2 Numeric Coercion
+=head2 Числовое приведение типов
 
 Z<numeric_coercion>
 X<coercion; numeric>
 X<numification>
 
-Numeric coercion occurs when using numeric comparison operators (such as C<==>
-and C<< <=> >>), when performing mathematic operations, and when using a value
-as an array or list index. The undefined value I<numifies> to zero and produces
-a "Use of uninitialized value" warning. Strings which do not begin with numeric
-portions also numify to zero and produce an "Argument isn't numeric" warning.
-Strings which begin with characters allowed in numeric literals numify to those
-values and produce no warnings, such that C<10 leptons leaping> numifies to
-C<10> and C<6.022e23 moles marauding> numifies to C<6.022e23>.
+Числовое приведение типов происходит при использовании операторов числового
+сравнения (таких как C<==> и C<< <=> >>), при выполнении математических операций
+и при использовании значения как индекса массива или списка. Неопределённое
+значение I<преобразуется> в ноль и выдаёт предупреждение E<laquo>use of
+uninitialized valueE<raquo>. Строки, которые не начинаются с числовой части,
+тоже преобразуются в ноль и выдают предупреждение E<laquo>Argument isn't
+numericE<raquo>. Строки, начинающиеся с символов, разрешённых в числовых
+литералах, преобразаются в эти значения, не выдавая предупреждений, то есть
+C<10 leptons leaping> преобразуется в C<10>, а C<6.022e23 moles marauding>
+E<mdash> в C<6.022e23>.
 
 X<Scalar::Util>
 X<Scalar::Util; looks_like_number>
 
-The core module C<Scalar::Util> contains a C<looks_like_number()> function
-which uses the same parsing rules as the Perl 5 grammar to extract a number
-from a string.
+Встроенный модуль C<Scalar::Util> содержит функцию C<looks_like_number()>,
+которая использует те же правила разбора, что и грамматика Perl 5, для выделения
+числа из строки.
 
-=begin tip Mathematicians Rejoice
+=begin tip Радость для математиков
 
-The strings C<Inf> and C<Infinity> represent the infinite value and behave as
-numbers. The string C<NaN> represents the concept "not a number". Numifying
-them produces no "Argument isn't numeric" warning.
+Строки C<Inf> и C<Infinity> обозначают бесконечное значение и ведут себя как
+числа. Строка C<NaN> обозначает понятие E<laquo>не числоE<raquo>. Их
+преобразование в числа не выдаёт предупреждения E<laquo>Argument isn't
+numericE<raquo>.
 
 =end tip
 
-=head2 Reference Coercion
+=head2 Ссылочное преобразование типов
 
 X<coercion; reference>
 X<autovivification>
 
-Using a dereferencing operation on a non-reference turns that value I<into> a
-reference. This process of autovivification (L<autovivification>) is handy when
-manipulating nested data structures (L<nested_data_structures>):
+Использование операции разыменования ссылки на значении, не являющемся ссылкой,
+превращает его в ссылку. Этот процесс автовивификации (L<autovivification>)
+удобен при манипулировании вложенными структурами данных
+(L<nested_data_structures>):
 
 =begin programlisting
 
@@ -99,31 +104,32 @@ manipulating nested data structures (L<nested_data_structures>):
 
 =end programlisting
 
-Although the hash never contained values for C<Brad> and C<Jack>, Perl
-helpfully created hash references for them, then assigned each a key/value pair
-keyed on C<id>.
+Хотя хеш не содержал значения для ключей C<Brad> и C<Jack>, Perl
+создаёт для них ссылки на хеши и присваивает каждому пару ключ/значение с ключом
+C<id>.
 
-=head2 Cached Coercions
+=head2 Кешированное преобразование типов
 
 Z<cached_coercions>
 
 X<coercion; cached>
 
-Perl 5's internal representation of values stores both string and numeric
-values. Stringifying a numeric value does not I<replace> the numeric value.
-Instead, it I<attaches> a stringified value, so that the representation
-contains I<both> components. Similarly, numifying a string value populates the
-numeric component while leaving the string component untouched.
+Внутреннее представление значений в Perl 5 хранит и строковое, и числовое
+значения. Преобразование числа в строку не I<заменяет> числовое значение. Вместо
+этого оно I<присоединяет> преобразованное в строку значение, так что
+представление будет иметь I<оба> компонента. Аналогично, преобразование строки в
+число заполняет числовой компонент, оставляя строковый компонент нетронутым.
 
-Certain Perl operations prefer to use one component of a value over
-another--boolean checks prefer strings, for example. If a value has a cached
-representation in a form you do not expect, relying on an implicit conversion
-may produce surprising results. You almost never need to be explicit about what
-you expectN<Your author can recall doing so twice in over a decade of
-programming Perl 5>, but knowing that this caching occurs may someday help you
-diagnose an odd situation.
+Некоторые операции в Perl предпочитают использование одного из компонентов
+другому E<mdash> булева проверка, например, предпочитает строки. Если значение
+имеет кешированное представление в форме, которую вы не ожидаете, расчёт на
+неявную конвертацию может привести к неожиданным результатам. Вам почти никогда
+не нужно будет явно указывать, что вы ожидаетеN<Автор может припомнить два таких
+случая за более чем десятилетие программирования на Perl 5>, но знание того, что
+это кеширование происходит, может однажды помочь вам диагностировать странную
+ситуацию.
 
-=head2 Dualvars
+=head2 Двойные переменные
 
 Z<dualvars>
 
@@ -132,10 +138,10 @@ X<C<dualvar()>>
 X<C<Scalar::Util>>
 X<dualvars>
 
-The multi-component nature of Perl values is available to users in the form of
-I<dualvars>. The core module C<Scalar::Util> provides a function C<dualvar()>
-which allows you to bypass Perl coercion and manipulate the string and numeric
-components of a value separately:
+Многокомпонентная природа переменных Perl доступна пользователям в виде
+I<двойных переменных>. Встроенный модуль C<Scalar::Utils> предоставляет функцию
+C<dualvar()>, которая позволяет вам обойти приведение типов Perl и
+манипулировать строковым и числовым компонентами значения по отдельности:
 
 =begin programlisting
 
