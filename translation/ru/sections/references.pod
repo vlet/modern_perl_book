@@ -1,9 +1,9 @@
-=head1 References
+=head1 Ссылки
 
 Z<references>
 
-Perl usually does what you expect, even if what you expect is subtle. Consider
-what happens when you pass values to functions:
+Perl обычно делает то, чего вы ожидаете, даже если это требует проницательности.
+Посмотрите, что происходит, когда вы передаёте значения в функции:
 
 =begin programlisting
 
@@ -19,28 +19,29 @@ what happens when you pass values to functions:
 
 =end programlisting
 
-Outside of the function, C<$name> contains C<Chuck>, even though the value
-passed into the function gets reversed into C<kcuhC>. You probably expected
-that. The value of C<$name> outside the function is separate from the C<$name>
-inside the function. Modifying one has no effect on the other.
+Снаружи функции C<$name> содержит значение C<Chuck>, несмотря на то, что
+значение, переданное в функцию, переворачивается в C<kcuhC>. Вероятно, этого вы
+и ожидаете. Значение C<$name> снаружи функции отдельно от значения внутри
+функции. Изменение одного не оказывает эффекта на другое.
 
-Consider the alternative. If you had to make copies of every value before
-anything could possibly change them out from under you, you'd have to write
-lots of extra defensive code.
+Рассмотрим альтернативу. Если бы вам было необходимо делать копии каждого
+значения прежде чем что-либо изменило бы их независимо от вас, вам пришлось бы
+написать большое количество дополнительного защитного кода.
 
-Yet sometimes it's useful to modify values in place. If you want to pass a hash
-full of data to a function to modify it, creating and returning a new hash for
-each change could be troublesome (to say nothing of inefficient).
+Однако иногда удобно модифицировать значения прямо на месте. Есл вы хотите
+передать хеш, полный данных, в функцию для изменения его, создание и возврат
+нового хеша для каждого изменения может быть хлопотным (уж не говоря о том, что
+неэффективным).
 
 X<references>
 
-Perl 5 provides a mechanism by which to refer to a value without making a copy.
-Any changes made to that I<reference> will update the value in place, such that
-I<all> references to that value can reach the new value. A reference is a
-first-class scalar data type in Perl 5 which refers to another first-class data
-type.
+Perl 5 предоставляет механизм, позволяющий ссылаться на значение, не делая его
+копии. Любые изменения, сделанные со I<ссылкой>, сразу же обновят значение, так
+что I<все> ссылки на это значение смогут получить новое значение. Ссылка в
+Perl 5 E<mdash> скалярный тип данных первого класса, который ссылается на другой
+тип данных первого класса.
 
-=head2 Scalar References
+=head2 Ссылки на скаляры
 
 Z<scalar_references>
 
@@ -50,9 +51,9 @@ X<references; C<\> operator>
 X<references; scalar>
 X<scalars; references>
 
-The reference operator is the backslash (C<\>). In scalar context, it creates a
-single reference which refers to another value. In list context, it creates a
-list of references. To take a reference to C<$name>:
+Оператор взятия ссылки E<mdash> обратный слеш (C<\>). В скалярном контексте он
+создаёт единственную ссылку, ссылающуюся на другое значение. В списочном
+контексте он создаёт список ссылок. Чтобы взять ссылку от C<$name>:
 
 =begin programlisting
 
@@ -64,9 +65,9 @@ list of references. To take a reference to C<$name>:
 X<dereferencing>
 X<references; dereferencing>
 
-You must I<dereference> a reference to evaluate the value to which it refers.
-Dereferencing requires you to add an extra sigil for each level of
-dereferencing:
+Вы должны I<разыменовать> ссылку, чтобы получить значение, на которое она
+ссылается. Разыменовывание требует добавления дополнительного сигила для каждого
+уровня разыменовывания:
 
 =begin programlisting
 
@@ -82,13 +83,14 @@ dereferencing:
 
 =end programlisting
 
-The double scalar sigil (C<$$>) dereferences a scalar reference.
+Двойной скалярный сигил (C<$$>) разыменовывает ссылку на скаляр.
 
 X<references; aliases>
 X<aliases>
 
-While in C<@_>, parameters behave as I<aliases> to caller variablesN<Remember that C<for> loops produce a similar aliasing behavior.>, so you can
-modify them in place:
+Находящиеся в C<@_> параметры ведут себя как I<псевдонимы> переменных
+вызывающего кодаN<Вспомните, что цикл C<for> имеет аналогичное поведение в
+плане создания псевдонимов.>, так что вы можете изменять их на месте:
 
 =begin programlisting
 
@@ -103,22 +105,22 @@ modify them in place:
 
 =end programlisting
 
-You usually don't want to modify values this way--callers rarely expect it, for
-example. Assigning parameters to lexicals within your functions removes this
-aliasing behavior.
+В большинстве случаев вы не захотите модифицировать значения таким способом
+E<mdash> вызывающий код, например, редко этого ожидает. Присваивание параметров
+лексическим переменным внутри ваших функций избавляет от такого поведения.
 
-=begin tip Saving Memory with References
+=begin tip Экономия памяти с помощью ссылок
 
-Modifying a value in place, or returning a reference to a scalar can save
-memory. Because Perl copies values on assignment, you could end up with
-multiple copies of a large string. Passing around references means that Perl
-will only copy the references--a far cheaper operation.
+Модификация значения на месте или возврат ссылки на скаляр может сэкономить
+память. Так как Perl копирует значения при присваивании, у вас может оказаться
+несколько копий большой строки. В случае передачи ссылок Perl будет копировать
+только ссылки E<mdash> гораздо более дешёвая операция.
 
 =end tip
 
-Complex references may require a curly-brace block to disambiguate portions of
-the expression. You may always use this syntax, though sometimes it clarifies
-and other times it obscures:
+Составные ссылки могут потребовать использования блока в фигурных скобках для
+разрешения неоднозначности частей выражения. Вы можете всегда использовать такой
+синтаксис, хотя иногда он проясняет, а иногда затеняет:
 
 =begin programlisting
 
@@ -130,44 +132,43 @@ and other times it obscures:
 
 =end programlisting
 
-If you forget to dereference a scalar reference, Perl will likely coerce the
-reference. The string value will be of the form C<SCALAR(0x93339e8)>, and the
-numeric value will be the C<0x93339e8> portion. This value encodes the type of
-reference (in this case, C<SCALAR>) and the location in memory of the
-reference.
+Если вы забудете разыменовать ссылку на скаляр, Perl, вероятно, выполнит
+приведение типа ссылки. Строковое значение будет иметь вид C<SCALAR(0x93339e8)>,
+а числовое будет содержать часть C<0x93339e8>. В этом значении зашифрован тип
+ссылки (в данном случае C<SCALAR>) и положение ссылки в памяти.
 
-=begin tip References Aren't Pointers
+=begin tip Ссылки E<mdash> не указатели
 
-Perl does not offer native access to memory locations. The address of the
-reference is a value used as an identifier. Unlike pointers in a language such
-as C, you cannot modify the address or treat it as an address into memory.
-These addresses are only I<mostly> unique because Perl may reuse storage
-locations as it reclaims unused memory.
+Perl не предоставляет доступа к ячейкам памяти. Адрес ссылки E<mdash> это
+значение, используемое как идентификатор. В отличие от указателей в таких языках
+как C, вы не можете модифицировать адрес или обращаться с ним как с адресом в
+памяти. Эти адреса лишь I<в большинстве случаев> уникальны, так как Perl может
+повторно использовать ячейки после освобождения неиспользуемой памяти.
 
 =end tip
 
-=head2 Array References
+=head2 Ссылки на массивы
 
 Z<array_references>
 
 X<arrays; references>
 X<references; arrays>
 
-I<Array references> are useful in several circumstances:
+I<Ссылки на массивы> полезны в нескольких ситуациях:
 
 =over 4
 
-=item * To pass and return arrays from functions without flattening
+=item * Для передачи и возвращения массивов из функций без разглаживания
 
-=item * To create multi-dimensional data structures
+=item * Для создания многомерхны структур данных
 
-=item * To avoid unnecessary array copying
+=item * Чтобы избежать ненужного копирования массива
 
-=item * To hold anonymous data structures
+=item * Для сохранения анонимных структур данных
 
 =back
 
-Use the reference operator to create a reference to a declared array:
+Использование оператора взятия ссылки для создания ссылки на объявленный массив:
 
 =begin programlisting
 
@@ -176,9 +177,9 @@ Use the reference operator to create a reference to a declared array:
 
 =end programlisting
 
-Any modifications made through C<$cards_ref> will modify C<@cards> and vice
-versa. You may access the entire array as a whole with the C<@> sigil, whether
-to flatten the array into a list or count its elements:
+Любые изменения, сделанные через C<$cards_ref>, будут изменять и C<@cards>, и
+наоборот. Вы можете получить доступ ко всему массиву целиком с помощью сигила
+C<@>, например, чтобы разгладить массив или сосчитать его элементы:
 
 =begin programlisting
 
@@ -190,7 +191,8 @@ to flatten the array into a list or count its elements:
 X<<< C<< -E<gt> >>; dereferencing arrow >>>
 X<<< operators; C<< -E<gt> >> >>>
 
-Access individual elements by using the dereferencing arrow (C<< -> >>):
+Доступ к отдельным элементам осуществляется с помощью разыменовывающей стрелки
+(C<< -> >>):
 
 =begin programlisting
 
@@ -199,19 +201,19 @@ Access individual elements by using the dereferencing arrow (C<< -> >>):
 
 =end programlisting
 
-The arrow is necessary to distinguish between a scalar named C<$cards_ref> and
-an array named C<@cards_ref>. Note the use of the scalar sigil (L<sigils>) to
-access a single element.
+Стрелка необходима чтобы различать скаляр C<$cards_ref> и массив C<@cards_ref>.
+Обратите внимание на использование скалярного сигила (L<sigils>) для доступа к
+единственному элементу.
 
-=begin tip Doubling Sigils
+=begin tip Дублирующиеся сигилы
 
-An alternate syntax prepends another scalar sigil to the array reference. It's
-shorter, if uglier, to write C<< my $first_card = B<$$cards_ref[0]>; >>.
+Альтернативный синтаксис добавляет ещё один скалярный сигил к ссылке на массив.
+Короче, хотя и уродливее, написать C<< my $first_card = B<$$cards_ref[0]>; >>.
 
 =end tip
 
-Use the curly-brace dereferencing syntax to slice (L<array_slices>) an array
-reference:
+Используйте разыменовывающий синтаксис с фигурными скобками для получения среза
+(L<array_slices>) по ссылке на массив:
 
 =begin programlisting
 
@@ -219,14 +221,14 @@ reference:
 
 =end programlisting
 
-You I<may> omit the curly braces, but their grouping often improves
-readability.
+Вы I<можете> опустить фигурные скобки, но их группировка часто улучшает
+читабельность.
 
 X<references; anonymous arrays>
 X<arrays; anonymous>
 
-To create an anonymous array--without using a declared array--surround a list
-of values with square brackets:
+Для создания анонимного массива E<mdash> без использования объявленного массива
+E<mdash> окружите список значений квадратными скобками:
 
 =begin programlisting
 
@@ -234,10 +236,10 @@ of values with square brackets:
 
 =end programlisting
 
-This array reference behaves the same as named array references, except that
-the anonymous array brackets I<always> create a new reference. Taking a
-reference to a named array always refers to the I<same> array with regard to
-scoping. For example:
+Эта ссылка на массив ведёт себя так же, как ссылки на именованные массивы, за
+исключением того, что скобки анонимного массива I<всегда> создают новую ссылку.
+Ссылка, взятая на именованный массив, всегда ссылается на I<тот же самый> массив
+с учётом области видимости. Например:
 
 =begin programlisting
 
@@ -249,7 +251,8 @@ scoping. For example:
 
 =end programlisting
 
-... both C<$sunday_ref> and C<$monday_ref> now contain a dessert, while:
+E<hellip>и C<$sunday_ref>, и C<$monday_ref> теперь содержат десерт, до тех пор,
+пока:
 
 =begin programlisting
 
@@ -261,18 +264,19 @@ scoping. For example:
 
 =end programlisting
 
-... neither C<$sunday_ref> nor C<$monday_ref> contains a dessert. Within the
-square braces used to create the anonymous array, list context flattens the
-C<@meals> array into a list unconnected to C<@meals>.
+E<hellip>ни C<$sunday_ref>, ни C<$monday_ref> не содержат десерт. В квадратных
+скобках, использованных для создания анонимного массива, списочный контекст
+разглаживает массив C<@meals> в список, не связанный с C<@meals>.
 
-=head2 Hash References
+=head2 Ссылки на хеши
 
 Z<hash_references>
 
 X<hashes; references>
 X<references; hashes>
 
-Use the reference operator on a named hash to create a I<hash reference>:
+Используйте оператор взятия ссылки на именованном хеше для создания I<ссылки на
+хеш>:
 
 =begin programlisting
 
@@ -289,8 +293,8 @@ Use the reference operator on a named hash to create a I<hash reference>:
 
 =end programlisting
 
-Access the keys or values of the hash by prepending the reference with the hash
-sigil C<%>:
+Доступ к ключам или значениям хеша можно получить, предварив ссылку сигилом хеша
+(C<%>):
 
 =begin programlisting
 
@@ -299,8 +303,9 @@ sigil C<%>:
 
 =end programlisting
 
-Access individual values of the hash (to store, delete, check the existence of,
-or retrieve) by using the dereferencing arrow or double sigils:
+Доступ к отдельным значениям хеша (для сохранения, удаления, проверки
+существования или получения) осуществляется с использованием разыменовывающей
+стрелки или двойных сигилов:
 
 =begin programlisting
 
@@ -313,7 +318,8 @@ or retrieve) by using the dereferencing arrow or double sigils:
 
 =end programlisting
 
-Use the array sigil (C<@>) and disambiguation braces to slice a hash reference:
+Используйте сигил массива (C<@>) и устраняющие неоднозначность скобки для
+получения среза по ссылке на хеш:
 
 =begin programlisting
 
@@ -322,7 +328,7 @@ Use the array sigil (C<@>) and disambiguation braces to slice a hash reference:
 
 =end programlisting
 
-Create anonymous hashes in place with curly braces:
+Создание анонимного хеша с помощью фигурных скобок:
 
 =begin programlisting
 
@@ -335,25 +341,26 @@ Create anonymous hashes in place with curly braces:
 
 =end programlisting
 
-As with anonymous arrays, anonymous hashes create a new anonymous hash on every
-execution.
+Как и анонимные массивы, анонимные хеши создают новый анонимный хеш при каждом
+выполнении.
 
-=begin tip Watch Those Braces!
+=begin tip Следи за скобками!
 
-The common novice error of assigning an anonymous hash to a standard hash
-produces a warning about an odd number of elements in the hash. Use parentheses
-for a named hash and curly brackets for an anonymous hash.
+Распространённая ошибка новичков E<mdash> присваивание анонимного хеша
+стандартному хешу E<mdash> выдаёт предупреждение о нечётном количестве элементов
+в хеше. Используйте круглые скобки для именованного хеша и фигурные скобки для
+анонимного хеша.
 
 =end tip
 
-=head2 Automatic Dereferencing
+=head2 Автоматическое разыменование
 
 Z<automatic_dereferencing>
 
 X<builtins; C<push>>
 
-As of Perl 5.14, Perl can automatically dereference certain references on your
-behalf. Given an array reference in C<$arrayref>, you can write:
+Начиная с Perl 5.14, Perl может автоматически разыменовать некоторые ссылки по
+вашему поручению. Имеюя ссылку на массив в C<$arrayref>, вы можете написать:
 
 =begin programlisting
 
@@ -361,7 +368,7 @@ behalf. Given an array reference in C<$arrayref>, you can write:
 
 =end programlisting
 
-Given an expression which returns an array reference, you can do the same:
+Имея выражение, возвращающее ссылку на массив, вы можете сделать то же самое:
 
 =begin programlisting
 
@@ -378,27 +385,28 @@ X<builtins; C<keys>>
 X<builtins; C<values>>
 X<builtins; C<each>>
 
-The same goes for the array operators C<pop>, C<shift>, C<unshift>, C<splice>,
-C<keys>, C<values>, and C<each> and the hash operators C<keys>, C<values>, and
-C<each>.
+То же относится и к операторам работы с массивами C<pop>, C<shift>, C<unshift>,
+C<splice>, C<keys>, C<values>, и C<each>, а также к операторам работы с хешами
+C<keys>, C<values> и C<each>.
 
-If the reference provided is not of the proper type--if it does not dereference
-properly--Perl will throw an exception. While this may seem more dangerous than
-explicitly dereferencing references directly, it is in fact the same behavior:
+Если предоставленная ссылка имеет несоответствующий тип E<mdash> если она не
+разыменовывается должным образом E<mdash> Perl выбросит исключение. Хотя это
+выглядит более опысным, чем явное разыменовывание ссылок напрямую, фактически,
+это то же самое поведение:
 
 =begin programlisting
 
     my $ref = sub { ... };
 
-    # will throw an exception
+    # выбросит исключение
     push  $ref, qw( list of values );
 
-    # will also throw an exception
+    # тоже выбросит исключение
     push @$ref, qw( list of values );
 
 =end programlisting
 
-=head2 Function References
+=head2 Ссылки на функции
 
 Z<function_references>
 
@@ -406,10 +414,10 @@ X<functions; references>
 X<references; functions>
 X<functions; first-class>
 
-Perl 5 supports I<first-class functions> in that a function is a data type just
-as is an array or hash. This is most obvious with I<function references>, and
-enables many advanced features (L<closures>). Create a function reference by
-using the reference operator on the name of a function:
+Perl 5 поддерживает I<функции первого класса>, поскольку функция E<mdash> такой
+же тип данных, как массив или хеш. Это наиболее очевидно в случае I<ссылок на
+функции> и даёт много продвинутых возможностей (L<closures>). Ссылка на функцию
+создаётся с помощью оператора взятия ссылки на имени функции:
 
 =begin programlisting
 
@@ -423,10 +431,10 @@ X<functions; sigil>
 X<sigils; C<&>>
 X<C<&>; sigil>
 
-Without the I<function sigil> (C<&>), you will take a reference to the
-function's return value or values.
+Без I<сигила функции> (C<&>), вы получите ссылку на возвращаемое значение или
+значения функции.
 
-Create anonymous functions with the bare C<sub> keyword:
+Анонимная функция создаётся с помощью голого ключевого слова C<sub>:
 
 =begin programlisting
 
@@ -436,10 +444,10 @@ Create anonymous functions with the bare C<sub> keyword:
 
 X<builtins; C<sub>>
 
-The use of the C<sub> builtin I<without> a name compiles the function as
-normal, but does not install it in the current namespace. The only way to
-access this function is via the reference returned from C<sub>. Invoke the
-function reference with the dereferencing arrow:
+Использование встроенной директивы С<sub> I<без> имени компилирует функцию как
+обычно, но не помещает её в текущее пространство имён. Единственный способ
+получить доступ к этой функции E<mdash> по ссылке, возвращённой C<sub>. Вызыв
+функции по ссылке осуществляется с помощью разыменовывающей ссылки:
 
 =begin programlisting
 
@@ -448,18 +456,18 @@ function reference with the dereferencing arrow:
 
 =end programlisting
 
-=begin tip Perl 4 Function Calls
+=begin tip Вызовы функций в Perl 4
 
-An alternate invocation syntax for function references uses the function sigil
-(C<&>) instead of the dereferencing arrow. Avoid this syntax; it has subtle
-implications for parsing and argument passing.
+Альтернативный синтаксис вызова для ссылок на функции использует сигил функции
+(C<&>) вместо разыменовывающей стрелки. Избегайте этого синтаксиса; он имеет
+коварные последствия для парсинга и передачи аргументов.
 
 =end tip
 
-Think of the empty parentheses as denoting an invocation dereferencing
-operation in the same way that square brackets indicate an indexed lookup and
-curly brackets cause a hash lookup. Pass arguments to the function within the
-parentheses:
+Воспринимайте пустые круглые скобки как обозначение операции разыменовывающего
+вызова, так же как квадратные скобки указывают на поиск по индексу, а фигурные
+скобки служат для поиска в хеше. Передавайте аргументы в функцию с помощью
+круглых скобок:
 
 =begin programlisting
 
@@ -467,8 +475,8 @@ parentheses:
 
 =end programlisting
 
-You may also use function references as methods with objects (L<moose>). This
-is useful when you've already looked up the method (L<reflection>):
+Также вы можете использовать ссылки на функции как методы объектов (L<moose>).
+Это удобно, когда вы уже нашли метод (L<reflection>):
 
 =begin programlisting
 
@@ -477,7 +485,7 @@ is useful when you've already looked up the method (L<reflection>):
 
 =end programlisting
 
-=head2 Filehandle References
+=head2 Ссылки на дескрипторы файлов
 
 Z<lexical_filehandles>
 
@@ -486,10 +494,10 @@ X<references; filehandles>
 X<C<IO::File>>
 X<C<IO::Handle>>
 
-When you use C<open>'s (and C<opendir>'s) lexical filehandle form, you deal
-with filehandle references. Internally, these filehandles are C<IO::File>
-objects. You can call methods on them directly. As of Perl 5.14, this is as
-simple as:
+Когда вы используете C<open> (и C<opendir>) в форме с лексическими дескрипторами
+файлов, вы имеете дело со ссылками на дескрипторы файлов. Внутренне эти
+дескрипторы файлов E<mdash> объекты C<IO::File>. Вы можете напрямую вызывать их
+методы. Начиная с Perl 5.14 это можно делать так:
 
 =begin programlisting
 
@@ -498,8 +506,9 @@ simple as:
 
 =end programlisting
 
-You must C<use IO::File;> in 5.12 to enable this and C<use IO::Handle;> in 5.10
-and earlier. Even older code may take references to typeglobs:
+В 5.12 вы должны написать C<use IO::File;> чтобы включить эту возможность, а в
+Perl 5.10 и раньше E<mdash> C<use IO::Handle;>. Даже более старый код может
+получать ссылки на тайпглобы:
 
 =begin programlisting
 
@@ -509,30 +518,33 @@ and earlier. Even older code may take references to typeglobs:
 
 =end programlisting
 
-This idiom predates lexical filehandles (introduced with Perl 5.6.0 in March
-2000). You may still use the reference operator on typeglobs to take references
-to package-global filehandles such as C<STDIN>, C<STDOUT>, C<STDERR>, or
-C<DATA>--but these are all global names anyhow.
+Эта идиома предшествует лексическим дескрипторам файлов (представленным в
+Perl 5.6.0 в марте 2000 года). Вы всё ещё можете использовать оператор взятия
+ссылки на тайпглобах для получения ссылок на дескрипторы файлов, глобальные для
+пакета, такие как C<STDIN>, C<STDOUT>, C<STDERR> или C<DATA> E<mdash> но это всё
+в любом случае глобальные имена.
 
-Prefer lexical filehandles when possible. With the benefit of explicit scoping,
-lexical filehandles allow you to manage the lifespan of filehandles as a
-feature of Perl 5's memory management.
+Использование лексических дескрипторов файлов по возможности предпочтительно.
+С преимуществами явного задания области видимости, лексические дескрипторы
+файлов позволяют вам управлять их сроком жизни благодаря возможностям Perl 5 по
+управлению памятью.
 
-=head2 Reference Counts
+=head2 Счётчики ссылок
 
 Z<reference_counts>
 X<references; reference counting>
 
-Perl 5 uses a memory management technique known as I<reference counting>.
-Every Perl value has a counter attached. Perl increases this counter every time
-something takes a reference to the value, whether implicitly or explicitly.
-Perl decreases that counter every time a reference goes away. When the counter
-reaches zero, Perl can safely recycle that value.
+Perl 5 использует технику управления памятью, известную как I<подсчёт ссылок>.
+Каждое значение в Perl имеет присоединённый к нему счётчик. Perl увеличивает
+этот счётчик при каждом взятии ссылки на это значение, явном или неявном. Perl
+уменьшаяет этот счётчик каждый раз, как ссылка исчезает. Когда счётчик
+достигает ноля, Perl может безопасно отправить это значение на переработку.
 
 X<lexicals; lifecycle>
 
-How does Perl know when it can safely release the memory for a variable? How
-does Perl know when it's safe to close the file opened in this inner scope:
+Как Perl узнаёт, когда можно безопасно освободить память, занимаемую переменной?
+Как Perl узнаёт, когда безопасно закрыть дескриптор файла, открытый во
+внутренней области видимости?
 
 =begin programlisting
 
@@ -547,25 +559,25 @@ does Perl know when it's safe to close the file opened in this inner scope:
 
 =end programlisting
 
-Within the inner block in the example, there's one C<$fh>. (Multiple lines in
-the source code refer to it, but only one variable refers to it: C<$fh>.)
-C<$fh> is only in scope in the block. Its value never leaves the block. When
-execution reaches the end of the block, Perl recycles the variable C<$fh> and
-decreases the reference count of the contained filehandle. The filehandle's
-reference count reaches zero, so Perl recycles it to reclaim memory, and calls
-C<close()> implicitly.
+Во внутреннем блоке в этом примере только одна дескриптор C<$fh>. (Несколько
+строк в исходном коде упоминают его, но ссылается на него только одна
+переменная: C<$fh>.) C<$fh> существует только в области видимости этого блока.
+Её значение никогда не покидает блок. Когда выполнение достигает конца блока,
+Perl перерабатывает переменную C<$fh> и уменьшает счётчик ссылок содержащегося
+в ней дескриптора файла. Счётчик дескриптора достигает ноля, так что Perl
+перерабатывает его для освобождения памяти и неявно вызывает C<close()>.
 
-You don't have to understand the details of how all of this works. You only
-need to understand that your actions in taking references and passing them
-around affect how Perl manages memory (see L<circular_references>).
+Вам не обязательно понимать детали того, как всё это работает. Вам нужно
+понимать только то, что ваши действия по взятию ссылок и их передаче влияют на
+то, как Perl управляет памятью (см. L<circular_references>).
 
-=head2 References and Functions
+=head2 Ссылки и функции
 
-When you use references as arguments to functions, document your intent
-carefully. Modifying the values of a reference from within a function may
-surprise the calling code, which doesn't expect anything else to modify its
-data. To modify the contents of a reference without affecting the reference
-itself, copy its values to a new variable:
+При использовании ссылок как аргументов функции внимательно документируйте ваше
+намерение. Изменение значений ссылки изнутри функции может стать неожиданностью
+для вызывающего кода, который не ожидает, что кто-то ещё будет модифицировать
+его данные. Для изменения содержимого ссылки, не воздействуюя на саму ссылку,
+скопируйте её значение в новую переменную:
 
 =begin programlisting
 
@@ -577,7 +589,8 @@ itself, copy its values to a new variable:
 X<C<Storable>>
 X<C<dclone()>>
 
-This is only necessary in a few cases, but explicit cloning helps avoid nasty
-surprises for the calling code. If you use nested data structures or other
-complex references, consider the use of the core module C<Storable> and its
-C<dclone> (I<deep cloning>) function.
+Это необходимо лишь в немногих случаях, но явное клонирование помогает избежать
+неприятных сюрпризов для вызывающего кода. Если вы используете вложенные
+структуры данных или другие сложные ссылки, рассмотрите использование
+встроенного модуля C<Storable> и его функции C<dclone> (I<deel cloning>,
+I<глубокое клонирование>).
