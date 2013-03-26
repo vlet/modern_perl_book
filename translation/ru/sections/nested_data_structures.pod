@@ -1,17 +1,17 @@
-=head1 Nested Data Structures
+=head1 Вложенные структуры данных
 
 Z<nested_data_structures>
 X<data structures>
 X<nested data structures>
 
-Perl's aggregate data types--arrays and hashes--allow you to store scalars
-indexed by integer or string keys. Perl 5's references (L<references>) allow
-you to access aggregate data types through special scalars. Nested data
-structures in Perl, such as an array of arrays or a hash of hashes, are
-possible through the use of references.
+Агрегатные типы данных Perl E<mdash> массивы и хеши E<mdash> позволяют вам
+хранить скаляры, индексированные целыми числами или строковыми ключами. Ссылки в
+Perl 5 позволяют получать доступ к агрегатным типам данных через специальные
+скаляры. Вложенные структуры данных в Perl, такие как массив массивов или хеш
+хешей, становятся возможными благодаря использованию ссылок.
 
-Use the anonymous reference declaration syntax to declare a nested data
-structure:
+Для объявления вложенной структуры данных используйте синтаксис объявления
+анонимной ссылки:
 
 =begin programlisting
 
@@ -32,16 +32,17 @@ structure:
 
 =end programlisting
 
-=begin tip Commas are Free
+=begin tip Запятые E<mdash> бесплатно
 
-Perl allows but does not require the trailing comma so as to ease adding new
-elements to the list.
+Perl позволяет, хотя и не требует, ставить завершающую запятую для облегчения
+последующего добавления элементов в список.
 
 =end tip
 
-Use Perl's reference syntax to access elements in nested data structures. The
-sigil denotes the amount of data to retrieve, and the dereferencing arrow
-indicates that the value of one portion of the data structure is a reference:
+Для доступа к элементам вложенных структур данных используйте синтаксис ссылок
+Perl. Сигил обозначает количество данные, которое должно быть получено, а
+разыменовывающая стрелка указывает, что значение части структуры данных является
+ссылкой:
 
 =begin programlisting
 
@@ -50,9 +51,9 @@ indicates that the value of one portion of the data structure is a reference:
 
 =end programlisting
 
-The only way to nest a multi-level data structure is through references, so the
-arrow is superfluous. You may omit it for clarity, except for invoking function
-references:
+Единственный способ создать многоуровневую структура данных E<mdash> посредством
+ссылок, так что стрелка излишня. Вы можете опустить её для ясности, за
+исключением вызовов функций по ссылке:
 
 =begin programlisting
 
@@ -62,8 +63,8 @@ references:
 
 =end programlisting
 
-Use disambiguation blocks to access components of nested data structures as if
-they were first-class arrays or hashes:
+Используйте устраняющий неоднозначность блок для доступа к компонентам вложенной
+структуры данных, как если бы они были массивами или хешами первого класса:
 
 =begin programlisting
 
@@ -72,7 +73,7 @@ they were first-class arrays or hashes:
 
 =end programlisting
 
-... or to slice a nested data structure:
+E<mdash>или для получения среза вложенной структуры данных:
 
 =begin programlisting
 
@@ -81,8 +82,8 @@ they were first-class arrays or hashes:
 
 =end programlisting
 
-Whitespace helps, but does not entirely eliminate the noise of this construct.
-Use temporary variables to clarify:
+Пробелы помогают, но не полностью устраняют зашумлённость этой конструкции.
+Используйте временные переменные для придания ясности:
 
 =begin programlisting
 
@@ -93,8 +94,8 @@ Use temporary variables to clarify:
 
 X<aliasing>
 
-... or use C<for>'s implicit aliasing to C<$_> to avoid the use of an
-intermediate reference:
+E<hellip>или используйте неявное создание псевдонимов в C<$_> директивой C<for>,
+чтобы избежать использования промежуточной ссылки:
 
 =begin programlisting
 
@@ -103,16 +104,16 @@ intermediate reference:
 
 =end programlisting
 
-C<perldoc perldsc>, the data structures cookbook, gives copious examples of how
-to use Perl's various data structures.
+C<perldoc perldsc>, кулинарная книга структур данных, даёт обширные примеры
+того, как использовать разные структуры данных в Perl.
 
-=head2 Autovivification
+=head2 Автовивификация
 
 Z<autovivification>
 X<autovivification>
 
-When you attempt to write to a component of a nested data structure, Perl will
-create the path through the data structure to the destination as necessary:
+Когда вы пытаетесь записать значение в компонент вложенной структуры данных,
+Perl по необходимости создаёт путь через структуру данных до пункта назначения:
 
 =begin programlisting
 
@@ -121,11 +122,11 @@ create the path through the data structure to the destination as necessary:
 
 =end programlisting
 
-After the second line of code, this array of arrays of arrays of arrays
-contains an array reference in an array reference in an array reference in an
-array reference. Each array reference contains one element. Similarly, treating
-an undefined value as if it were a hash reference in a nested data structure
-will make it so:
+После второй строки кода этот массив массивов массивов массивов содержит ссылку
+на массив в ссылке на массив в ссылке на массив в ссылке на массив. Каждая
+ссылка содержит один элемент. Аналогично, обработка неопределённого значения
+так, как будто это ссылка на хеш во вложенной структуре данных, сделает его
+таковой:
 
 =begin programlisting
 
@@ -138,40 +139,41 @@ X<autovivification>
 X<C<autovivification> pragma>
 X<pragmas; C<autovivification>>
 
-This useful behavior is I<autovivification>. While it reduces the
-initialization code of nested data structures, it cannot distinguish between
-the honest intent to create missing elements in nested data structures and
-typos. The C<autovivification> pragma (L<pragmas>) from the CPAN lets you
-disable autovivification in a lexical scope for specific types of operations.
+Это полезное поведение называется I<автовивификацией>. Оно уменьшает объём
+инициализирующего кода вложенной стркутуры данных, но не может определить
+разницу между честным намерением создать недостающие элементы во вложенной
+структуре данных и опечаткой. Прагма C<autovivification> (L<pragmas>) из CPAN
+позволит вам отключить автовивификацию в лексической области видимости для
+определённых типов операций.
 
-You may wonder at the contradiction between taking advantage of
-autovivification while enabling C<strict>ures. The question is one of balance.
-Is it more convenient to catch errors which change the behavior of your program
-at the expense of disabling error checks for a few well-encapsulated symbolic
-references? Is it more convenient to allow data structures to grow rather than
-specifying their size and allowed keys?
+Вас может удивить применение преимуществ автовивификации параллельно установке
+ограничений с помощью C<strict>. Это вопрос баланса. Будет ли более удобным
+получить ошибки, изменяющие поведение вашей программы, ценой отключения проверок
+на ошибки для хорошо инкапсулированных символьных ссылок? Будет ли более удобным
+позволить структурам данных расти вместо чёткого указания их размера и
+доступных ключей?
 
-The answers depend on your project. During early development, allow yourself
-the freedom to experiment. While testing and deploying, consider an increase of
-strictness to prevent unwanted side effects. Thanks to the lexical scoping of
-the C<strict> and C<autovivification> pragmas, you can enable these behaviors
-where and as necessary.
+Ответы зависят от вашего проекта. Во период начальной разработки позвольте себе
+свободу экспериментировать. Во время тестирования и развёртывания рассмотрите
+увеличение строгости для предотвращения нежелательных побочных эффектов.
+Благодаря лексической области видимости прагм C<strict> и C<autovivification> вы
+можете включить эти варианты поведения там, где это необходимо.
 
-You I<can> verify your expectations before dereferencing each level of a
-complex data structure, but the resulting code is often lengthy and tedious.
-It's better to avoid deeply nested data structures by revising your
-data model to provide better encapsulation.
+Вы I<можете> проверять свои ожидания перед разыменованием каждого уровня сложной
+структуры данных, но результирующий код зачастую будет длинным и громоздким.
+Лучше избегать глубоко вложенных структур данных, пересмотрев свою модель данных
+в сторону лучшей инкапсуляции.
 
-=head2 Debugging Nested Data Structures
+=head2 Отладка вложенных структур данных
 
-The complexity of Perl 5's dereferencing syntax combined with the potential for
-confusion with multiple levels of references can make debugging nested data
-structures difficult. Two good visualization tools exist.
+Сложность разыменовывающего синтаксиса Perl 5, объединённая с потенциальной
+путаницей нескольких уровней ссылок, может сделать отладку вложенных структур
+данных сложной. Есть два хороших инструмента визуализации.
 
 X<C<Data::Dumper>>
 
-The core module C<Data::Dumper> converts values of arbitrary complexity into
-strings of Perl 5 code:
+Встроенный модуль C<Data::Dumper> преобразует значения произвольной сложности в
+строки кода Perl 5:
 
 =begin programlisting
 
@@ -181,16 +183,17 @@ strings of Perl 5 code:
 
 =end programlisting
 
-This is useful for identifying what a data structure contains, what you should
-access, and what you accessed instead. C<Data::Dumper> can dump objects as well
-as function references (if you set C<$Data::Dumper::Deparse> to a true value).
+Это удобно для определения того, что содержит структура данных, что вы должны
+получить, и что вы получили вместо этого. C<Data::Dumper> может выводить
+объекты, так же как ссылки на функции (если вы установите
+C<$Data::Dumper::Deparse> в истинное значение).
 
-While C<Data::Dumper> is a core module and prints Perl 5 code, its output is
-verbose. Some developers prefer the use of the C<YAML::XS> or C<JSON> modules
-for debugging. They do not produce Perl 5 code, but their outputs can be much
-clearer to read and to understand.
+Хотя C<Data::Dumper> E<mdash> встроенный модуль и выводит код на Perl 5, его
+вывод довольно многословен. Некоторые разработчики предпочитают использовать для
+отладки модули C<YAML::XS> или C<JSON>. Они не выдают код на Perl 5, но их вывод
+может быть гораздо проще для чтения и понимания.
 
-=head2 Circular References
+=head2 Циклические ссылки
 
 Z<circular_references>
 
@@ -198,11 +201,12 @@ X<circular references>
 X<memory management; circular references>
 X<garbage collection>
 
-Perl 5's memory management system of reference counting (L<reference_counts>)
-has one drawback apparent to user code. Two references which eventually point
-to each other form a I<circular reference> that Perl cannot destroy on its own.
-Consider a biological model, where each entity has two parents and zero or more
-children:
+Имеющаяся в Perl 5 система управления памятью с помощью подсчёта ссылок
+(L<reference_counts>) имеет один недостаток, заметный для пользовательского
+кода. Две ссылки, которые в конечном счёте указывают друг на друга, образуют
+I<циклическую ссылку>, которую Perl не может уничтожить сам. Рассмотрим
+биологическую модель, где каждая сущность имеет двух родителей и ноль или больше
+детей:
 
 =begin programlisting
 
@@ -215,22 +219,21 @@ children:
 
 =end programlisting
 
-Both C<$alice> and C<$robert> contain an array reference which contains
-C<$cianne>. Because C<$cianne> is a hash reference which contains C<$alice> and
-C<$robert>, Perl can never decrease the reference count of any of these three
-people to zero. It doesn't recognize that these circular references exist, and
-it can't manage the lifespan of these entities.
+И C<$alice>, и C<$robert> содержат ссылку на массив, которая содержит
+C<$cianne>. Поскольку C<$cianne> E<mdash> ссылка на хеш, которая содержит
+C<$alice> и C<$robert>, Perl никогда не сможет уменьшить счётчик ссылок любого
+из этих трёх человек до нуля. Он не распознает, что эти циклические ссылки
+существуют, и не сможет управлять сроком жизни этих сущностей.
 
 X<references; weak>
 X<weak references>
 X<C<Scalar::Util>>
 
-Either break the reference count manually yourself (by clearing the children of
-C<$alice> and C<$robert> or the parents of C<$cianne>), or use I<weak
-references>. A weak reference is a reference which does not increase the
-reference count of its referent. Weak references are available through the core
-module C<Scalar::Util>. Its C<weaken()> function prevents a reference count
-from increasing:
+Или разбейте счётчик ссылок сами вручную (очистив детей C<$alice> и C<$robert>
+или родителей C<$cianne>), или используйте I<слабые ссылки>. Слабая ссылка
+E<mdash> это ссылка, которая не увеличивает счётчик ссылок значения, на которое
+ссылается. Слабые ссылки доступны во встроенном модуле C<Scalar::Util>. Его
+функция C<weaken()> предотвращает увеличение счётчика ссылок:
 
 =begin programlisting
 
@@ -248,15 +251,16 @@ from increasing:
 
 =end programlisting
 
-Now C<$cianne> will retain references to C<$alice> and C<$robert>, but those
-references will not by themselves prevent Perl's garbage collector from
-destroying those data structures. Most data structures do not need weak
-references, but when they're necessary, they're invaluable.
+Теперь C<$cianne> сохранит ссылки на C<$alice> и C<$robert>, но эти ссылки сами
+по себе не будут удерживать сборщик мусора Perl от разрушения этих структур
+данных. Большинство структур данных не требуют слабых ссылок, но когда они
+необходимы E<mdash> они бесценны.
 
-=head2 Alternatives to Nested Data Structures
+=head2 Альтернативы вложенным структурам данных
 
-While Perl is content to process data structures nested as deeply as you can
-imagine, the human cost of understanding these data structures and their
-relationships--to say nothing of the complex syntax--is high. Beyond two or
-three levels of nesting, consider whether modeling various components of your
-system with classes and objects (L<moose>) will allow for clearer code.
+Хотя Perl способен обрабатывать структуры данных, вложенные так глубоко, как
+нужно, человеческая стоимость понимания этих структур данных и их
+взаимоотношений E<mdash> не говоря о сложном синтаксисе E<mdash> высока. После
+двух или трёх уровней вложенности задумайтесь, не позволит ли вам моделирование
+разных компонентов вашей системы как классов и объектов (L<moose>) сделать код
+чище.
