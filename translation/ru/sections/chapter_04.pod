@@ -1,16 +1,17 @@
-=head0 Operators
+=head0 Операторы
 
 Z<operators>
 X<operators>
 X<operands>
 
-Some people call Perl an "operator-oriented language". To understand a Perl
-program, you must understand how its operators interact with their operands.
+Некоторые называют Perl E<laquo>оператор-ориентированным языкомE<raquo>. Чтобы
+понять программу на Perl, вы должны понять как её операторы взаимодействуют со
+своими операндами.
 
-A Perl I<operator> is a series of one or more symbols used as part of the
-syntax of a language. Each operator operates on zero or more I<operands>. Think
-of an operator as a special sort of function the parser understands and its
-operands as arguments.
+I<Оператор> в Perl E<mdash> это набор из одного или более символов, используемый
+как часть синтаксиса языка. Каждый оператор оперирует нулём или более
+I<операндов>. Воспринимайте операторы как особый вид функций, понимаемых
+парсером, а их операторы E<mdash> как аргументы.
 
 L<operator_characteristics>
 
