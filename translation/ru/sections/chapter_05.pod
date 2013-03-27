@@ -1,16 +1,16 @@
-=head0 Functions
+=head0 Функции
 
 X<function>
 X<subroutine>
 
-A I<function> (or I<subroutine>) in Perl is a discrete, encapsulated unit of
-behavior. A program is a collection of little black boxes where the interaction
-of these functions governs the control flow of the program. A function may have
-a name. It may consume incoming information. It may produce outgoing
-information.
+I<Функция> (или I<подпрограмма>) в Perl E<mdash> это обособленная,
+инкапсулированная единица поведения. Программа E<mdash> это набор маленьких
+чёрных ящиков, в котором взаимодействие функций руководит её потоком управления.
+Функция может иметь имя. Она может потреблять входную информацию. Она может
+генерировать выходную информацию.
 
-Functions are a prime mechanism for abstraction, encapsulation, and re-use in
-Perl 5.
+Функции E<mdash> главный механизм абстракции, инкапсуляции и повторного
+использования в Perl 5.
 
 L<functions>
 
