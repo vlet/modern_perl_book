@@ -1,12 +1,12 @@
-=head1 Operator Types
+=head1 Типы операторов
 
 Z<operator_types>
 
-Perl operators provide value contexts (L<value_contexts>) to their operands.
-To choose the appropriate operator, understand the values of the operands you
-provide as well as the value you expect to receive.
+Оперторы Perl предоставляют контекст значения (L<value_contexts>) своим
+операндам. Чтобы выбрать подходящий оператор, нужно понимать значения
+предоставляемых вами операндов, а так же значение, которое вы ожидаете получить.
 
-=head2 Numeric Operators
+=head2 Числовые операторы
 
 Z<numeric_operators>
 
@@ -39,13 +39,13 @@ X<C<%=>; numeric operator>
 X<operators; C<-->>
 X<C<-->; numeric operator>
 
-Numeric operators impose numeric contexts on their operands. These operators
-are the standard arithmetic operators such as addition (C<+>), subtraction
-(C<->), multiplication (C<*>), division (C</>), exponentiation (C<**>), modulo
-(C<%>), their in-place variants (C<+=>, C<-=>, C<*=>, C</=>, C<**=>, and
-C<%=>), and both postfix and prefix auto-decrement (C<-->).
+Числовые операторы налагают числовой контекст на свои операнды. Эти операторы
+E<mdash> стандартные арифметические операторы, такие как сложение (C<+>),
+вычитание (C<->), умножение (C<*>), деление (C</>), возведение в степерь
+(C<**>), остаток от деления (C<%>), их вариации (C<+=>, C<-=>, C<*=>, C</=>,
+C<**=> и C<%=>), а также постфиксный и префиксный автодекремент (C<-->).
 
-The auto-increment operator has special string behavior
+Оператор автоинкремента имеет специальное строковое поведение
 (L<auto_increment_operator>).
 
 X<operators; C<==>>
@@ -64,13 +64,12 @@ X<<< C<< E<gt>= >>; numeric comparison operator >>>
 X<<< C<< E<lt>= >>; numeric comparison operator >>>
 X<<< C<< E<lt>=E<gt> >>; numeric comparison operator >>>
 
-Several comparison operators impose numeric contexts upon their operands.
-These are numeric equality (C<==>), numeric inequality (C<!=>), greater than
-(C<< E<gt> >>), less than (C<< E<lt> >>), greater than or equal to (C<< E<gt>=
->>), less than or equal to (C<< E<lt>= >>), and the sort comparison operator
-(C<< E<lt>=E<gt> >>).
+Некоторые операторы сравнения налагают числовой контекст на свои операнды. Это
+числовое равенство (C<==>), числовое неравенство (C<!=>), больше чем
+(C<< E<gt> >>), меньше чем (C<< E<lt> >>), больше или равно (C<< E<gt>= >>),
+меньше или равно (C<< E<lt>= >>) и оператор сравнения (C<< E<lt>=E<gt> >>).
 
-=head2 String Operators
+=head2 Строковые операторы
 
 X<operators; string>
 X<strings; operators>
@@ -81,9 +80,9 @@ X<C<!~>; string operator>
 X<operators; C<.>>
 X<C<.>; string operator>
 
-String operators impose string contexts on their operands. These operators are
-positive and negative regular expression binding (C<=~> and C<!~>,
-respectively), and concatenation (C<.>).
+Строковые операторы налагают строковый контекст на свои операнды. Это
+положительная и отрицательная связь с регулярными выражениями (C<=~> and C<!~>
+соответственно) и конкатенация (C<.>).
 
 X<operators; C<eq>>
 X<operators; C<ne>>
@@ -100,12 +99,12 @@ X<C<ge>; string comparison operator>
 X<C<le>; string comparison operator>
 X<C<cmp>; string comparison operator>
 
-Several comparison operators impose string contexts upon their operands. These
-are string equality (C<eq>), string inequality (C<ne>), greater than (C<gt>),
-less than (C<lt>), greater than or equal to (C<ge>), less than or equal to
-(C<le>), and the string sort comparison operator (C<cmp>).
+Некоторые операторы сравнения налагают строковый контекст на свои операнды. Это
+строковое равенство (C<eq>), строковое неравенство (C<ne>), больше чем (C<gt>),
+меньше чем (C<lt>), больше или равно (C<ge>), меньше или равно (C<le>) и
+оператор строкового сравнения (C<cmp>).
 
-=head2 Logical Operators
+=head2 Логические операторы
 
 X<operators; logical>
 X<operators; C<&&>>
@@ -130,15 +129,15 @@ X<operators; defined-or>
 X<defined-or; logical operator>
 X<short-circuiting>
 
-Logical operators impose a boolean context on their operands. These operators
-are C<&&>, C<and>, C<||>, and C<or>. All are infix and all exhibit
-I<short-circuiting> behavior (L<short_circuiting>). The word variants have
-lower precedence than their punctuation forms.
+Логические операторы налагают булев контекст на свои операнды. Это операторы
+C<&&>, C<and>, C<||> и C<or>. Все они инфиксные и проявляют поведение
+I<короткого замыкания> (L<short_circuiting>). Словесные варианты имеют более
+низкий приоритет, чем их знаковые формы.
 
-The defined-or operator, C<//>, tests the I<definedness> of its operand. Unlike
-C<||> which tests the I<truth> of its operand, C<//> evaluates to a true value
-even if its operand evaluates to a numeric zero or the empty string. This is
-especially useful for setting default parameter values:
+Оператор определено-или, C<//>, проверяет I<определённость> своего операнда. В
+отличие от C<||>, который проверяет I<истинность> своего операнда, C<//>
+возвращает истинное значение даже если его операнд вычисляется в числовой ноль
+или пустую строку. Это особенно полезно для установки параметров по умолчанию:
 
 =begin programlisting
 
@@ -152,9 +151,9 @@ especially useful for setting default parameter values:
 
 X<C<?:>; ternary conditional operator>
 
-The ternary conditional operator (C<?:>) takes three operands. It evaluates the
-first in boolean context and evaluates to the second if the first is true and
-the third otherwise:
+Тернарный условный оператор (C<?:>) принимает три операнда. Он вычисляет первый
+операнд в булевом контексте и возвращает второй операнд, если первый E<mdash>
+истина, или третий в противном случае:
 
 =begin programlisting
 
@@ -162,13 +161,13 @@ the third otherwise:
 
 =end programlisting
 
-The prefix C<!> and C<not> operators return the logical opposite of the boolean
-value of their operands. C<not> is a lower precedence version of C<!>.
+Префиксные операторы C<!> и C<not> возвращают логическую противоположность
+булева значения своих операндов. C<not> имеет более низкий приоритет, чем C<!>.
 
-The C<xor> operator is an infix operator which evaluates to the exclusive-or of
-its operands.
+Оператор C<xor> E<mdash> инфиксный оператор, вычисляющий исключающее или своих
+операндов.
 
-=head2 Bitwise Operators
+=head2 Побитовые операторы
 
 X<operators; bitwise>
 X<<< operators; C<< E<lt>E<lt> >> >>>
@@ -194,13 +193,13 @@ X<C<^=>; bitwise operator>
 X<<< C<< E<lt>E<lt>= >>; bitwise operator >>>
 X<<< C<< E<gt>E<gt>= >>; bitwise operator >>>
 
-Bitwise operators treat their operands numerically at the bit level. These
-operations are uncommon. They consist of left shift (C<< << >>), right shift
-(C<< >> >>), bitwise and (C<&>), bitwise or (C<|>), and bitwise xor (C<^>), as
-well as their in-place variants (C<< <<= >>, C<< >>= >>, C<&=>, C<|=>, and
-C<^=>).
+Побитовые операторы обрабатывают свои операнды численно на битовом уровне. Эти
+операторы не очень распространены. Они включают левый сдвиг (C<< << >>), правый
+сдвиг (C<< >> >>), побитовое и (C<&>), побитовое или (C<|>) и побитовое
+исключающее или (C<^>), а также их варианты (C<< <<= >>, C<< >>= >>, C<&=>,
+C<|=> и C<^=>).
 
-=head2 Special Operators
+=head2 Специальные операторы
 
 Z<auto_increment_operator>
 
@@ -209,11 +208,11 @@ X<auto-increment>
 X<operators; C<++>>
 X<C<++>; auto-increment operator>
 
-The auto-increment operator has special behavior. When used on a value with a
-numeric component (L<cached_coercions>), the operator increments that numeric
-component. If the value is obviously a string (and has no numeric component),
-the operator increments that string value such that C<a> becomes C<b>, C<zz>
-becomes C<aaa>, and C<a9> becomes C<b0>.
+Оператор автоинкремента имеет специальное поведение. При использовании на
+значении с числовым компонентом (L<cached_coercions>), оператор инкрементирует
+этот числовой компонент. Если значение очевидно строка (и не имеет числового
+компонента), оператор инкрементирует это строковое значение так, что C<a>
+становится C<b>, C<zz> становится C<aaa> и C<a9> становится C<b0>.
 
 =begin programlisting
 
@@ -238,14 +237,15 @@ X<operators; repetition>
 X<operators; C<x>>
 X<C<x>; repetition operator>
 
-The repetition operator (C<x>) is an infix operator with complex behavior. In
-list context, when given a list, it evaluates to that list repeated the number
-of times specified by its second operand. In list context when given a scalar,
-it produces a string consisting of the string value of its first operand
-concatenated to itself the number of times specified by its second operand.
+Оператор повторения (C<x>) E<mdash> инфиксный оператор со сложным поведением. В
+списочном контексте, когда передан список, он возвращает этот список,
+повторённый количество раз, определяемое вторым операндом. В списочном контексте
+если передан скаляр, он выдаёт строку, состояющую из строкового значения его
+первого операнда, конкатенированного с собой количество раз, определяемое вторым
+операндом.
 
-In scalar context, the operator always produces a concatenated string repeated
-appropriately. For example:
+В скалярном контексте операто всегда выдаёт конкатенированную строку,
+соответствующим образом повторённую. Например:
 
 =begin programlisting
 
@@ -271,7 +271,8 @@ X<range>
 X<operators; C<..>>
 X<C<..>; range operator>
 
-The infix I<range> operator (C<..>) produces a list of items in list context:
+Инфиксный оператор I<диапазона> (C<..>) генерирует список элементов в списочном
+контексте:
 
 =begin programlisting
 
@@ -279,18 +280,18 @@ The infix I<range> operator (C<..>) produces a list of items in list context:
 
 =end programlisting
 
-It can produce simple, incrementing ranges (both as integers or strings), but
-it cannot intuit patterns or more complex ranges.
+Он может генерировать простые инкрементирующиеся диапазоны (как целочисленные,
+так и строковые), но не может угадать шаблоны более сложных диапазонов.
 
 X<operators; flip-flop>
 X<flip-flop>
 X<C<..>; flip-flop operator>
 
-In boolean context, the range operator becomes the I<flip-flop> operator. This
-operator produces a false value until its left operand is true. That value
-stays true until the right operand is true, after which the value is false
-again until the left operand is true again. Imagine parsing the text of a
-formal letter with:
+В булевом контексте оператор диапазона становится оператором I<flip-flop>. Этот
+оператор выдаёт ложное значение до тех пор, пока его левый операнд E<mdash>
+истина. Это значение остаётся истинным, пока правый оператор E<mdash> истина,
+после чего вновь становится ложным, пока левый операнд снова не станет истинным.
+Представьте разбор текста формального письма следующим образом:
 
 =begin programlisting
 
@@ -307,10 +308,10 @@ X<C<,>; operator>
 X<<< operators; C<< =E<gt> >> >>>
 X<<< C<< =E<gt> >>; fat comma operator >>>
 
-The I<comma> operator (C<,>) is an infix operator. In scalar context it
-evaluates its left operand then returns the value produced by evaluating its
-right operand. In list context, it evaluates both operands in left-to-right
-order.
+Оператор I<запятая> (C<,>) E<mdash> инфиксный оператор. В скалярном контексте он
+вычисляет свой левый операнд, а затем возвращает значение, полученное при
+вычислении правого операнда. В списочном контексте он вычисляет оба операнда
+в порядке слева направо.
 
-The fat comma operator (C<< => >>) also automatically quotes any bareword used
-as its left operand (L<hashes>).
+Оператор толстой запятой (C<< => >>) кроме того автоматически берёт в кавычки
+любое голое слово, использованное как его левый операнд (L<hashes>).
