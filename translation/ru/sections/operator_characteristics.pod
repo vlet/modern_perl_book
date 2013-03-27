@@ -1,41 +1,41 @@
-=head1 Operator Characteristics
+=head1 Свойства операторов
 
 Z<operator_characteristics>
 X<operators; characteristics>
 
-Every operator possesses several important characteristics which govern its
-behavior: the number of operands on which it operates, its relationship to
-other operators, and its syntactic possibilities.
+Каждый оператор обладает несколькими свойствами, определяющими его поведение:
+количество операндов, которыми он оперирует, его отношения с другими операторами
+и его синтаксические возможности.
 
-C<perldoc perlop> and C<perldoc perlsyn> provide voluminous information about
-Perl's operators, but the documentation assumes you're already familiar with
-some details of how they work. The essential computer science concepts may
-sound imposing at first, but once you get past their names, they're
-straightforward. You already understand them implicitly.
+C<perldoc perlop> и C<perldoc perlsyn> предоставляют обширную информацию об
+операторах Perl, но документация подразумевает, что вы уже знакомы с некоторыми
+деталями того, как они работают. Основные понятия компьютерных наук могут
+выглядеть внушительно, но когда вы проберётесь через их названия, они довольно
+очевидны. Неявно вы их уже понимаете.
 
-=head2 Precedence
+=head2 Приоритет
 
 Z<precedence>
 X<precedence>
 
-The I<precedence> of an operator governs when Perl should evaluate it in an
-expression. Evaluation order proceeds from highest to lowest precedence.
-Because the precedence of multiplication is higher than the precedence of
-addition, C<7 + 7 * 10> evaluates to C<77>, not C<140>.
+I<Приоритет> оператора определяет, когда Perl должен вычислить его в выражении.
+Порядок вычисления следует от наивысших приоритетов к наинизшим. Так как
+приоритет умножения выше, чем приоритет сложения, результатом вычисления
+C<7 + 7 * 10> будет C<77>, а не C<140>.
 
-To force the evaluation of some operators before others, group their
-subexpressions in parentheses. In C<(7 + 7) * 10>, grouping the addition into a
-single unit forces its evaluation before the multiplication. The result is
-C<140>.
+Чтобы заставить какие-либо операторы раньше других, сгруппируйте их подвыражения
+в круглые скобки. В выражении C<(7 + 7) * 10> группировка сложения в одно целое
+приводит к тому, что оно вычисляется раньше умножения. Результатом будет C<140>.
 
-C<perldoc perlop> contains a table of precedence. Read it, understand it, but
-don't bother memorizing it (almost no one does). Spend your time keeping your
-expressions simple, and then add parentheses to clarify your intent.
+C<perldoc perlop> содержит таблицу приоритетов. Прочитайте её, поймите, но не
+утруждайте себя запоминанием (почти никто этого не делает). Лучше сохраняйте
+свои выражения простыми и добавляйте скобки для прояснения своего замысла.
 
-In cases where two operators have the same precedence, other factors such as
-associativity (L<associativity>) and fixity (L<fixity>) break the tie.
+В случае, если два оператора имеют одинаковый приоритет, ситуацию разрешают
+другие факторы, такие как ассоциативность (L<associativity>) и фиксность
+(L<fixity>).
 
-=head2 Associativity
+=head2 Ассоциативность
 
 Z<associativity>
 X<associativity>
@@ -44,15 +44,15 @@ X<left associativity>
 X<associativity; right>
 X<right associativity>
 
-The I<associativity> of an operator governs whether it evaluates from left to
-right or right to left. Addition is left associative, such that C<2 + 3 + 4>
-evaluates C<2 + 3> first, then adds C<4> to the result. Exponentiation is right
-associative, such that C<2 ** 3 ** 4> evaluates C<3 ** 4> first, then raises
-C<2> to the 81st power.
+I<Ассоциативность> оператора определяет вычисляется он слева направо или справа
+налево. Сложение левоассоциативно, поэтому C<2 + 3 + 4> сначала вычисляет
+C<2 + 3>, а затем добавляет к результату C<4>. Возведение в степерь
+правоассоциативно, поэтому C<2 ** 3 ** 4> вычисляет сначала C<3 ** 4>, а затем
+возводит C<2> в 81-ую степень.
 
-It's worth your time to memorize the precedence and associativity of the common
-mathematical operators, but again simplicity rules the day. Use parentheses to
-make your intentions clear.
+Стоит запомнить приоритет и ассоциативность распространённых математических
+операторов, но, опять-таки, простота вам поможет. Используйте скобки для
+прояснения своего замысла.
 
 =begin sidebar
 
@@ -60,18 +60,18 @@ X<C<B::Deparse>>
 X<precedence; disambiguation>
 X<associativity; disambiguation>
 
-The core C<B::Deparse> module is an invaluable debugging tool. Run C<perl
--MO=Deparse,-p> on a snippet of code to see exactly how Perl handles operator
-precedence and associativity. The C<-p> flag adds extra grouping parentheses
-which often clarify evaluation order.
+Встроенный модуль C<B:Deparse> E<mdash> бесценный отладочный инструмент.
+Выполните C<perl -MO=Deparse,-p> с фрагментом кода чтобы уведить в точности как
+Perl обрабатывает приоритет и ассоциативность. Флаг C<-p> добавляет
+дополнительные групирующие скобки, которые часто проясняют порядок вычисления.
 
-Beware that Perl's optimizer will simplify mathematical operations as given as
-examples earlier in this section; use variables instead, as in C<$x ** $y **
-$z>.
+Имейте ввиду, что оптимизатор Perl упростит математические операции как описано
+в предыдущих примерах; вместо этого используйте переменные, как в
+C<$x ** $y ** $z>.
 
 =end sidebar
 
-=head2 Arity
+=head2 Арность
 
 Z<arity>
 
@@ -83,39 +83,37 @@ X<binary>
 X<trinary>
 X<listary>
 
-The I<arity> of an operator is the number of operands on which it operates.  A
-I<nullary> operator operates on zero operands. A I<unary> operator operates on
-one operand. A I<binary> operator operates on two operands. A I<trinary>
-operator operates on three operands. A I<listary> operator operates on a list
-of operands. An operator's documentation and examples should make its arity
-clear.
+I<Арность> оператора E<mdash> это количество операндов, которыми он оперирует.
+I<Нульарный> оператор имеет ноль операндов. I<Унарный> оператор имеет один
+оператор. I<Бинарный> оператор имеет два операнда. I<Тернарный> оператор имеет
+три операнда. Оператор I<списочной арности> оперирует списком операндов.
+Документация и примеры использования оператора должны сделать его арность ясной.
 
-For example, the arithmetic operators are binary operators, and are usually
-left associative. C<2 + 3 - 4> evaluates C<2 + 3> first; addition and
-subtraction have the same precedence, but they're left associative and binary,
-so the proper evaluation order applies the leftmost operator (C<+>) to the
-leftmost two operands (C<2> and C<3>) with the leftmost operator (C<+>), then
-applies the rightmost operator (C<->) to the result of the first operation and
-the rightmost operand (C<4>).
+Например, арифметические операторы E<mdash> бинарные, и обычно
+левоассоциативные. C<2 + 4 - 4> сначала вычисляет C<2 + 3>; сложение и вычитание
+имеют одинаковый приоритет, но они левоассоциативные и бинарные, поэтому
+правильный порядок вычисления применяет самый левый оператор (C<+>) к двум самым
+левым операндам (C<2> и C<3>), а затем применяет правый оператор (C<->) к
+результату первой операции и правому операнду (C<4>).
 
-Perl novices often find confusion between the interaction of listary
-operators--especially function calls--and nested expressions. Where parentheses
-usually help, beware of the parsing complexity of:
+Новичков в Perl часто сбивает с толку взаимодействие между операторами списочной
+арности E<mdash> особенно вызовами функций E<mdash> и вложенными выражениями.
+Хотя скобки обычно помогают, опасайтесь запутанности парсинга выражения:
 
 =begin programlisting
 
-    # probably buggy code
+    # вероятно ошибочный код
     say ( 1 + 2 + 3 ) * 4;
 
 =end programlisting
 
-... which prints the value C<6> and (probably) evaluates as a whole to C<4>
-(the return value of C<say> multiplied by C<4>). Perl's parser happily
-interprets the parentheses as postcircumfix (L<fixity>) operators denoting the
-arguments to C<say>, not circumfix parentheses grouping an expression to change
-precedence.
+E<hellip>которое выводит значение C<6> и (вероятно) в целом возвращает C<4>
+(возвращаемое значение C<say>, умноженное на C<4>). Парсер Perl успешно
+интерпретирует скобки как постциркумфиксные (L<fixity>) операторы, обозначающие
+аргументы C<say>, а не циркумфиксные скобки, группирующие выражение для
+изменения приоритета.
 
-=head2 Fixity
+=head2 Фиксность
 
 Z<fixity>
 X<fixity>
@@ -131,7 +129,8 @@ X<fixity; circumfix>
 X<postcircumfix>
 X<fixity; postcircumfix>
 
-An operator's I<fixity> is its position relative to its operands:
+I<Фиксность> оператора E<mdash> это его расположение по отношению к своим
+операндам:
 
 X<C<.>; infix operator>
 X<C<.=>; infix operator>
@@ -148,9 +147,9 @@ X<C<//=>; infix operator>
 
 =over 4
 
-=item * I<Infix> operators appear between their operands. Most mathematical
-operators are infix operators, such as the multiplication operator in C<$length
-* $width>.
+=item * I<Инфиксные> операторы располагаются между своими операторами.
+Большинство математических операторов E<mdash> инфиксные операторы, такие как
+оператор умножения в C<$length * $width>.
 
 X<C<\>; prefix operator>
 X<C<~>; prefix operator>
@@ -161,9 +160,10 @@ X<C<->; prefix operator>
 X<C<!>; prefix operator>
 X<C<!!>; prefix operator>
 
-=item * I<Prefix> operators precede their operators. I<Postfix> operators
-follow. These operators tend to be unary, such as mathematic negation (C<-$x>),
-boolean negation (C<!$y>), and postfix increment (C<$z++>).
+=item * I<Префиксные> операторы предшествуют своим операндам. I<Постфиксные>
+операторы следуют за операндами. Эти операнды склонны быть унарными, как
+математическое отрицание (C<-$x>), булево отрицание (C<!$y>) и постфиксный
+инкремент (C<$z++>).
 
 X<C<()>; circumfix operator>
 X<C<{}>; circumfix operator>
@@ -173,14 +173,15 @@ X<C<``>; circumfix operator>
 X<C<''>; circumfix operator>
 X<C<"">; circumfix operator>
 
-=item * I<Circumfix> operators surround their operands, as with the anonymous
-hash constructor (C<{ ... }>) and quoting operators (C<qq[ ... ]>).
+=item * I<Циркумфиксные> операторы окружают свои операнды, как конструктор
+анонимного хеша (C<{ ... }>) и операторы заключения в кавычки (C<qq[ ... ]>).
 
 X<C<()>; postcircumfix operator>
 X<C<{}>; postcircumfix operator>
 X<C<[]>; postcircumfix operator>
 
-=item * I<Postcircumfix> operators follow certain operands and surround others,
-as seen in hash and array element access (C<$hash{$x}> and C<$array[$y]>).
+=item * I<Постциркумфиксные> операторы следуют за одними операндами и окружают
+другие, как в доступе к элементам хеша или массива (C<$hash{$x}> и
+C<$array[$y]>).
 
 =back
