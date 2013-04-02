@@ -1,10 +1,11 @@
-=head1 State versus Closures
+=head1 Состояния против замыканий
 
 Z<state>
 
-Closures (L<closures>) take advantage of lexical scope (L<scope>) to mediate
-access to semi-private variables. Even named functions can take advantage of
-lexical bindings:
+Замыкания (L<closures>) пользуются возможностями лексической области видимости
+(L<scope>) для предоставления опосредованного доступа к полу-приватным
+переменным. Даже именованные функции могут возпользоваться лексическими
+привязками:
 
 =begin programlisting
 
@@ -23,13 +24,14 @@ lexical bindings:
 
 =end programlisting
 
-The encapsulation of functions to toggle the safety allows all three functions
-to share state without exposing the lexical variable directly to external code.
-This idiom works well for cases where external code should be able to change
-internal state, but it's clunkier when only one function needs to manage that
-state.
+Инкапсуляция функция для обеспечения безопасности позволяет всем трём функциям
+разделять состояние, не подвергая лексическую переменную прямому воздействию
+внешнего кода. Эта идиома хорошо работает для тех случаев, когда внешний код
+должен иметь возможность изменять внутреннее состояние, но слишком тяжеловесна,
+если только одной функции нужно управлять состоянием.
 
-Suppose every hundredth person at your ice cream parlor gets free sprinkles:
+Предположим, что каждый сотый покупатель вашего магазина мороженого получает
+бесплатную посыпку:
 
 =begin programlisting
 
@@ -51,10 +53,10 @@ Suppose every hundredth person at your ice cream parlor gets free sprinkles:
 X<state>
 X<builtins; C<state>>
 
-This approach I<works>, but creating a new lexical scope for a single function
-introduces more accidental complexity than is necessary. The C<state> builtin
-allows you to declare a lexically scoped variable with a value that persists
-between invocations:
+Этот подход I<работает>, но создание новой лексической области видимости для
+единственной функции создаёт больше сопутствующей сложности, чем нужно.
+Встроенная директива C<state> позволяет вам объявлять переменные лексической
+области видимости со значением, сохраняющимся между вызовами:
 
 =begin programlisting
 
@@ -75,12 +77,11 @@ between invocations:
 X<C<feature>>
 X<C<feature>; C<state>>
 
-You must enable this feature explicitly by using a module such as
-C<Modern::Perl>, the C<feature> pragma (L<pragmas>), or requiring a specific
-version of Perl of 5.10 or newer (with C<use 5.010;> or C<use 5.012;>, for
-example).
+Вы должны явно подключить эту возможность, используя модуль C<Modern::Perl>,
+прагму C<feature> (L<pragmas>) или требуя конкретную версию Perl 5.10 или выше
+(например, с помощью C<use 5.010;> или C<use 5.012;>).
 
-C<state> also works within anonymous functions:
+C<state> также работает внутри анонимных функций:
 
 =begin programlisting
 
@@ -95,28 +96,30 @@ C<state> also works within anonymous functions:
 
 =end programlisting
 
-... though there are few obvious benefits to this approach.
+E<hellip>хотя у этого подхода немного очевидных преимуществ.
 
-=head1 State versus Pseudo-State
+=head1 Состояния против псевдосостояний
 
-Perl 5.10 deprecated a technique from previous versions of Perl by which you
-could effectively emulate C<state>. A named function could close over its
-previous lexical scope by abusing a quirk of implementation. Using a postfix
-conditional which evaluates to false with a C<my> declaration avoided
-I<reinitializing> a lexical variable to C<undef> or its initialized value.
+Perl 5.10 не рекомендует использование техники из предыдущих версий Perl, с
+помощью который вы могли в сущности эмулировать C<state>. Именованная функция
+может замкнуться на своей предыдущей лексической области видимости с помощью
+злоупотребления нюансом реализации. Использование постфиксного условия,
+возвращающего ложь, с объявлением C<my> позволяет избежать I<повторной
+инициализации> лексической переменной значением C<undef> или её инициализирующим
+значением.
 
-Any use of a postfix conditional expression modifying a lexical variable
-declaration now produces a deprecation warning. It's too easy to write
-inadvertently buggy code with this technique; use C<state> instead where
-available, or a true closure otherwise. Rewrite this idiom when you encounter
-it:
+Любое использование постфиксного условного выражения, модифицирующего объявление
+лексической переменной, теперь вызывает предупреждение о нерекомендуемости. С
+использованием этой техники слишком легко написать непреднамеренно ошибочный
+код; вместо этого используйте C<state> там где доступно или настоящие замыкания
+в ином случае. Перепишите эту идиому, если она вам попадётся:
 
 =begin programlisting
 
     sub inadvertent_state
     {
-        # my $counter  = 1 if 0; # DEPRECATED; don't use
-        state $counter = 1;      # use instead
+        # my $counter  = 1 if 0; # НЕ РЕКОМЕНДУЕТСЯ; не используйте
+        state $counter = 1;      # используйте вместо
 
         ...
     }
