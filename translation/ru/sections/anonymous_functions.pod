@@ -1,20 +1,21 @@
-=head1 Anonymous Functions
+=head1 Анонимные функции
 
 Z<anonymous_functions>
 
 X<functions; anonymous>
 
-An I<anonymous function> is a function without a name. It otherwise behaves
-exactly like a named function--you can invoke it, pass arguments to it, return
-values from it, and copy references to it. Yet the only way to deal with it is
-by reference (L<function_references>).
+I<Анонимная функция> E<mdash> это функция без имени. В остальном она ведёт себя
+в точности так же, как именованная функция E<mdash> вы можете вызывать её,
+передавать в неё аргументы, возвращать из неё значения и копировать ссылки на
+неё. Однако единственный способ работать с ней E<mdash> по ссылке
+(L<function_references>).
 
 X<functions; dispatch table>
 X<idioms; dispatch table>
 X<dispatch table>
 
-A common Perl 5 idiom known as a I<dispatch table> uses hashes to associate
-input with behavior:
+Распространённая идиома Perl 5, известная как I<таблица диспетчеризации>,
+использует для сопоставления входных данных с соответствующим поведением:
 
 =begin programlisting
 
@@ -40,16 +41,17 @@ input with behavior:
 
 =end programlisting
 
-The C<dispatch()> function takes arguments of the form C<(2, 'times', 2)> and
-returns the result of evaluating the operation.
+Функция C<dispatch()> принимает аргументы в форме C<(2, 'times', 2)> и
+возвращает результат вычисления операции.
 
-=head2 Declaring Anonymous Functions
+=head2 Объявление анонимных функций
 
 X<builtins; C<sub>>
 
-The C<sub> builtin used without a name creates and returns an anonymous
-function. Use this function reference any place you'd use a reference to a
-named function, such as to declare the dispatch table's functions in place:
+Встроенная директива C<sub>, использованная без имени, создаёт и возвращает
+анонимную функцию. Используйте эту ссылку на функцию в любом месте, где вы могли
+бы использовать ссылку на именованную функцию, как например объявление функций
+таблицы диспетчеризации прямо на месте:
 
 =begin programlisting
 
@@ -64,18 +66,18 @@ named function, such as to declare the dispatch table's functions in place:
 
 =end programlisting
 
-=begin tip Defensive Dispatch
+=begin tip Защитная диспетчеризация
 
-This dispatch table offers some degree of security; only those functions mapped
-within the table are available for users to call. If your dispatch function
-blindly assumed that the string given as the name of the operator corresponded
-directly to the name of a function to call, a malicious user could conceivably
-call any function in any other namespace by passing
+Эта таблица диспетчеризации создаёт некоторую степень защиты; только функции,
+входящие в таблицу, доступны для вызова пользователями. Если вы диспетчеризуете
+функции вслепую, предполагая, что строка, заданная как имя оператора, напрямую
+соответствует имени вызываемой функции, злонамеренный пользователь потенциально
+сможет вызвать любую функцию в любом пространстве имён, передав
 C<'Internal::Functions::malicious_function'>.
 
 =end tip
 
-You may also see anonymous functions passed as function arguments:
+Вам также может встретиться передача анонимных функций как аргументов функции:
 
 =begin programlisting
 
@@ -95,15 +97,15 @@ You may also see anonymous functions passed as function arguments:
 
 =end programlisting
 
-=head2 Anonymous Function Names
+=head2 Имена анонимных функций
 
 X<anonymous functions; names>
 
 X<CPAN; C<Sub::Identify>>
 
-Given a reference to a function, you can determine whether the function is
-named or anonymous with introspectionN<... or C<sub_name> from the CPAN module
-C<Sub::Identify>.>:
+Имея ссылку на функцию, вы можете определить, именованная она или анонимная, с
+помощью интроспекцииN<E<hellip>или с помощью C<sub_name> из CPAN-модуля
+C<Sub::Identitiy>.>:
 
 =begin programlisting
 
@@ -126,7 +128,7 @@ C<Sub::Identify>.>:
 
 =end programlisting
 
-The result may be surprising:
+Результат может быть неожиданным:
 
     Called from ShowCaller::B<main>
              in ShowCaller:anoncaller.pl:20
@@ -135,10 +137,10 @@ The result may be surprising:
 
 X<CPAN; C<Sub::Name>>
 
-The C<__ANON__> in the second line of output demonstrates that the anonymous
-function has no name that Perl can identify. This can complicate debugging.
-The CPAN module C<Sub::Name>'s C<subname()> function allows you to attach names
-to anonymous functions:
+C<__ANON__> во второй строке вывода показывает, что анонимная функция не имеет
+имени, которое Perl мог бы распознать. Это может усложнить отладку. Функция
+C<subname()> из CPAN-модуля C<Sub::Name> позволяет вам закреплять имена за
+анонимными функциями:
 
 =begin programlisting
 
@@ -156,31 +158,32 @@ to anonymous functions:
 
 =end programlisting
 
-This program produces:
+Эта программа выведет:
 
     __ANON__
     pseudo-anonymous
     pseudo-anonymous
     __ANON__
 
-Be aware that both references refer to the same underlying anonymous function.
-Using C<subname()> on one reference to a function will modify that anonymous
-function's name such that all other references to it will see the new name.
+Имейте ввиду, что обе ссылки ссылаются на одну и ту же лежащую в основе функцию.
+Использование C<subname()> на одной ссылке на функцию будет изменять имя этой
+анонимной функции, так что все остальные ссылки на неё будут видеть это новое
+имя.
 
-=head2 Implicit Anonymous Functions
+=head2 Неявные анонимные функции
 
 X<anonymous functions; implicit>
 
 X<CPAN; C<Test::Fatal>>
 
-Perl 5 allows the declaration of anonymous functions implicitly through the use
-of prototypes (L<prototypes>). Though this feature exists nominally to enable
-programmers to write their own syntax such as that for C<map> and C<eval>, an
-interesting example is the use of I<delayed> functions that don't look like
-functions.
+Perl 5 позволяет объявлять анонимные фукнции неявно, используя прототипы
+(L<prototypes>). Хотя официально эта возможность существует для того, чтобы дать
+программистам возможность писать свой собственный синтаксис, как например для
+C<map> и C<eval>, интересным примером является использование I<отложенных>
+функций, которые не выглядят как функции.
 
-Consider the CPAN module C<Test::Fatal>, which takes an anonymous function as
-the first argument to its C<exception()> function:
+Рассмотрите CPAN-модуль C<Test::Fatal>, который принимает анонимную функцию как
+первый аргумент своей функции C<exception()>:
 
 =begin programlisting
 
@@ -197,7 +200,7 @@ the first argument to its C<exception()> function:
 
 =end programlisting
 
-You might rewrite this more verbosely as:
+Вы можете переписать это более многословно следующим образом:
 
 =begin programlisting
 
@@ -206,7 +209,7 @@ You might rewrite this more verbosely as:
 
 =end programlisting
 
-... or to pass named functions by reference:
+E<hellip> или передать именованную функцию по ссылке:
 
 =begin programlisting
 
@@ -221,22 +224,22 @@ You might rewrite this more verbosely as:
 
 =end programlisting
 
-... but you may I<not> pass them as scalar references:
+E<hellip>но вы I<не> можете передавать их как ссылки на скаляры:
 
 =begin programlisting
 
     B<my $croak_ref = \&croaker;>
     B<my $live_ref  = \&liver;>
 
-    # BUGGY: does not work
+    # ОШИБОЧНО: не работает
     my $croaker   = exception $croak_ref;
     my $liver     = exception $live_ref;
 
 =end programlisting
 
-... because the prototype changes the way the Perl 5 parser interprets this
-code. It cannot determine with 100% clarity I<what> C<$croaker> and C<$liver>
-will contain, and so will throw an exception.
+E<hellip>потому что прототип изменяет то, как парсер Perl 5 интерпретирует этот
+код. Он не может со стопроцентной точностью определить, I<что> будут содержать
+C<$croaker> и C<$liver>, и поэтому выбросит исключение.
 
 =begin screen
 
@@ -245,8 +248,8 @@ will contain, and so will throw an exception.
 
 =end screen
 
-Also be aware that a function which takes an anonymous function as the first of
-multiple arguments cannot have a trailing comma after the function block:
+Кроме того, имейте ввиду, что функция, принимающая анонимную функцию как первый
+из нескольких аргументов, не может иметь замыкающую запятую после блока функции:
 
 =begin programlisting
 
@@ -258,7 +261,7 @@ multiple arguments cannot have a trailing comma after the function block:
 
 =end programlisting
 
-This is an occasionally confusing wart on otherwise helpful syntax, courtesy of
-a quirk of the Perl 5 parser. The syntactic clarity available by promoting bare
-blocks to anonymous functions can be helpful, but use it sparingly and document
-the API with care.
+Это временами сбивающий с толку изъян в остальном полезного синтаксиса,
+учтивость в отношении причуд парсера Perl 5. Синтаксическая ясность,
+обеспечиваемая повышением голых блоков до анонимных функций, может быть
+полезной, но используйте её экономно и тщательно документируйте API.
