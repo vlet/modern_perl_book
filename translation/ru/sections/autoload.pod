@@ -2,9 +2,9 @@
 
 Z<autoload>
 
-Perl does not require you to declare every function before you call it. Perl
-will happily attempt to call a function even if it doesn't exist. Consider the
-program:
+Perl не требует от вас объявлять каждую функцию прежде чем её вызывать. Perl
+охотно попытается вызвать функцию даже если она не существует. Расмотрим
+программу:
 
 =begin programlisting
 
@@ -14,10 +14,10 @@ program:
 
 =end programlisting
 
-When you run it, Perl will throw an exception due to the call to the undefined
-function C<bake_pie()>.
+Когда вы её запустите, Perl вызовет исключение по причине вызова неопределённой
+функции C<backe_pie()>.
 
-Now add a function called C<AUTOLOAD()>:
+Теперь добавьте функцию, называемую C<AUTOLOAD()>:
 
 =begin programlisting
 
@@ -25,9 +25,10 @@ Now add a function called C<AUTOLOAD()>:
 
 =end programlisting
 
-When you run the program now, nothing obvious will happen. Perl will call a
-function named C<AUTOLOAD()> in a package--if it exists--whenever normal
-dispatch fails.  Change the C<AUTOLOAD()> to emit a message:
+Когда вы запустите программу, ничего заметного не произойдёт. Perl вызовет
+функцию пакета с именем C<AUTOLOAD()> E<mdash> если она существует E<mdash> в
+случае если обычная диспетчеризация не сработает. Измените C<AUTOLOAD()> для
+вывода сообщения:
 
 =begin programlisting
 
@@ -35,11 +36,12 @@ dispatch fails.  Change the C<AUTOLOAD()> to emit a message:
 
 =end programlisting
 
-... to demonstrate that it gets called.
+E<hellip>чтобы продемонстрировать, что она вызывается.
 
-=head2 Basic Features of AUTOLOAD
+=head2 Основные возможности AUTOLOAD
 
 X<C<$AUTOLOAD>>
+
 
 The C<AUTOLOAD()> function receives the arguments passed to the undefined
 function in C<@_> directly and the I<name> of the undefined function is
@@ -52,17 +54,17 @@ like:
     {
         B<our $AUTOLOAD;>
 
-        # pretty-print the arguments
+        # оформленный вывод аргументов
         local $" = ', ';
         say "In AUTOLOAD(@_) B<for $AUTOLOAD>!"
     }
 
 =end programlisting
 
-The C<our> declaration (L<our>) scopes C<$AUTOLOAD> to the function body.  The
-variable contains the fully-qualified name of the undefined function (in this
-case, C<main::bake_pie>). Remove the package name with a regular expression
-(L<regex>):
+Объявление C<our> (L<our>) ограничивает C<$AUTOLOAD> в пределах тела функции.
+Переменная содержит полностью определённое имя неопределённой функции (в данном
+случае C<main::bake_pie>). Удалить имя пакета можно с помощью регулярного
+выражения (L<regex>):
 
 =begin programlisting
 
@@ -70,14 +72,14 @@ case, C<main::bake_pie>). Remove the package name with a regular expression
     {
         B<my ($name) = our $AUTOLOAD =~ /::(\w+)$/;>
 
-        # pretty-print the arguments
+        # оформленный вывод аргументов
         local $" = ', ';
         say "In AUTOLOAD(@_) B<for $name>!"
     }
 
 =end programlisting
 
-Whatever C<AUTOLOAD()> returns, the original call receives:
+Оригинальный вызов получит то, что вернёт C<AUTOLOAD()>:
 
 =begin programlisting
 
@@ -87,10 +89,10 @@ Whatever C<AUTOLOAD()> returns, the original call receives:
 
 =end programlisting
 
-So far, these examples have merely intercepted calls to undefined functions.
-You have other options.
+До сих пор приведённые примеры всего лишь перехватывали вызовы к неопределённым
+функциям. Но есть и другие возможности.
 
-=head2 Redispatching Methods in AUTOLOAD()
+=head2 Редиспетчеризация методов в AUTOLOAD()
 
 X<C<AUTOLOAD>; redispatch>
 X<C<AUTOLOAD>; delegation>
@@ -99,9 +101,10 @@ X<delegation>
 X<OO; proxying>
 X<proxying>
 
-A common pattern in OO programming (L<moose>) is to I<delegate> or I<proxy>
-certain methods in one object to another, often contained in or otherwise
-accessible from the former. A logging proxy can help with debugging:
+Распространённый шаблон в ОО программировании (L<moose>) E<mdash>
+I<делегировать> или I<проксировать> определённые методы одного объекта другому,
+зачастую содержащемуся в первом или доступному каким-либо иным способом.
+Проксирование логирования может помочь с отладкой:
 
 =begin programlisting
 
@@ -124,19 +127,19 @@ accessible from the former. A logging proxy can help with debugging:
 
 =end programlisting
 
-This C<AUTOLOAD()> logs the method call. Then it dereferences the proxied
-object from a blessed scalar reference, extracts the name of the undefined
-method, then invokes that method on the proxied object with the provided
-parameters.
+Эта функция C<AUTOLOAD()> логирует вызов метода. Затем она разыменовывает
+проксируемый объект из благословлённой скалярной ссылки, извлекает имя
+неопределённого метода, а затем вызывает этот метод на проксируемом объекте с
+переданными параметрами.
 
-=head2 Generating Code in AUTOLOAD()
+=head2 Генерация кода в AUTOLOAD()
 
 X<C<AUTOLOAD>; code installation>
 
-This double dispatch is easy to write but inefficient. Every method call on the
-proxy must fail normal dispatch to end up in C<AUTOLOAD()>.  Pay that penalty
-only once by installing new methods into the proxy class as the program needs
-them:
+Эта двойная диспетчеризация легка для написания, но неэффективна. Каждый вызов
+метода на прокси должен провалить нормальную диспетчеризацию чтобы попасть в
+C<AUTOLOAD()>. Вы можете заплатить эту цену лишь раз, устанавливая новые методы
+в прокси-класс по мере того, как они понадобятся программе:
 
 =begin programlisting
 
@@ -159,24 +162,24 @@ them:
 
 =end programlisting
 
-The body of the previous C<AUTOLOAD()> has become a closure (L<closures>) bound
-over the I<name> of the undefined method. Installing that closure in the
-appropriate symbol table allows all subsequent dispatch to that method to find
-the created closure (and avoid C<AUTOLOAD()>). This code finally invokes the
-method directly and returns the result.
+Тело предыдущей функции C<AUTOLOAD()> стало замыканием (L<closures>),
+привязанным к I<имени> неопределённого метода. Установка этого замыкания в
+соответствующую таблицу символов позволяет всем последующим обращениям к этому
+методу найти созданное замыкание (и обойти C<AUTOLOAD()>). Этот код наконец
+вызывает метод напрямую и возвращает результат.
 
-Though this approach is cleaner and almost always more transparent than
-handling the behavior directly in C<AUTOLOAD()>, the code I<called> by
-C<AUTOLOAD()> may detect that dispatch has gone through C<AUTOLOAD()>.  In
-short, C<caller()> will reflect the double-dispatch of both techniques shown so
-far. While it may violate encapsulation to care that this occurs, leaking the
-details of I<how> an object provides a method may also violate encapsulation.
+Хотя этот подход чище и почти всегда прозрачнее, чем обработка поведения прямо в
+C<AUTOLOAD()>, код, I<вызванный> C<AUTOLOAD()>, может определить, что обращение
+прошло через C<AUTOLOAD()>. Короче говоря, C<caller()> будет отображать двойную
+диспетчеризацию обеих приведённых техник. Хотя забота о том, что это происходит,
+может быть нарушением инкапсуляции, утечка деталей того, I<как> объект
+предоставляет метод, тоже может быть нарушением инкапсуляции.
 
 X<tailcalls>
 X<C<goto>; tailcall>
 
-Some code uses a tailcall (L<tailcalls>) to I<replace> the current invocation
-of C<AUTOLOAD()> with a call to the destination method:
+Некоторый код использует хвостовые вызовы (L<tailcalls>) для I<замены> текущего
+вызова C<AUTOLOAD()> вызовом целевого метода:
 
 =begin programlisting
 
@@ -192,11 +195,12 @@ of C<AUTOLOAD()> with a call to the destination method:
 
 =end programlisting
 
-This has the same effect as invoking C<$method> directly, except that
-C<AUTOLOAD()> will no longer appear in the list of calls available from
-C<caller()>, so it looks like the generated method was simply called directly.
+Это приводит к тому же эффекту, что и вызов C<$method> напрямую, за исключением
+того, что C<AUTOLOAD()> не будет появляться в списке вызовов, доступном через
+C<caller()>, так что это будет выглядеть так, как будто сгенерированный метод
+был просто вызван напрямую.
 
-=head2 Drawbacks of AUTOLOAD
+=head2 Недостатки AUTOLOAD
 
 Z<autoload_drawbacks>
 
@@ -207,11 +211,12 @@ X<C<subs> pragma>
 X<pragmas; C<subs>>
 X<functions; predeclaration>
 
-C<AUTOLOAD()> can be useful tool, though it is difficult to use properly. The
-naE<iuml>ve approach to generating methods at runtime means that the C<can()>
-method will not report the right information about the capabilities of objects
-and classes. The easiest solution is to predeclare all functions you plan to
-C<AUTOLOAD()> with the C<subs> pragma:
+C<AUTOLOAD()> может быть полезным инструментом, хотя её непросто использовать
+правильно. Наивный подход к генерированию методов во время исполнения означает,
+что метод C<can()> не будет выдавать правильную информацию о возможностях
+объектов и классов. Самое простое решение E<mdash> предварительно объявить все
+функции, которые вы планируете генерировать в C<AUTOLOAD()>, с помощью прагмы
+C<subs>:
 
 =begin programlisting
 
@@ -219,16 +224,16 @@ C<AUTOLOAD()> with the C<subs> pragma:
 
 =end programlisting
 
-=begin tip Now You See Them
+=begin tip Теперь вы их видите
 
-Forward declarations are only useful in the two rare cases of attributes and
-autoloading (L<autoload>).
+Предварительные объявления могут пригодиться только в двух редких случаях
+использования атрибутов и автозагрузки (L<autoload>).
 
 =end tip
 
-That technique has the advantage of documenting your intent but the
-disadvantage that you have to maintain a static list of functions or methods.
-Overriding C<can()> (L<universal>) sometimes works better:
+Плюсом этой техники является документирование ваших намерений, но недостаток в
+том, что вам придётся поддерживать статический список функций или методов.
+Перегрузка C<can()> (L<universal>) иногда работает лучше:
 
 =begin programlisting
 
@@ -236,11 +241,11 @@ Overriding C<can()> (L<universal>) sometimes works better:
     {
         my ($self, $method) = @_;
 
-        # use results of parent can()
+        # использовать результат родительского can()
         my $meth_ref = $self->SUPER::can( $method );
         return $meth_ref if $meth_ref;
 
-        # add some filter here
+        # добавить фильтрацию
         return unless $self->should_generate( $method );
 
         $meth_ref = sub { ... };
@@ -259,28 +264,28 @@ Overriding C<can()> (L<universal>) sometimes works better:
 
 =end programlisting
 
-C<AUTOLOAD()> is a big hammer; it can catch functions and methods you had no
-intention of autoloading, such as C<DESTROY()>, the destructor of objects. If
-you write a C<DESTROY()> method with no implementation, Perl will happily
-dispatch to it instead of C<AUTOLOAD()>:
+C<AUTOLOAD()> E<mdash> большой молоток; он может ловить функции и методы,
+которые вы не собирались автозагружить, такие как C<DESTROY()>, деструктор
+объектов. Если напишете метод C<DESTROY> без имплементации, Perl с удовольствием
+направится к нему вместо C<AUTOLOAD()>:
 
 =begin programlisting
 
-    # skip AUTOLOAD()
+    # пропустить AUTOLOAD()
     sub DESTROY {}
 
 =end programlisting
 
-=begin tip A Very Special Method
+=begin tip Совершенно особенный метод
 
-The special methods C<import()>, C<unimport()>, and C<VERSION()> never go
-through C<AUTOLOAD()>.
+Специальные методы C<import()>, C<unimport()> и C<VERSION()> никогда не проходят
+через C<AUTOLOAD()>.
 
 =end tip
 
-If you mix functions and methods in a single namespace which inherits from
-another package which provides its own C<AUTOLOAD()>, you may see the strange
-error:
+Если вы смешаете функции и методы в едином пространстве имён, наследующем от
+другого пакета, имеющего собственную C<AUTOLOAD()>, вы можете увидеть странную
+ошибку:
 
 =begin screen
 
@@ -289,12 +294,12 @@ error:
 
 =end screen
 
-If this happens to you, simplify your code; you've called a function which does
-not exist in a package which inherits from a class which contains its own
-C<AUTOLOAD()>. The problem compounds in several ways: mixing functions and
-methods in a single namespace is often a design flaw, inheritance and
-C<AUTOLOAD()> get complex very quickly, and reasoning about code when you don't
-know what methods objects provide is difficult.
+Если с вами это произошло, упростите свой код; вы вызвали несуществующую функцию
+в пакете, наследующем от класса, содержащего свою собственную C<AUTOLOAD()>.
+Проблема состоит из нескольких частей: смешивание функций и методов в одном
+пространстве имён зачастую недостаток дизайна, наследование и C<AUTOLOAD()>
+очень быстро становятся сложными, и делать выводы о коде, когда вы не знаете,
+какие методы предоставляет объект, трудно.
 
-C<AUTOLOAD()> is useful for quick and dirty programming, but robust code avoids
-it.
+C<AUTOLOAD()> полезна для быстрого и грязного программирования, но надёжный код
+её избегает.
