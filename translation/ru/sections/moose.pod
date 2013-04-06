@@ -4,22 +4,23 @@ Z<moose>
 
 X<moose>
 
-Perl 5's default object system is flexible, but minimal. You can build great
-things on top of it, but it provides little assistance for some basic tasks.
-I<Moose> is a complete object system for Perl 5N<See C<perldoc Moose::Manual>
-for more information.>. It provides simpler defaults, and advanced features
-borrowed from languages such as Smalltalk, Common Lisp, and Perl 6. Moose code
-interoperates with the default object system and is currently the best way to
-write object oriented code in modern Perl 5.
+Стандартная объектная система Perl 5 гибка, но минималистична. Вы можете
+построить замечательные вещи на её основе, но она даёт лишь небольшую помощь в
+некоторых базовых задачах. I<Moose> E<mdash> это полноценная объектная система
+для Perl5N<См. C<perldoc Moose::Manual> для подробной информации.>. Он
+предоставляет простые умолчания и продвинутые возможности, заимствованные из
+таких языков как Smalltalk, Common Lisp и Perl 6. Код Moose работает совместно
+с стандартной объектной системой и на данный момент является лучшим способом
+написания объектно-ориентированного кода в современном Perl 5.
 
-=head2 Classes
+=head2 Классы
 
 X<classes>
 X<builtins; C<package>>
 
-A Moose object is a concrete instance of a I<class>, which is a template
-describing data and behavior specific to the object. Classes use packages
-(L<packages>) to provide namespaces:
+Объект в Moose E<mdash> это конкретный экземпляр I<класса>, который представляет
+собой шаблон, описывающий данные и поведение, характерные для объекта. Классы
+используют пакеты (L<packages>) для создания пространств имён:
 
 =begin programlisting
 
@@ -32,8 +33,9 @@ describing data and behavior specific to the object. Classes use packages
 
 X<OO; instances>
 
-This C<Cat> class I<appears> to do nothing, but that's all Moose needs to make
-a class. Create objects (or I<instances>) of the C<Cat> class with the syntax:
+Это класс C<Cat> I<выглядит> так, как будто ничего не делает, но это всё, что
+нужно Moose для создания класса. Объекты (или I<экземпляры>) класса C<Cat>
+создаются с помощью следующего синтаксиса:
 
 =begin programlisting
 
@@ -42,20 +44,19 @@ a class. Create objects (or I<instances>) of the C<Cat> class with the syntax:
 
 =end programlisting
 
-Just as an arrow dereferences a reference, an arrow calls a method on an object
-or class.
+Как стрелка разыменовывает ссылку, также она и вызвает метод объекта или класса.
 
-=head2 Methods
+=head2 Методы
 
 X<OO; methods>
 X<OO; invocants>
 
-A I<method> is a function associated with a class. Just as functions belong to
-namespaces, so do methods belong to classes, with two differences. First, a
-method always operates on an I<invocant>. Calling C<new()> on C<Cat>
-effectively sends the C<Cat> class a message. The name of the class, C<Cat>, is
-C<new()>'s invocant. When you call a method on an object, that object is the
-invocant:
+I<Метод> E<mdash> это функция, ассоциированная с классом. Как функции
+принадлежат пространствам имён, также и методы принадлежат классам, с двумя
+отличиями. Во-первых, метод всегда оперирует I<вызывающей сущностью>. Вызов
+C<new()> на C<Cat> в сущности отправляет классу C<Cat> сообщение. Имя класса,
+C<Cat>, будет вызывающей сущностью C<new()>. Если вы вызываете метод на объекте,
+этот объект будет вызывающей сущностью:
 
 =begin programlisting
 
@@ -69,12 +70,13 @@ X<method dispatch>
 X<OO; dispatch>
 X<OO; method dispatch>
 
-Second, a method call always involves a I<dispatch> strategy, where the object
-system selects the appropriate method. Given the simplicity of C<Cat>, the
-dispatch strategy is obvious, but much of the power of OO comes from this idea.
+Во-вторых, вызов метода всегда включает стратегию I<диспетчеризации>, когда
+объектная система выбирает соответствующий метод. Учитывая простоту C<Cat>,
+стратегия диспетчеризации очевидна, но существенная часть мощи ОО происходит из
+этой идеи.
 
-Inside a method, its first argument is the invocant. Idiomatic Perl 5 uses
-C<$self> as its name. Suppose a C<Cat> can C<meow()>:
+Внутри метода первым аргументом будет вызывающая сущность. Идиоматический Perl 5
+использует C<$self> как его имя. Предположим, что <Cat> может мяукать:
 
 =begin programlisting
 
@@ -91,8 +93,8 @@ C<$self> as its name. Suppose a C<Cat> can C<meow()>:
 
 =end programlisting
 
-Now all C<Cat> instances can wake you up in the morning because they haven't
-eaten yet:
+Теперь все экземпляры C<Cat> могут разбудить вас с утра из-за того, что их ещё
+не покормили:
 
 =begin programlisting
 
@@ -108,22 +110,24 @@ X<OO; instance methods>
 X<methods; class>
 X<methods; instance>
 
-Methods which access invocant data are I<instance methods>, because they depend
-on the presence of an appropriate invocant to work correctly. Methods (such as
-C<meow()>) which do not access instance data are I<class methods>. You may
-invoke class methods on classes and class and instance methods on instances,
-but you cannot invoke instance methods on classes.
+Методы, пользующиеся доступом к данным вызывающей сущностью E<mdash> это
+I<методы экземпляра>, потому что для корректной работы они требуют присутствия
+соответствующей вызывающей сущности. Методы (такие как C<meow()>), не
+обращающиеся к данным экземпляра, E<mdash> это I<методы класса>. Вы можете
+вызывать методы класса на классах и методы классов и экземпляров на экземплярах,
+но нельзя вызывать методы экземпляра на классах.
 
 X<methods; constructor>
 
-I<Constructors>, which I<create> instances, are obviously class methods. Moose
-provides a default constructor for you.
+I<Конструкторы>, которые I<создают> экземпляры, очевидно являются методами
+класса. Moose предоставляет вам конструктор по умолчанию.
 
-Class methods are effectively namespaced global functions. Without access to
-instance data, they have few advantages over namespaced functions. Most OO code
-rightly uses instance methods, as they have access to instance data.
+Методы класса E<mdash> это в сущности глобальные функции в пространстве имён.
+Без доступа к данным экземпляра они имеют немного преимуществ над функциями в
+пространстве имён. Большая часть ОО кода должным образом использует методы
+экземпляров, так как у них есть доступ к данным экземпляра.
 
-=head2 Attributes
+=head2 Атрибуты
 
 X<attributes; objects>
 X<OO; attributes>
@@ -131,9 +135,10 @@ X<OO; state>
 X<attributes; typed>
 X<attributes; C<ro> (read only)>
 
-Every object in Perl 5 is unique. Objects can contain private data associated
-with each unique object--these are I<attributes>, I<instance data>, or object
-I<state>. Define an attribute by declaring it as part of the class:
+Каждй объект в Perl 5 уникален. Объекты могут содержать приватные данные,
+ассоциированные с каждым объектом, E<mdash> это I<атрибуты>, I<данные
+экземпляра>, или I<состояние> объекта. Определите атрибут, объявив его как часть
+класса:
 
 =begin programlisting
 
@@ -146,20 +151,22 @@ I<state>. Define an attribute by declaring it as part of the class:
 
 =end programlisting
 
-In English, that reads "C<Cat> objects have a C<name> attribute.  It's
-read-only, and is a string."
+Это читается как E<laquo>Объекты C<Cat> имеют атрибут C<name>. Он доступен
+только для чтения и является строкой.E<raquo>
 
-Moose provides the C<has()> function, which declares an attribute. The first
-argument, C<'name'> here, is the attribute's name.  The C<< is => 'ro' >> pair
-of arguments declares that this attribute is C<r>ead C<o>nly, so you cannot
-modify it after you've set it. Finally, the C<< isa => 'Str' >> pair declares
-that the value of this attribute can only be a C<str>ing.
+Moose предоставляет функцию C<has()>, которая объявляет атрибут. Первый
+аргумент, в данном случае C<'name'>, это имя атрибута. Пара аргументов
+C<< is => 'ro' >> объявляет, что этот атрибут доступен только для чтения
+(C<r>ead C<o>nly), так что вы не можете его изменять после того, как установили.
+Наконец, пара C<< isa => 'Str' >> объявляет, что значение этого атрибута может
+быть только строкой (C<str>ing).
 
 X<methods; accessor>
 X<OO; accessor methods>
 
-As a result of C<has>, Moose creates an I<accessor> method named C<name()> and
-allows you to pass a C<name> parameter to C<Cat>'s constructor:
+Как результат выполнения C<has> Moose создает метод-I<аксессор> с именем
+C<name()> и позволяет вам передавать параметр C<name> в конструктор класса
+C<Cat>:
 
 =begin programlisting
 
@@ -173,8 +180,8 @@ allows you to pass a C<name> parameter to C<Cat>'s constructor:
 
 =begin sidebar
 
-Moose's documentation uses parentheses to separate attribute names and
-characteristics:
+Документация Moose использует круглые скобки для разделения имён атрибутов и их
+свойств:
 
 =begin programlisting
 
@@ -182,7 +189,7 @@ characteristics:
 
 =end programlisting
 
-This is equivalent to:
+Это равнозначно следующему:
 
 =begin programlisting
 
@@ -190,7 +197,7 @@ This is equivalent to:
 
 =end programlisting
 
-Moose's approach works nicely for complex declarations:
+Подход Moose хорошо подходит для сложных объявлений:
 
 =begin programlisting
 
@@ -198,22 +205,23 @@ Moose's approach works nicely for complex declarations:
         is         => 'ro',
         isa        => 'Str',
 
-        # advanced Moose options; perldoc Moose
+        # дополнительные параметры Moose; perldoc Moose
         init_arg   => undef,
         lazy_build => 1,
     );
 
 =end programlisting
 
-... while this book prefers a low-punctuation approach for simple declarations.
-Choose the punctuation which offers you the most clarity.
+E<hellip>тогда как в этой книге предпочтение отдано подходу с меньшим
+количеством пунктуации для простых объявлений. Выберите пунктуацию, которая
+даёт вам наибольшую понятность.
 
 =end sidebar
 
 X<attributes; untyped>
 
-Moose will complain if you pass something which isn't a string. Attributes do
-not I<need> to have types. In that case, anything goes:
+Moose пожалуется, если вы передадите что-нибудь, не являющееся строкой. Атрибуты
+не I<обязаны> иметь тип. В таком случае подойдёт что угодно:
 
 =begin programlisting
 
@@ -230,15 +238,16 @@ not I<need> to have types. In that case, anything goes:
 
 =end programlisting
 
-Specifying a type allows Moose to perform some data validations for you.
-Sometimes this strictness is invaluable.
+Указание типа позволяет Moose выполнить для вас некоторую валидацию данных.
+Иногда подобная строгость бесценна.
 
 X<attributes; C<rw> (read-write)>
 X<methods; mutator>
 X<OO; mutator methods>
 
-If you mark an attribute as readable I<and> writable (with C<< is => rw >>),
-Moose will create a I<mutator> method which can change that attribute's value:
+Если вы пометите атрибут как доступный для чтения I<и> записи (с помощью
+C<< is => rw >>), Moose создаст метод-I<мутатор>, который может изменять
+значение этого атрибута:
 
 =begin programlisting
 
@@ -262,36 +271,37 @@ Moose will create a I<mutator> method which can change that attribute's value:
 
 =end programlisting
 
-An C<ro> accessor used as a mutator will throw the exception C<Cannot assign a
+C<ro>-аксессор, используемый как мутатор, выбросит исключение C<Cannot assign a
 value to a read-only accessor at ...>.
 
-Using C<ro> or C<rw> is a matter of design, convenience, and purity. Moose
-enforces no particular philosophy in this area. Some people suggest making all
-instance data C<ro> such that you must pass instance data into the constructor
-(L<immutability>). In the C<Cat> example, C<age()> might still be an accessor,
-but the constructor could take the I<year> of the cat's birth and calculate the
-age itself based on the current year. This approach consolidates validation
-code and ensure that all created objects have valid data.
+Использование C<ro> или C<rw> E<mdash> вопрос дизайна, удобства и чистоты. Moose
+не принуждает к какой-то определённой философии в этой области. Некоторые
+предлагают делать все данные экземпляра C<ro>, чтобы необходимо было передавать
+данные экземпляра в конструктор (L<immutability>). В примере с C<Cat> C<age()>
+всё ещё может быть аксессором, но конструктор может принять I<год> рождения кота
+и вычислить возраст сам исходя из текущего года. Этот подход усиливает код
+валидации и гарантирует, что все создаваемые объекты будут иметь валидные
+данные.
 
-Instance data begins to demonstrate the value of object orientation. An object
-contains related data and can perform behaviors with that data. A class
-describes that data and those behaviors.
+Данные экземпляра начинают демонстрировать значение объектной ориентации. Объект
+содержит связанные данные и может выполнять действия с этими данными. Класс
+только описывает эти данные и действия.
 
-=head2 Encapsulation
+=head2 Инкапсуляция
 
 X<encapsulation>
 X<OO; encapsulation>
 
-Moose allows you to declare I<which> attributes class instances possess (a cat
-has a name) as well as the attributes of those attributes (you cannot change a
-cat's name; you can only read it). Moose itself decides how to I<store> those
-attributes. You can change that if you like, but allowing Moose to manage your
-storage encourages I<encapsulation>: hiding the internal details of an object
-from external users of that object.
+Moose позволяет вам объявить, I<какими> атрибутами обладают экземпляры класса
+(у кота есть имя), а также атрибуты этих атрибутов (вы не можете изменить имя
+кота; вы можете его только читать). Moose сам решает, как I<хранить> эти
+атрибуты. Вы можете изменить это, если захотите, но позволение Moose управлять
+вашим хранилищем поддерживает I<инкапсуляцию>: скрытие внутренних деталей
+объекта от внешних пользователей этого объекта.
 
-Consider a change to how C<Cat>s manage their ages. Instead of passing a value
-for an age to the constructor, pass in the year of the cat's birth and
-calculate the age as needed:
+Рассмотрим изменение того, как C<Cat> управляет своим возрастом. Вместо передачи
+значения возраста в конструктор, передадим год рождения кота и вычислим возраст
+при необходимости:
 
 =begin programlisting
 
@@ -314,23 +324,24 @@ calculate the age as needed:
 
 =end programlisting
 
-While the syntax for I<creating> C<Cat> objects has changed, the syntax for
-I<using> C<Cat> objects has not. Outside of C<Cat>, C<age()> behaves as it
-always has. I<How> it works internally is a detail to the C<Cat> class.
+Хотя синтаксис I<создания> объектов C<Cat> изменился, синтаксис I<использования>
+объектов C<Cat> остался прежним. Снаружи C<Cat> C<age()> ведёт себя так же, как
+и раньше. I<Как> это работает внутренне E<mdash> это забота класса C<Cat>.
 
-=begin tip Compatibility and APIs
+=begin tip Совместимость и API
 
-Retain the old syntax for I<creating> C<Cat> objects by customizing the
-generated C<Cat> constructor to allow passing an C<age> parameter. Calculate
-C<birth_year> from that. See C<perldoc Moose::Manual::Attributes>.
+Сохраните поддержку старого синтаксиса I<создания> объектов C<Cat>,
+модифицировав генерируемый конструктор C<Cat>, чтобы позволить передавать
+параметр C<age>. На основе него вычислите C<birth_year>. См.
+C<perldoc Moose::Manual::Attributes>.
 
 =end tip
 
 X<attributes; default values>
 
-Calculating ages has another advantage. A I<default attribute value> will do
-the right thing when someone creates a new C<Cat> object without passing a
-birth year:
+Вычисление возраста имеет другое преимущество. I<Значение атрибута по умолчанию>
+будет вести себя правильно в случае, если кто-нибудь создат новый объект C<Cat>,
+не передав год рождения:
 
 =begin programlisting
 
@@ -349,11 +360,12 @@ birth year:
 
 =end programlisting
 
-The C<default> keyword on an attribute takes a function referenceN<You can use
-a simple value such as a number or string directly, but use a function
-reference for anything more complex.> which returns the default value for that
-attribute when constructing a new object. If the code creating an object passes
-no constructor value for that attribute, the object gets the default value:
+Ключевое слово C<default> у атрибута принимает ссылку на функциюN<Вы можете
+использовать простое значение, такое как число или строка, напрямую, но для
+чего-либо более сложного используйте ссылку на функцию.>, которая возвращает
+значение по умолчанию для этого атрибута при создании нового объекта. Если код,
+создающий объект, не передас в конструктор значение для этого атрибута, объект
+получит значение по умолчанию:
 
 =begin programlisting
 
@@ -361,22 +373,22 @@ no constructor value for that attribute, the object gets the default value:
 
 =end programlisting
 
-... and that kitten will have an age of C<0> until next year.
+E<hellip>и этот котёнок будет иметь возраст C<0> до следующего года.
 
-=head3 Polymorphism
+=head3 Полиморфизм
 
-Encapsulation is useful, but the real power of object orientation is much
-broader. A well-designed OO program can manage many types of data. When
-well-designed classes encapsulate specific details of objects into the
-appropriate places, something curious happens: the code often becomes I<less>
-specific.
+Инкапсуляция полезна, но настоящие возможности объектного-ориентированного
+подхода намного шире. Хорошо спроектированная ОО-программа может управлять
+множеством типов данных. Когда хорошо спроектированные классы инкапсулируют
+конкретные детали объектов в соответствующих местах, происходит нечто
+любопытное: код зачастую становится I<менее> конкретным.
 
-Moving the details of what the program knows about individual C<Cat>s (the
-attributes) and what the program knows that C<Cat>s can do (the methods) into
-the C<Cat> class means that code that deals with C<Cat> instances can happily
-ignore I<how> C<Cat> does what it does.
+Перемещение деталей того, что программа знает об отдельных объектах C<Cat>
+(атрибуты), и того, что программа знает о том, что объекты C<Cat> могут делать
+(методы) в класс C<Cat> означает, что код, работающий с экземплярами C<Cat>,
+будет успешно игнорировать то, I<как> C<Cat> делает то, что он делает.
 
-Consider a function which displays details of an object:
+Рассмотрим функцию, выводяющую детали объекта:
 
 =begin programlisting
 
@@ -394,81 +406,85 @@ Consider a function which displays details of an object:
 X<genericity>
 X<OO; genericity>
 
-It's obvious (in context) that this function works if you pass it a C<Cat>
-object. In fact, it will do the right thing for any object with the appropriate
-three accessors, no matter I<how> that object provides those accessors and no
-matter I<what kind> of object it is: C<Cat>, C<Caterpillar>, or C<Catbird>. The
-function is sufficiently generic that any object which respects this interface
-is a valid parameter.
+Очевидно (из контекста), что эта функцию работает, если вы передадите ей объект
+C<Cat>. Фактически, она будет делать то, что нужно, для любого объекта, имеющего
+три соответствующих аксессора, независимо от того, I<как> этот объект
+предоставляет эти аксессоры, и независимо от того, I<что> это за объект: C<Cat>,
+C<Caterpillar> или C<Catbird>. Функция имеет достаточно общий вид, чтобы любой
+объект, обеспечивающий этот интерфейс, будет корректным параметром.
 
 X<polymorphism>
 X<OO; polymorphism>
 
-This property of I<polymorphism> means that you can substitute an object of one
-class for an object of another class if they provide the same external
-interface.
+Это свойство I<полиморфизма> означает, что вы можете заменить объект одного
+класса объектом другого класса, если они предоставляют один и тот же внешний
+интерфейс.
 
-=begin tip Duck Typing
+=begin tip Утиная типизация
 
 X<duck typing>
 X<OO; duck typing>
 
-Some languages and environments require a formal relationship between two
-classes before allowing a program to substitute instances for each other.  Perl
-5 provides ways to enforce these checks, but it does not require them. Its
-default ad-hoc system lets you treat any two instances with methods of the same
-name as equivalent enough. Some people call this I<duck typing>, arguing that
-any object which can C<quack()> is sufficiently duck-like that you can treat it
-as a duck.
+Некоторые языки и среды требуют установления формального отношения между двумя
+классами прежде чем позволить программе заменять экземпляры одного экземплярами
+другого. Perl 5 предоставляет способы сделать эти проверки обязательными, но не
+требует их. Его стандартная ad-hoc-система позволяет вам обращаться с двумя
+любыми экземплярами, имеющими одинаково названные методы, как с достаточно
+эквивалентными. Некоторые называют это I<утиной типизацией>, утверждая, что
+любой объект, который может крякать (C<quack()>) достаточно поход на утку, чтобы
+с ним можно было обращаться как с уткой.
 
 =end tip
 
-C<show_vital_stats()> cares that an invocant is valid only in that it supports
-three methods, C<name()>, C<age()>, and C<diet()> which take no arguments and
-each return something which can concatenate in a string context. You may have a
-hundred different classes in your code, none of which have any obvious
-relationships, but they will work with this method if they conform to this
-expected behavior.
+C<show_vital_stats()> заботится о том, чтобы вызывающая сущность была валидна
+только в смысле поддержки этих трёх методов, C<name()>, C<age()> и C<diet()>,
+какждый из которых не имеет аргументов и возвращает нечто, что можно
+конкатенировать в строковом контексте. Вы можете иметь в своём коде сотню разных
+классов, ни один из которых не будет иметь каких-либо очевидных взаимосвязей, но
+они будут работать с этим методом, если они соответствуют этому ожидаемому
+поведению.
 
-Consider how you might enumerate a zoo's worth of animals without this
-polymorphic function. The benefit of genericity should be obvious. As well, any
-specific details about how to calculate the age of an ocelot or octopus can
-belong in the relevant class--where it matters most.
+Подумайте, как вы могли бы пересчитать целый зоопарк животных без этой
+полиморфной функции? Выгода универсальности должна быть очевидна. Также, любые
+специфичные детали того, как рассчитать возраст оцелота или осьминога, могут
+принадлежать соответствующему классу E<mdash> где они имеют наибольшее значение.
 
-Of course, the mere existence of a method called C<name()> or C<age()> does not
-by itself imply the behavior of that object. A C<Dog> object may have an
-C<age()> which is an accessor such that you can discover C<$rodney> is 9 but
-C<$lucky> is 4. A C<Cheese> object may have an C<age()> method that lets you
-control how long to stow C<$cheddar> to sharpen it. C<age()> may be an accessor
-in one class but not in another:
+Конечно, одно лишь существование методов с именами C<name()> или C<age()> само
+по себе не определяет поведение объекта. Для объекта C<Dog> C<age()> может быть
+аксессором, с помощью которого вы можете узнать, что C<$rodney> E<mdash> 9 лет,
+а C<$lucky> E<mdash> 4 года. Объект C<Cheese> может иметь метод C<age()>,
+который позволяет вам контролировать, как долго хранить C<$cheddar> чтобы его
+вкус заострился. C<age()> может быть аксессором в одном классе, но не в другом:
 
 =begin programlisting
 
-    # how old is the cat?
+    # сколько лет коту?
     my $years = $zeppie->age();
 
-    # store the cheese in the warehouse for six months
+    # хранить сыр на складе шесть месяцев
     $cheese->age();
 
 =end programlisting
 
-Sometimes it's useful to know I<what> an object does and what that I<means>.
+Иногда полезно знать, I<что> делает объект, и что это I<означает>.
 
-=head2 Roles
+=head2 Роли
 
 Z<roles>
 X<roles>
 
-A I<role> is a named collection of behavior and stateN<See the Perl 6 design
-documents on roles at U<http://feather.perl6.nl/syn/S14.html> and research on
-Smalltalk traits at U<http://scg.unibe.ch/research/traits> for copious
-details.>. While a class organizes behaviors and state into a template for
-objects, a role organizes a named collection of behaviors and state. You can
-instantiate a class, but not a role. A role is something a class does.
+I<Роль> E<mdash> это именованная совокупность поведений и состоянийN<Смотрите
+дизайн-документы Perl 6 на тему ролей по адресу
+U<http://feather.perl6.nl/syn/S14.html> и исследуйте трейты Smalltalk на
+странице U<http://scg.unibe.ch/research/traits> для получения обширных
+подробностей.>. Тогда как класс организует поведения и состояние в шаблон для
+создания объектов, роль организует именованную коллекцию поведений и состояния.
+Вы можете создать экземпляр класса, но не роли. Роль E<mdash> это что-то, что
+делает класс.
 
-Given an C<Animal> which has an age and a C<Cheese> which can age, one
-difference may be that C<Animal> does the C<LivingBeing> role, while the
-C<Cheese> does the C<Storable> role:
+Если у нас есть C<Animal>, имеющий возраст, и C<Cheese>, имеющий возраст,
+разница между ними может быть в том, что C<Animal> выполняет роль
+C<LivingBeing>, тогда как C<Cheese> выполняет роль C<Storable>:
 
 =begin programlisting
 
@@ -481,8 +497,8 @@ C<Cheese> does the C<Storable> role:
 
 =end programlisting
 
-Anything which does this role must supply the C<name()>, C<age()>, and
-C<diet()> methods. The C<Cat> class must explicitly mark that it does the role:
+Всё, что имеет эту роль, должно предоставлять методы C<name()>, C<age()> и
+C<diet()>. Класс C<Cat> может явно обозначить, что он имеет эту роль:
 
 =begin programlisting
 
@@ -507,23 +523,24 @@ C<diet()> methods. The C<Cat> class must explicitly mark that it does the role:
 
 X<roles; composition>
 
-The C<with> line causes Moose to I<compose> the C<LivingBeing> role into the
-C<Cat> class. Composition ensures all of the attributes and methods of the role
-part of the class. C<LivingBeing> requires any composing class to provide
-methods named C<name()>, C<age()>, and C<diet()>. C<Cat> satisfies these
-constraints. If C<LivingBeing> were composed into a class which did not provide
-those methods, Moose would throw an exception.
+Строчка C<with> заставляет Moose I<скомпоновать> роль C<LivingBeing> в класс
+C<Cat>. Компоновка гарантирует, что все атрибуты и методы роли являются частью
+класса. C<LivingBeing> требует от любого компонуемого класса предоставлять
+методы с названиями C<name()>, C<age()> и C<diet()>. C<Cat> удовлетворяет этим
+ограничениям. Если C<LivingBeing> была скомпонована в класс, который не
+предоставляет эти методы, Moose бы выбросил исключение.
 
-=begin tip Order Matters!
+=begin tip Порядок имеет значение!
 
-The C<with> keyword used to apply roles to a class must occur I<after>
-attribute declaration so that composition can identify any generated accessor
-methods.
+Ключевое слово C<with>, используемое для применение роли к классу, должно
+находиться I<после> объявлений атрибутов, чтобы компоновка могла распознать
+все сгенерированные методы-аксессоры.
 
 =end tip
 
-Now all C<Cat> instances will return a true value when queried if they provide
-the C<LivingBeing> role. C<Cheese> objects should not:
+Теперь все экземпляры C<Cat> будут возвращать истинное значение если их
+запросить, предоставляют ли они роль C<LivingBeing>. А объекты C<Cheese> не
+будут:
 
 =begin programlisting
 
@@ -532,9 +549,9 @@ the C<LivingBeing> role. C<Cheese> objects should not:
 
 =end programlisting
 
-This design technique separates the I<capabilities> of classes and objects from
-the I<implementation> of those classes and objects. The birth year calculation
-behavior of the C<Cat> class could itself be a role:
+Эта техника проектирования отделяет I<возможности> классов и объектов от
+I<реализации> этих классов и объектов. Поведение вычисления года рождения класса
+C<Cat> само по себе тоже может быть ролью:
 
 =begin programlisting
 
@@ -558,8 +575,8 @@ behavior of the C<Cat> class could itself be a role:
 
 =end programlisting
 
-Extracting this role from C<Cat> makes the useful behavior available to other
-classes. Now C<Cat> can compose both roles:
+Выделение этой роли из C<Cat> делает полезное поведение доступным для других
+классов. Теперь C<Cat> может компоновать обе роли:
 
 =begin programlisting
 
@@ -576,41 +593,43 @@ classes. Now C<Cat> can compose both roles:
 
 =end programlisting
 
-Notice how the C<age()> method of C<CalculateAge::From::BirthYear> satisfies
-the requirement of the C<LivingBeing> role. Notice also that any check that
-C<Cat> performs C<LivingBeing> returns a true value. Extracting C<age()> into a
-role has only changed the details of I<how> C<Cat> calculates an age. It's
-still a C<LivingBeing>. C<Cat> can choose to implement its own age or get it
-from somewhere else. All that matters is that it provides an C<age()> which
-satisfies the C<LivingBeing> constraint.
+Обратите внимание как метод C<age()> из C<CalculateAge::From::BirthYear>
+удовлетворяет требование роли C<LivingBeing>. Также заметьте, что любая провера
+того, что C<Cat> выполняет роль C<LivingBeing>, возвращает истинное значение.
+Выделение C<age()> в роль изменило только детали того, I<как> C<Cat> вычисляет
+возраст. Это всё ещё C<LivingBeing>. C<Cat> может выбрать, имплементировать ли
+свой собственный возраст или получить его откуда-то ещё. Всё что имеет значение
+E<mdash> это то, что он предоставляет C<age()>, который удовлетворяет
+ограничениям C<LivingBeing>.
 
 X<allomorphism>
 X<roles; allomorphism>
 
-Just as polymorphism means that you can treat multiple objects with the same
-behavior in the same way, this I<allomorphism> means that an object may
-implement the same behavior in multiple ways.
+Как полиморфизм означает, что вы можете работать с разными объектами, имеющими
+одно и то же поведение, одним и тем же способом, так и этот I<алломорфизм>
+означает, что объект может реализовывать одно и то же поведение разными
+способами.
 
-Pervasive allomorphism can reduce the size of your classes and increase the
-code shared between them. It also allows you to name specific and discrete
-collections of behaviors--very useful for testing for capabilities instead of
-implementations.
+Глубокий алломорфизм может уменьшить размер ваших классов и увеличить количество
+кода, разделяемого между ними. Он также позволяет вам именовать специфичные и
+обособленные поведения E<mdash> очень полезно для проверки возможностей вместо
+реализаций.
 
 X<OO; mixins>
 X<OO; multiple inheritance>
 X<OO; monkeypatching>
 
-To compare roles to other design techniques such as mixins, multiple
-inheritance, and monkeypatching, see
+Для сравнения ролей с другими техниками проектирования, такими как примеси,
+множественное наследование и манкипатчинг см.
 U<http://www.modernperlbooks.com/mt/2009/04/the-why-of-perl-roles.html>.
 
-=head3 Roles and DOES()
+=head3 Роли и DOES()
 
 X<C<DOES()>>
 X<Moose; C<DOES()>>
 
-When you compose a role into a class, the class and its instances will return a
-true value when you call C<DOES()> on them:
+Если вы компонуете роль в класс, класс и его экземпляры будут возвращать
+истинное значение если вы вызовете на них C<DOES()>:
 
 =begin programlisting
 
@@ -619,7 +638,7 @@ true value when you call C<DOES()> on them:
 
 =end programlisting
 
-=head2 Inheritance
+=head2 Наследование
 
 Z<inheritance>
 
@@ -627,27 +646,28 @@ X<inheritance>
 X<OO; inheritance>
 X<Moose; inheritance>
 
-Perl 5's object system supports I<inheritance>, which establishes a
-relationship between two classes such that one specializes the other. The child
-class behaves the same way as its parent--it has the same number and types of
-attributes and can use the same methods. It may have additional data and
-behavior, but you may substitute any instance of a child where code expects its
-parent. In one sense, a subclass provides the role implied by the existence of
-its parent class.
+Объектная система Perl 5 поддерживает I<наследование>, которое устанавливает
+связи между двумя классами, так, что один адаптирует другой. Дочерний класс
+ведёт себя так же, как его родитель E<mdash> он имеет то же самое количество и
+типы атрибутов, и вы можете использовать те же самые методы. Он может иметь
+дополнительные данные и поведение, но вы можете использовать экземпляр дочернего
+класса там, где код ожидает родительский. В некотором смысле, подкласс
+предоставляет роль, предполагаемую существованием его родительского класса.
 
-=begin tip Roles versus Inheritance
+=begin tip Роли против наследования
 
-Should you use roles or inheritance? Roles provide composition-time safety,
-better type checking, better factoring of code, and finer-grained control over
-names and behaviors, but inheritance is more familiar to experienced developers
-of other languages. Use inheritance when one class truly I<extends> another.
-Use a role when a class needs additional behavior, and when you can give that
-behavior a meaningful name.
+Должны ли вы использовать роли или наследование? Роли предоставляют безопасность
+времени компоновки, лучшую проверку типов, лучшее разбиение кода и более тонкий
+контроль над именами и поведениями, но наследование более привычно опытным
+разработчикам на других языках. Используйте наследование в случае, если один
+класс на самом деле I<расширяет> другой. Используйте роль, если класс требует
+дополнительного поведения, и если вы можете дать этому поведению осмысленное
+имя.
 
 =end tip
 
-Consider a C<LightSource> class which provides two public attributes
-(C<enabled> and C<candle_power>) and two methods (C<light> and C<extinguish>):
+Рассмотрите класс C<LightSource>, который предоставляет два публичных атрибута
+(C<enabled> и C<candle_power>) и два метода (C<light> и C<extinguish>):
 
 =begin programlisting
 
@@ -679,13 +699,13 @@ Consider a C<LightSource> class which provides two public attributes
 
 =end programlisting
 
-(Note that C<enabled>'s C<writer> option creates a private accessor usable
-within the class to set the value.)
+(Заметьте, что опция C<writer> атрибута C<enabled> создаёт приватный аксессор,
+используемый в классе для установки значения.)
 
-=head3 Inheritance and Attributes
+=head3 Наследование и атрибуты
 
-A subclass of C<LightSource> could define a super candle which provides a
-hundred times the amount of light:
+Подкласс C<LightSource> может определить супер-свечу, дающую в сто раз больше
+света:
 
 =begin programlisting
 
@@ -702,25 +722,26 @@ hundred times the amount of light:
 
 X<Moose; C<extends>>
 
-C<extends> takes a list of class names to use as parents of the current class.
-If that were the only line in this class, C<SuperCandle> objects would behave
-the same as C<LightSource> objects. It would have both the C<candle_power> and
-C<enabled> attributes as well as the C<light()> and C<extinguish()> methods.
+C<extends> принимает списо имён классов для использования их в качестве
+родителей текущего класса. Если бы это была единственная строка в этом классе,
+объект C<SuperCandle> вёл бы себя в точности так же, как объекты C<LightSource>.
+Он имел бы оба атрибута, C<candle_power> и C<enabled>, так же как и методы
+C<light()> и C<extinguish()>.
 
-The C<+> at the start of an attribute name (such as C<candle_power>) indicates
-that the current class does something special with that attribute. Here the
-super candle overrides the default value of the light source, so any new
-C<SuperCandle> created has a light value of 100 candles.
+C<+> в начале имени атрибута (как у C<candle_power>) указывает, что текущий
+класс делает с этим атрибутом что-то особенное. Здесь супер-свеча переопределяет
+значение по умолчанию источника света, так что любой новый созданный объект
+C<SuperCandle> будет иметь световое значение в 100 свечей.
 
-When you invoke C<light()> or C<extinguish()> on a C<SuperCandle> object, Perl
-will look in the C<SuperCandle> class for the method, then in each parent.  In
-this case, those methods are in the C<LightSource> class.
+Когда вы вызываете C<light()> или C<extinguish()> на объекте C<SuperCandle>,
+Perl будет искать методы в классе C<SuperCandle>, а затем в его родителе. В
+данном случае эти методы находятся в классе C<LightSource>.
 
 X<Moose; attribute inheritance>
 
-Attribute inheritance works similarly (see C<perldoc Class::MOP>).
+Наследование атрибутов работает аналогично (см. C<perldoc Class::MOP>).
 
-=head3 Method Dispatch Order
+=head3 Порядок диспетчеризации методов
 
 X<methods; resolution>
 X<method resolution order>
@@ -730,28 +751,30 @@ X<objects; inheritance>
 X<objects; multiple inheritance>
 X<MRO>
 
-I<Method dispatch order> (or I<method resolution order> or I<MRO>) is obvious
-for single-parent classes. Look in the object's class, then its parent, and so
-on until you find the method or run out of parents. Classes which inherit from
-multiple parents (I<multiple inheritance>)--C<Hovercraft> extends both C<Boat>
-and C<Car>--require trickier dispatch. Reasoning about multiple inheritance is
-complex. Avoid multiple inheritance when possible.
+I<Порядок диспетчеризации методов> (I<или порядок разрешения методов>, I<method
+resolution order> или I<MRO>) очевиден для классов, имеющих одного родителя.
+Искать в классе объекта, затем в его родителе, и так далее до тех пор пока
+метод не будет найден или родители не закончатся. Классы, наследующие от
+нескольких родителей (I<множественное наследование>) E<mdash> C<Hovercraft>
+расширяет и C<Boat>, и C<Car> E<mdash> требуют более хитрой диспетчеризации.
+Суждение о множественном наследовании сложно. По возможности избегайте
+множественного наследования.
 
-Perl 5 uses a depth-first method resolution strategy. It searches the class of
-the I<first> named parent and all of that parent's parents recursively before
-searching the classes of subsequent parents. The C<mro> pragma (L<pragmas>)
-provides alternate strategies, including the C3 MRO strategy which searches a
-given class's immediate parents before searching any of their parents.
+Perl 5 использует стратегию разрешения методов поиском в глубину. Он ищет класс
+родителя, названного I<первым>, и всех родителей этого родителя рекурсивно,
+прежде чем искать в классах следующих родителей. Прагма C<mro> (L<pragmas>)
+предоставляет альтернативные стратегии, включая стратегию C3 MRO, которая ищет
+в непосредственных родителях заданного класса прежде чем искать в их родителях.
 
 See C<perldoc mro> for more details.
 
-=head3 Inheritance and Methods
+=head3 Наследование и методы
 
 X<Moose; overriding methods>
 X<Moose; C<override>>
 
-As with attributes, subclasses may override methods. Imagine a light that you
-cannot extinguish:
+Как и с атрибутами, подклассы могут переопределять методы. Представьте свет,
+который вы не можете потушить:
 
 =begin programlisting
 
@@ -766,13 +789,14 @@ cannot extinguish:
 
 =end programlisting
 
-Calling C<extinguish()> on a glowstick does nothing, even though
-C<LightSource>'s method does something. Method dispatch will find the
-subclass's method. You may not have meant to do this. When you do, use Moose's
-C<override> to express your intention clearly.
+Вызов C<extinguish()> на светящейся палочке не будет делать ничего, несмотря на
+то, что метод из C<LightSource> что-то делает. Диспетчеризация методов найдёт
+метод подкласса. Вы, возможно, не имели намерения так делать. Если вы его
+имеете, используйте функцию Moose C<override> чтобы ясно выразить своё
+намерение.
 
-Within an overridden method, Moose's C<super()> allows you to call the
-overridden method:
+Внутри переопределённого метода функция Moose C<super()> позволит вам вызвать
+переопределённый метод:
 
 =begin programlisting
 
@@ -806,25 +830,26 @@ overridden method:
 
 =end programlisting
 
-This subclass adds a warning when trying to light or extinguish a light source
-that already has the current state. The C<super()> function dispatches to the
-nearest parent's implementation of the current method, per the normal Perl 5
-method resolution order.
+Этот подкласс добавляет предупреждение при попытке зажечь или потушить источник
+света, который уже находится в нужном состоянии. Функция C<super()> отправляет
+к реализации текущего метода в ближайшем родителе, согласно стандартному порядку
+разрешения методов Perl 5.
 
-=begin tip Powered by Moose
+=begin tip Работает на Moose
 
-Moose's method modifiers can do similar things--and more. See C<perldoc
-Moose::Manual::MethodModifiers>.
+Модификаторы методов Moose могут делать похожие вещи E<mdash> и больше. Смотрите
+C<perldoc Moose::Manual::MethodModifiers>.
 
 =end tip
 
-=head3 Inheritance and isa()
+=head3 Наследование и isa()
 
 X<C<isa()>>
 X<Moose; C<isa()>>
 
-Perl's C<isa()> method returns true if its invocant is or extends a named
-class. That invocant may be the name of a class or an instance of an object:
+Метод C<isa()> в Perl возвращает истину, если его вызывающая сущность является
+или расширяет названный класс. Эта вызывающая сущность может быть именем класса
+или экземпляром объекта.
 
 =begin programlisting
 
@@ -836,15 +861,16 @@ class. That invocant may be the name of a class or an instance of an object:
 
 =end programlisting
 
-=head2 Moose and Perl 5 OO
+=head2 Moose и Perl 5 ООП
 
 X<Moose; compared to default Perl 5 OO>
 
-Moose provides many features beyond Perl 5's default OO.  While you I<can>
-build everything you get with Moose yourself (L<blessed_references>), or cobble
-it together with a series of CPAN distributions, Moose is worth using. It is a
-coherent whole, with good documentation. Many important projects use it
-successfully. Its development community is mature and attentive.
+Moose предоставляет много возможностей помимо стандартного ООП Perl 5. Хотя вы
+I<можете> построить всё, что вы получаете с Moose, сами (L<blessed_references>),
+или смастерить это из нескольких CPAN-дистрибутивов, Moose заслуживает
+использования. Это логически связанное целое, с хорошей документацией. Многие
+важные проекты успешно его используют. Он имеет зрелое и внимательное сообщество
+разработчиков.
 
 X<metaprogramming>
 X<Moose; MOP>
@@ -852,14 +878,15 @@ X<Moose; metaprogramming>
 X<C<Class::MOP>>
 X<C<Class::MOP::Class>>
 
-Moose takes care of constructors, destructors, accessors, and encapsulation.
-You must do the work of declaring what you want, but what you get back is safe
-and easy to use. Moose objects can extend and work with objects from the
-vanilla Perl 5 system.
+Moose позаботится о конструкторах, деструкторах, аксессорах и инкапсуляции. Вам
+придётся объявить, чего вы хотите, но то, что вы получите, будет безопасным и
+простым в использовании. Объекты Moose могут расширять и работать с объектами
+ванильной системы Perl 5.
 
-Moose also allows I<metaprogramming>--manipulating your objects through Moose
-itself. If you've ever wondered which methods are available on a class or an
-object or which attributes an object supports, this information is available:
+Moose также даёт возможность I<метапрограммирования> E<mdash> манипулирования
+вашими объектами через сам Moose. Если вы когда-нибудь интересовались, какие
+методы доступны в классе или объекте, или какие атрибуты объект поддерживает,
+эта информация доступна:
 
 =begin programlisting
 
@@ -876,7 +903,7 @@ object or which attributes an object supports, this information is available:
 
 =end programlisting
 
-You can even see which classes extend a given class:
+Вы даже можете увидеть, какие классы расширяют заданный класс:
 
 =begin programlisting
 
@@ -888,12 +915,12 @@ You can even see which classes extend a given class:
 
 =end programlisting
 
-See C<perldoc Class::MOP::Class> for more information about metaclass
-operations and C<perldoc Class::MOP> for Moose metaprogramming information.
+Смотрите C<perldoc Class::MOP::Class> для большей информации об операциях
+метаклассов и C<perldoc Class::MOP> для информации о метапрограммировании Moose.
 
-Moose and its I<meta-object protocol> (or MOP) offers the possibility of a
-better syntax for declaring and working with classes and objects in Perl 5.
-This is valid Perl 5 code:
+Moose и его I<протокол метаобъектов> (I<meta-object protocol>, или MOP) даёт
+возможность лучшего синтаксиса для объявления и работы с классами и объектами в
+Perl 5. Это корректный код на Perl 5:
 
 =begin programlisting
 
@@ -927,23 +954,24 @@ This is valid Perl 5 code:
 X<CPAN; C<MooseX::Declare>>
 X<CPAN; C<Devel::Declare>>
 
-The C<MooseX::Declare> CPAN distribution uses C<Devel::Declare> to add new
-Moose-specific syntax. The C<class>, C<role>, and C<method> keywords reduce the
-amount of boilerplate necessary to write good object oriented code in Perl 5.
-Note specifically the declarative nature of this example, as well as the lack
-of C<my $self = shift;> in C<age()>.
+CPAN-дистрибутив C<MooseX::Declare> использует C<Devel::Declare> для добавления
+нового Moose-специфичного синтаксиса. Ключевые слова I<class>, I<role> и
+I<method> уменьшают количество текста, необходимого для написания хорошего
+объектно-ориентированного кода на Perl 5. Обратите особое внимание на
+декларативную природу этого примера, а также на отсутствие C<my $self = shift;>
+в C<age()>.
 
-While Moose is not a part of the Perl 5 core, its popularity ensures that it's
-available on many OS distributions. Perl 5 distributions such as Strawberry
-Perl and ActivePerl also include it. Even though Moose is a CPAN module and not
-a core library, its cleanliness and simplicity make it essential to modern Perl
-programming.
+Хотя Moose и не является частью ядра Perl 5, его популярность гарантирует его
+доступность в дистрибутивах многих ОС. Дистрибутивы Perl 5, такие как Strawberry
+Perl и ActivePerl, тоже его включают. Несмотря на то, что Moose E<mdash>
+CPAN-модуль, его чистота и простота делают его неотъемлемой частью современного
+Perl-программирования.
 
-=begin tip The Svelte I<Alces>
+=begin tip Стройный I<лось>
 
 X<CPAN; C<Any::Moose>>
 
-Moose isn't a small library, but it's powerful. The C<Any::Moose> CPAN module
-helps reduce the cost of features you don't use.
+Moose не маленькая, но мощная библиотека. CPAN-модуль C<Any::Moose> помогает
+уменьшить стоимость возможностей, которые вы не используете.
 
 =end tip
