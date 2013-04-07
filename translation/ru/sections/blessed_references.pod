@@ -1,47 +1,49 @@
-=head1 Blessed References
+=head1 Благословлённые ссылки
 
 Z<blessed_references>
 
-Perl 5's core object system is deliberately minimal. It has only three rules:
+Встроенная система объектов Perl 5 сознательно минималистична. Она включает
+всего три правила:
 
 =over 4
 
-=item * A class is a package.
+=item * Класс E<mdash> это пакет.
 
-=item * A method is a function.
+=item * Метод E<mdash> это функция.
 
-=item * A (blessed) reference is an object.
+=item * (Благословлённая) ссылка E<mdash> это объект.
 
 =back
 
-You can build anything else out of those three rules, but that's all you get by
-default. This minimalism can be impractical for larger projects--in particular,
-the possibilities for greater abstraction through metaprogramming
-(L<code_generation>) are awkward and limited. Moose (L<moose>) is a better
-choice for modern programs larger than a couple of hundred lines, although
-plenty of legacy code still uses Perl 5's default OO.
+Основываясь на этих трёх правилах вы можете построить что угодно, но это всё,
+что вы получаете по умолчанию. Этот минимализм для больших проектов может быть
+непрактичен E<mdash> особенно неловки и ограниченны возможности увеличения
+абстракции посредством метапрограммирования (L<code_generation>). Moose
+(L<moose>) E<mdash> более подходящий для современных программ, размер которых
+больше чем несколько сотен строк кода, хотя большое количество унаследованного
+кода всё ещё использует стандартное ОО Perl 5.
 
 X<OO; C<bless>>
 X<builtins; C<bless>>
 
-The final piece of Perl 5 core OO is the blessed reference.  The C<bless>
-builtin associates the name of a class with a reference. That reference is now
-a valid invocant, and Perl will perform method dispatch on it, using the
-associated class.
+Последний кусок встроенного ОО Perl 5 E<mdash> благословлённая ссылка.
+Встроенная функция bless ассоциирует имя класса со ссылкой. Эта ссылка
+становится корректной вызывающей сущностью, и Perl будет выполнять на ней
+диспетчеризацию методов, используя ассоциированный класс.
 
 X<OO; constructors>
 X<OO; class methods>
 X<methods; class>
 
-A constructor is a method which creates and blesses a reference. By convention,
-constructors have the name C<new()>, but this is not a requirement.
-Constructors are also almost always I<class methods>.
+Конструктор E<mdash> это метод, создающий и благословляющий ссылку. По
+соглашению конструкторы имеют имя C<new()>, но это не обязательно. Также
+конструкторы почти всегда являются I<методами класса>.
 
-C<bless> takes two arguments, a reference and a class name. It evaluates to the
-reference. The reference may be empty. The class does not have to exist yet.
-You may even use C<bless> outside of a constructor or a class (though all but
-the simplest programs should use real constructors). The canonical constructor
-resembles:
+C<bless> принимает два аргумента, ссылку и имя класса. Она возвращает ссылку.
+Ссылка может быть пустой. Класс ещё не обязательно должен существовать. Вы даже
+можете использовать C<bless> за пределами конструктора или класса (хотя все
+программы, кроме самых простых, должны использовать настоящие конструкторы).
+Канонический конструктор выглядит так:
 
 =begin programlisting
 
@@ -53,16 +55,17 @@ resembles:
 
 =end programlisting
 
-By design, this constructor receives the class name as the method's invocant.
-You may also hard-code the name of a class, at the expense of flexibility.
-Parametric constructor allows reuse through inheritance, delegation, or
-exporting.
+По замыслу, этот конструктор получает имя класса как вызывающую сущность метода.
+Но вы можете и захардкодить имя класса, потеряв при этом в гибкости.
+Параметрический конструктор даёт возможность повторного использования
+посредством наследования, делегирования или экспорта.
 
 X<OO; instance data>
 
-The type of reference used is relevant only to how the object stores its own
-I<instance data>. It has no other effect on the resulting object. Hash
-references are most common, but you can bless any type of reference:
+Используемый тип ссылки имеет значение только для того, как объект хранит свои
+I<данные экземпляра>. Он не оказывает никакого другого влияния на результирующий
+объект. Ссылки на хеши наиболее распространены, но благословить можно любой тип
+ссылки:
 
 =begin programlisting
 
@@ -72,9 +75,9 @@ references are most common, but you can bless any type of reference:
 
 =end programlisting
 
-Moose classes define object attributes declaratively, but Perl 5's default OO
-is lax. A class representing basketball players which stores jersey number and
-position might use a constructor like:
+Классы Moose определяют атрибуты объекта декларативно, но стандартное ОО Perl 5
+недостаточно формально. Класс, представляющий игроков в баскетболл, который
+хранит номер футболки и позицию, может использовать такой конструктор:
 
 =begin programlisting
 
@@ -89,7 +92,7 @@ position might use a constructor like:
 
 =end programlisting
 
-... and create players with:
+E<hellip>и создавать игроков следующим образом:
 
 =begin programlisting
 
@@ -101,7 +104,8 @@ position might use a constructor like:
 
 =end programlisting
 
-The class's methods can access object attributes as hash elements directly:
+Методы класса могут обращаться к атрибутам объекта напрямую как к элементам
+хеша:
 
 =begin programlisting
 
@@ -114,8 +118,8 @@ The class's methods can access object attributes as hash elements directly:
 
 =end programlisting
 
-... but so can any other code, so any change to the object's internal
-representation may break other code. Accessor methods are safer:
+E<hellip>так же как и любой другой код, так что любое изменение внутреннего
+представления объекта может сломать другой код. Методы-аксессоры безопаснее:
 
 =begin programlisting
 
@@ -124,16 +128,16 @@ representation may break other code. Accessor methods are safer:
 
 =end programlisting
 
-... and now you're starting to write manually what Moose gives you for free.
-Better yet, Moose encourages people to use accessors instead of direct access
-by hiding the accessor generation code. Goodbye, temptation.
+E<hellip>и вот вы уже начинаете вручную писать то, что Moose даёт вам бесплатно.
+Мало того, Moose поощряет использовать аксессоры вместо прямого доступа, скрывая
+код генерации аксессоров. Прощайте, соблазны.
 
-=head2 Method Lookup and Inheritance
+=head2 Поиск методов и наследование
 
 X<method dispatch>
 X<OO; methods>
 
-Given a blessed reference, a method call of the form:
+При наличии благословлённой ссылки вызов метода следующим образом:
 
 =begin programlisting
 
@@ -141,29 +145,30 @@ Given a blessed reference, a method call of the form:
 
 =end programlisting
 
-... looks up the name of the class associated with the blessed reference
-C<$joel>--in this case, C<Player>. Next, Perl looks for a functionN<Remember
-that Perl 5 makes no distinction between functions in a namespace and methods.>
-named C<number()> in C<Player>. If no such function exists and if C<Player>
-extends class, Perl looks in the parent class (and so on and so on) until it
-finds a C<number()>. If Perl finds C<number()>, it calls that method with
-C<$joel> as an invocant.
+E<hellip>ищет имя класса, ассоциированного с благословлённой ссылкой C<$joel>
+E<mdash> в данном случае C<Player>. Затем Perl ищет функциюN<Вспомните, что
+Perl 5 не делает различия между функциями в пространстве имён и методами.> с
+именем C<number()> в классе C<Player>. Если такой функции не существует и если
+C<Player> расширяет другой класс, Perl ищет в родительском классе (и так далее
+и так далее) до тех пор, пока не найдёт C<number()>. Если Perl находит
+C<number()>, он вызывает этот метод с C<$joel> в качестве вызывающей сущности.
 
-=begin tip Keeping Namespaces Clean
+=begin tip Сохранение пространств имён чистыми
 
 X<CPAN; C<namespace::autoclean>>
 
-The C<namespace::autoclean> CPAN module can help avoid unintentional collisions between imported functions and methods.
+CPAN-модуль C<namespace::autoclean> может помочь избежать непреднамеренных
+коллизий между импортируемыми функциями и методами.
 
 =end tip
 
 X<C<@ISA>>
 X<OO; C<@ISA>>
 
-Moose provides C<extends> to track inheritance relationships, but Perl 5 uses a
-package global variable named C<@ISA>. The method dispatcher looks in each
-class's C<@ISA> to find the names of its parent classes.  If C<InjuredPlayer>
-extends C<Player>, you might write:
+Moose предоставляет C<extends> для отслеживания связей наследования, Perl 5 же
+использует глобальную переменную пакета с именем C<@ISA>. Диспетчер методов
+ищет в C<@ISA> каждого класса имена его родительских классов. Если
+C<InjuredPlayer> расширяет C<Player>, вы можете написать так:
 
 =begin programlisting
 
@@ -177,8 +182,8 @@ extends C<Player>, you might write:
 X<C<parent> pragma>
 X<pragmas; C<parent>>
 
-The C<parent> pragma (L<pragmas>) is cleanerN<Older code may use the C<base>
-pragma, but C<parent> superseded C<base> in Perl 5.10.>:
+Прагма C<parent> (L<pragmas>) чищеN<Старый код может использовать прагму
+C<base>, но C<parent> заменила C<base> в Perl 5.10.>:
 
 =begin programlisting
 
@@ -189,13 +194,13 @@ pragma, but C<parent> superseded C<base> in Perl 5.10.>:
 
 =end programlisting
 
-Moose has its own metamodel which stores extended inheritance information; this
-offers additional features.
+Moose имеет собственную метамодель, сохраняющую расширенную информацию о
+наследовании; это обеспечивает дополнительные возможности.
 
 X<multiple inheritance>
 X<OO; inheritance>
 
-You may inherit from multiple parent classes:
+Вы можете наследовать от нескольких родительских классов:
 
 =begin programlisting
 
@@ -206,8 +211,9 @@ You may inherit from multiple parent classes:
 
 =end programlisting
 
-... though the caveats about multiple inheritance and method dispatch
-complexity apply. Consider instead roles (L<roles>) or Moose method modifiers.
+E<hellip>хотя есть протесты против множественного наследования и сложности
+диспетчеризации методов. Рассмотрите использование в качестве замены ролей
+(L<roles>) или модификаторов методов Moose.
 
 =head2 AUTOLOAD
 
@@ -215,27 +221,31 @@ X<C<AUTOLOAD>>
 X<OO; C<AUTOLOAD>>
 X<methods; C<AUTOLOAD>>
 
-If there is no applicable method in the invocant's class or any of its
-superclasses, Perl 5 will next look for an C<AUTOLOAD()> function (L<autoload>)
-in every class according to the selected method resolution order. Perl will
-invoke any C<AUTOLOAD()> it finds to provide or decline the desired method.
+Если в классе вызывающей сущности или в любом из его суперклассов нет
+подходящего метода, дальше Perl 5 будет искать функцию C<AUTOLOAD()>
+(L<autoload>) в каждом классе в соответствии с выбранным порядком разрешения
+методов. Perl вызовет любую найденную функцию C<AUTOLOAD()>, чтобы она
+предоставила или отклонила желаемый метод.
 
-C<AUTOLOAD()> makes multiple inheritance much more difficult to understand.
+C<AUTOLOAD()> делает множественное наследование гораздо более сложным для
+понимания.
 
-=head2 Method Overriding and SUPER
+=head2 Перегрузка методов и SUPER
 
-As with Moose, you may override methods in the core Perl 5 OO. Unlike Moose,
-core Perl 5 provides no mechanism for indicating your I<intent> to override a
-parent's method. Worse yet, any function you predeclare, declare, or import
-into the child class may override a method in the parent class by having the
-same name. Even if you forget to use the C<override> system of Moose, at least
-it exists. Core Perl 5 OO offers no such protection.
+Как и в Moose, во встроенном ОО Perl 5 вы можете перегружать методы. В отличие
+от Moose, стандартный Perl 5 не предоставляет механизмов для указания вашего
+I<намерения> переопределить родительский метод. Хуже того, любая функция,
+которую вы предварительно определили, определили или импортировали в дочерний
+класс, может перегрузить метод родительского класса, если имеет то же самое имя.
+Даже если вы забыли использовать предоставляемую Moose систему перегрузки с
+C<override>, она по крайней мере существует. Встроенное ОО Perl 5 не предлагает
+такой защиты.
 
 X<builtins; C<SUPER::>>
 
-To override a method in a child class, declare a method of the same name as the
-method in the parent. Within an overridden method, call the parent method with
-the C<SUPER::> dispatch hint:
+Чтобы перегрузить метод в дочернем классе, объявите метод с тем же именем, что и
+метод в родительском классе. Внутри перегруженного метода можно вызвать
+родительский метод с помощь подсказки диспетчера C<SUPER::>:
 
 =begin programlisting
 
@@ -248,53 +258,56 @@ the C<SUPER::> dispatch hint:
 
 =end programlisting
 
-The C<SUPER::> prefix to the method name tells the method dispatcher to
-dispatch to an overridden method of the appropriate name. You can provide your
-own arguments to the overridden method, but most code reuses C<@_>. Be careful
-to C<shift> off the invocant if you do.
+Префикс C<SUPER::> у имени метода говорит диспетчерку методов перейти к
+перегруженному методу с соответствующим именем. Вы можете указать собственные
+аргументы для перегруженного метода, но большая часть кода использует C<@_>.
+Не забудьте удалить вызывающую сущность с помощью C<shift>, если вы так делаете.
 
 =begin tip The Brokenness of C<SUPER::>
 
 X<CPAN; C<SUPER>>
 
-C<SUPER::> has a confusing misfeature: it dispatches to the parent of the
-package into which the overridden method was I<compiled>. If you've imported
-this method from another package, Perl will happily dispatch to the I<wrong>
-parent. The desire for backwards compatibility has kept this misfeature in
-place. The C<SUPER> module from the CPAN offers a workaround. Moose's
-C<super()> does not suffer the same problem.
+C<SUPER::> имеет сбивающий с толку недостаток: он диспетчеризует к родителю
+пакета, в который был I<скомпилирован> перегруженный метод. Если вы
+импортировали этот метод из другого пакета, Perl с удовольствием направит к
+I<неверному> родителю. Потребность в обратной совместимости привела к сохранению
+этой неудачной функции. Модуль C<SUPER> из CPAN предлагает обходной путь. В
+Moose C<super()> не страдает от такого недостатка.
 
 =end tip
 
 =head2 Strategies for Coping with Blessed References
 
-If blessed references seem minimal and tricky and confusing, they are. Moose is
-a tremendous improvement. Use it whenever possible. If you do find yourself
-maintaining code which uses blessed references, or if you can't convince your
-team to use Moose in full yet, you can work around some of the problems of
-blessed references with discipline.
+Если благословлённые ссылки выглядят минималистичными, коварными и сбивающими с
+толку, такие они и есть. Moose E<mdash> огромное улучшение. Используйте его
+везде, где возможно. Если же вам придётся поддерживать код, использующий
+благословлённые ссылки, или вы ещё не смогли убедить свою команду полностью
+перейти на Moose, вы можете обойти некоторые проблемы благословлённых ссылок с
+помощью дисциплины.
 
 X<C<Class::Accessor>>
 
 =over 4
 
-=item * Use accessor methods pervasively, even within methods in your class.
-Consider using a module such as C<Class::Accessor> to avoid repetitive
-boilerplate.
+=item * Повсеместно используйте методы-аксессоры, даже в методах вашего класса.
+Рассмотрите использование модуля наподобиет C<Class::Accessor>, чтобы избежать
+повторяющегося кода.
 
-=item * Avoid C<AUTOLOAD()> where possible. If you I<must> use it, use forward
-declarations of your functions (L<functions>) to help Perl know which
-C<AUTOLOAD()> will provide the method implementation.
+=item * По возможности избегайте использования C<AUTOLOAD()>. Если вам
+I<необходимо> его использовать, используйте предварительные объявления ваших
+функций (L<functions>), чтобы помочь Perl понять, какая функция C<AUTOLOAD>
+предоставляет реализацию метода.
 
-=item * Expect that someone, somewhere will eventually need to subclass (or
-delegate to or reimplement the interface of) your classes. Make it easier for
-them by not assuming details of the internals of your code, by using the
-two-argument form of C<bless>, and by breaking your classes into the smallest
-responsible units of code.
+=item * Исходите из предположения, что кому-нибудь, где-нибудь рано или поздно
+потребуется унаследовать (или делегировать, или заново реализовать интерфейс)
+от ваших классов. Упростите эту задачу, не предполагая понимания внутренних
+деталей вашего кода, используя двухаргументную форму C<bless>, и разбивая ваши
+классы на наименьшие возможные самостоятельные единицы кода.
 
-=item * Do not mix functions and methods in the same class.
+=item * Не смешивайте функции и методы в одном классе.
 
-=item * Use a single F<.pm> file for each class, unless the class is a small,
-self-contained helper used from a single place.
+=item * Используйте один файл F<.pm> для каждого класса, если только класс не
+является маленьким, самодостаточным вспомогательным инструментом, используемым
+в одном месте.
 
 =back
