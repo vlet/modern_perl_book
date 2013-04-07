@@ -1,84 +1,88 @@
-=head1 Advanced OO Perl
+=head1 Продвинутое ОО в Perl
 
 Z<advanced_oo>
 
-Creating and using objects in Perl 5 with Moose (L<moose>) is easy.
-I<Designing> good programs is not. You must balance between designing too
-little and too much.  Only practical experience can help you understand the
-most important design techniques, but several principles can guide you.
+Создание и использование объектов в Perl 5 с Moose (L<moose>) легко.
+I<Проектирование> хороших программ E<mdash> нет. Вы должны выдерживать баланс
+между проектированием слишком много и слишком мало. Только практический опыт
+может помочь вам понять наиболее важные техники проектирования, но несколько
+принципов могут указать вам направление.
 
-=head2 Favor Composition Over Inheritance
+=head2 Предпочитайте компоновку наследованию
 
 X<OO: composition>
 X<OO; inheritance>
 
-Novice OO designs often overuse inheritance to reuse code and to exploit
-polymorphism. The result is a deep class hierarchy with responsibilities
-scattered in the wrong places. Maintaining this code is difficult--who knows
-where to add or edit behavior? What happens when code in one place conflicts
-with code declared elsewhere?
+Новички в ОО-проектировании зачастую чрезмерно применяют наследование для
+повторного использования кода и применения полиморфизма. Результат этого
+E<mdash> глубокая иерархия классов с ответственностями, разбросанными по
+неверным местам. Поддержка этого кода тяжела E<mdash> кто знает, где добавить
+или отредактировать поведение? Что случится, если код в одном месте конфликтует
+с кодом, объявленным где-то ещё?
 
 X<OO; is-a>
 X<OO; has-a>
 
-Inheritance is but one of many tools. A C<Car> may extend C<Vehicle::Wheeled>
-(an I<is-a relationship>), but C<Car> may better I<contain> several C<Wheel>
-objects as instance attributes (a I<has-a relationship>).
+Наследование E<mdash> лишь один из многих инструментов. C<Car> может расширять
+C<Vehicle::Wheeled> (I<отношение is-a>, I<является>), но лучше, если C<Car>
+будет I<содержать> несколько объектов C<Wheel> в качестве атрибутов экземпляра
+(I<отношение has-a>, I<имеет>).
 
-Decomposing complex classes into smaller, focused entities (whether classes or
-roles) improves encapsulation and reduces the possibility that any one class or
-role will grow to do too much. Smaller, simpler, and better encapsulated
-entities are easier to understand, test, and maintain.
+Разбиение сложных классов на меньшие, специализированные сущности (будь то
+классы или роли) улучшает инкапсуляцию и уменьшает возможность того, что
+какой-либо класс или роль слишком разрастётся. Меньшие, более простые и лучше
+инкапсулированные сущности проще для понимания и поддержки.
 
-=head2 Single Responsibility Principle
+=head2 Принцип единственной обязанности
 
 X<OO; single responsibility principle>
 
-When you design your object system, consider the responsibilities of each
-entity. For example, an C<Employee> object may represent specific information
-about a person's name, contact information, and other personal data, while a
-C<Job> object may represent business responsibilities. Separating these
-entities in terms of their responsibilities allows the C<Employee> class to
-consider only the problem of managing information specific to who the person is
-and the C<Job> class to represent what the person does. (Two C<Employee>s may
-have a C<Job>-sharing arrangement, for example.)
+Когда вы проектируете вашу объектную систему, обдумайте обязанности каждой
+сущности. Например, объект C<Employee> может представлять индивидуальную
+информацию об имени человека, контактную информацию и другие личные данные, а
+объект C<Job> может представлять рабочие обязанности. Разделение этих сущностей
+в по их обязанностям позволяет классу C<Employee> принимать во внимание только
+проблему управления информацией, касающейся того, кто человек есть, а классу
+C<Job> E<mdash> представлять, что человек делает. (Например, два сотрудника
+C<Employee> могут иметь договорённость по разделению одной работы C<Job>.)
 
-When each class has a single responsibility, you improve the encapsulation of
-class-specific data and behaviors and reduce coupling between classes.
+Если каждый класс имеет единственную обязанность, вы улучшаете инкапсуляцию
+свойственных классу данных и поведения и уменьшаете пересечения между классами.
 
-=head2 Don't Repeat Yourself
+=head2 Не повторяйтесь
 
 X<DRY>
 
-Complexity and duplication complicate development and maintenance. The DRY
-principle (Don't Repeat Yourself) is a reminder to seek out and to eliminate
-duplication within the system. Duplication exists in data as well as in code.
-Instead of repeating configuration information, user data, and other artifacts
-within your system, create a single, canonical representation of that
-information from which you can generate the other artifacts.
+Сложность и дублирование затрудняют разработку и поддержку. Принцип DRY (Don't
+Repeat Yourself, Не повторяйтесь) E<mdash> напоминание о необходимости находить
+и устранять дублирование внутри системы. Дублирование существует в данных, так
+же как и в коде. Вместо повторения конфигурационной информации, пользовательских
+данных и других артефактов внутри вашей системы, создаёте единое, каноническое
+представление этой информации, из которого вы сможете генерировать другие
+артефакты.
 
-This principle helps to reduce the possibility that important parts of your
-system can get unsynchronized, and helps you to find the optimal representation
-of the system and its data.
+Этот принцип помогает уменьшить возможность того, что важные части вашей системы
+могут потерять синхронизированность, и также помогает найти оптимальное
+представление системы и её данных.
 
-=head2 Liskov Substitution Principle
+=head2 Принцип замещения Лисков
 
 X<OO; Liskov Substitution Principle>
 
-The Liskov substitution principle suggests that you should be able to
-substitute a specialization of a class or a role for the original without
-violating the API of the original.  In other words, an object should be as or
-more general with regard to what it expects and at least as specific about what
-it produces.
+Принцип замещения Лисков предполагает, что вы должны иметь возможность поставить
+специализацию класса или роли на место оригинала, не нарушив API оригинала.
+Другими словами, объект должен быть также или более общим в отношении того,
+что он ожидает, и как минимум так же конкретнет в отношении того, что он
+производит.
 
-Imagine two classes, C<Dessert> and its child class C<PecanPie>. If the
-classes follow the Liskov substitution principle, you can replace every use of
-C<Dessert> objects with C<PecanPie> objects in the test suite, and everything
-should passN<See Reg Braithwaite's "IS-STRICTLY-EQUIVALENT-TO-A" for more
-details,
+Представьте два класса, C<Dessert> и его дочерний класс C<PecanPie>. Если классы
+следуют принципу замещения Лисков, вы можете заменить в наборе тестов каждое
+использование объектов C<Dessert> объектами C<PecanPie>, и все тесты должны
+пройтиN<См. E<laquo>IS-STRICTLY-EQUIVALENT-TO-A<raquo> Рэга Брейтуейта (Reg
+Braithwaite) для дальнейших подробностей,
 U<http://weblog.raganwald.com/2008/04/is-strictly-equivalent-to.html>.>.
 
-=head2 Subtypes and Coercions
+=head2 Подтипы и приведение типов
 
 Z<subtypes>
 Z<coercions>
@@ -86,40 +90,42 @@ X<types>
 X<subtypes>
 X<coercion>
 
-Moose allows you to declare and use types and extend them through subtypes to
-form ever more specialized descriptions of what your data represents and how it
-behaves. These type annotations help verify that the data on which you want to
-work in specific functions or methods is appropriate and even to specify
-mechanisms by which to coerce data of one type to data of another type.
+Moose позволяет вам объявить и использовать типы, а также расширять их с помощью
+подтипов, для формирования наиболее специализированного описания того, что
+представляют собой ваши данные и как они себя ведут. Эти прояснения типов
+помогают проверить, что данные, с которыми вы собираетесь работать в конкретных
+функциях и методах, соответствующи, и даже указать механизмы преобразования
+данных одного типа в данные другого типа.
 
 X<C<Moose::Util::TypeConstraints>>
 X<C<MooseX::Types>>
 
 See C<Moose::Util::TypeConstraints> and C<MooseX::Types> for more information.
 
-=head2 Immutability
+=head2 Неизменяемость
 
 Z<immutability>
 
 X<OO; immutability>
 
-OO novices often treat objects as if they were bundles of records which use
-methods to get and set internal values. This simple technique leads to the
-unfortunate temptation to spread the object's responsibilities throughout the
-entire system.
+Новички в ОО зачастую обращаются с объектами так, как будто они пачка записей,
+использующих методы для получения и установки внутренних значений. Эта простая
+техника ведёт к неприятному соблазну распространить обязанности объекта по всей
+системе.
 
-With a well-designed object, you tell it what to do and not how to do it. As a
-rule of thumb, if you find yourself accessing object instance data (even
-through accessor methods), you may have too much access to an object's
-internals.
+В случае хорошо спроектированного объекта, вы говорите ему, что делать, но не
+как это делать. Как правило большого пальца, если обнаружили, что обращаетесь к
+данным экземпляра объекта (даже с помощью методов-аксессоров), у вас, возможно,
+слишком много доступа к внутренностям объекта.
 
-One approach to preventing this behavior is to consider objects as immutable.
-Provide the necessary data to their constructors, then disallow any
-modifications of this information from outside the class. Expose no methods to
-mutate instance data. The objects so constructed are always valid after their
-construction and cannot become invalid through external manipulation. This
-takes tremendous discipline to achieve, but the resulting systems are robust,
-testable, and maintainable.
+Один из подходов, предотвращающих такое поведение E<mdash> считать объект
+неизменяемым. Передайте нужные данные в их конструкторы, а затем запретите
+любые модификации этой информации из-за пределов класса. Не делайте видимыми
+методы изменения данных экземпляра. Сконструированные таким образом объекты
+всегда корректны с момент своего создания и не могут стать некорректными в
+результате внешних манипуляций. Для достижения этого требуется огромная
+дисциплина, но получающиеся в результате системы надёжны, легко тестируются и
+поддерживаются.
 
-Some designs go as far as to prohibit the modification of instance data
-I<within> the class itself, though this is much more difficult to achieve.
+Некоторые варианты проектирования заходят так далеко, что запрещают изменение
+данных экземпляра I<внутри> самого класса, хотя этого достичь гораздо труднее.
