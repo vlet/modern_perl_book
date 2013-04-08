@@ -1,23 +1,25 @@
-=head1 Exceptions
+=head1 Исключения
 
 Z<exceptions>
 X<exceptions>
 
-Programming well means anticipating the unexpected. Files that should exist
-don't. That huge disk that will never fill up does. The always-on network
-isn't. The unbreakable database breaks. Exceptions happen, and robust software
-must handle them.  If you can recover, great! If you can't, log the relevant
-information and retry.
+Программировать хорошо означает предвидеть неожиданное. Файлы, которые должны
+существовать, не существуют. Этот огромный диск, который никогда не заполняется,
+оказывается полным. Всегда доступная сеть не доступна. Неломающиеся базы данных
+ломаются. Исключения случаются, и надёжное программное обеспечение должно их
+обрабатывать. Если вы можете восстановиться, отлично! Если не можете, запишите
+нужную информацию в лог и попробуйте снова.
 
-Perl 5 handles exceptional conditions through I<exceptions>: a
-dynamically-scoped control flow mechanism designed to raise and handle errors.
+Pelr 5 обрабатывает исключительные ситуации с помощью I<исключений>: механизм
+потока управления динамической области видимости, разработанный для возбуждения
+и обработки ошибок.
 
-=head2 Throwing Exceptions
+=head2 Выбрасывание исключений
 
 Z<throwing_exceptions>
 
-Suppose you want to write a log file. If you can't open the file, something has
-gone wrong. Use C<die> to throw an exception:
+Предположим, вы хотите записать в лог файл. Если вы не смогли открыть файл,
+что-то пошло не так. Используйте C<die> чтобы выбросить исключение:
 
 =begin programlisting
 
@@ -38,72 +40,76 @@ X<exceptions; C<die>>
 X<C<$@>>
 X<exceptions; C<$@>>
 
-C<die()> sets the global variable C<$@> to its operand and immediately exits
-the current function I<without returning anything>. This thrown exception will
-continue up the call stack (L<controlled_execution>) until something catches
-it. If nothing catches the exception, the program will exit with an error.
+C<die()> устанавливает значение своего операнда в глобальную переменную C<$@> и
+немедленно выходит из текущей функции I<ничего не возвращая>. Это выброшенное
+исключение будет подниматься по стеку вызовов (L<controlled_execution>) до тех
+пор, пока не будет где-нибудь поймано. Если исключение не будет поймано нигде,
+программа завершится с ошибкой.
 
-Exception handling uses the same dynamic scope (L<dynamic_scope>) as C<local>
-symbols.
+Обработка исключений использует ту же самую динамическую область видимости
+(L<dynamic_scope>), что и символы, объявленные с помощью C<local>.
 
-=head2 Catching Exceptions
+=head2 Отлавливание исключений
 
 Z<catching_exceptions>
 
 X<exceptions; catching>
 
-Sometimes an exception exiting the program is useful. A program run as a timed
-process might throw an exception when the error logs have filled, causing an
-SMS to go out to administrators. Yet not all exceptions should be fatal. Good
-programs can recover from some, or at least save their state and exit cleanly.
+Иногда исключение, приводящее к выходу из программы, удобно. Программа,
+выполняемая как синхронизированный процесс, может выбросить исключение, если
+логи ошибок заполнены, что приведёт к отправке SMS администраторам. Однако не
+все исключения должны быть фатальными. От некоторых из них хорошие программы
+должны уметь восстанавливаться, или по крайней мере сохранять текущее состояние
+и завершаться чисто.
 
 X<builtins; C<eval>>
 X<C<eval>; block>
 
-Use the block form of the C<eval> operator to catch an exception:
+Используйте блочную форму оператора C<eval> чтобы поймать исключение:
 
 =begin programlisting
 
-    # log file may not open
+    # лог-файл может не открыться
     my $fh = eval { open_log_file( 'monkeytown.log' ) };
 
 =end programlisting
 
-If the file open succeeds, C<$fh> will contain the filehandle. If it fails,
-C<$fh> will remain undefined, and program flow will continue.
+Если файл успешно открыт, C<$fh> будет содержать дескриптор файла. Если нет,
+C<$fh> останется неопределённой и выполнение программы продолжится.
 
-The block argument to C<eval> introduces a new scope, both lexical and dynamic.
-If C<open_log_file()> called other functions and something eventually threw an
-exception, this C<eval> could catch it.
+Блочный аргумента C<eval> вводит новую область видимости, и лексическую, и
+динамическую. Если C<open_log_file()> вызывает другие функции и какая-нибудь из
+них в конечном счёте выбросила исключение, это C<eval> его поймает.
 
 X<magic variables; C<$@>>
 
-An exception handler is a blunt tool. It will catch all exceptions in its
-dynamic scope. To check which exception you've caught (or if you've caught an
-exception at all), check the value of C<$@>. Be sure to C<local>ize C<$@>
-before you attempt to catch an exception; remember that C<$@> is a global
-variable:
+Обработка исключений E<mdash> грубый инструмент. Он будет ловить все исключения
+в своей динамической области видимости. Чтобы проверить, какое исключение вы
+поймали (и поймали ли вообще), проверьте значение C<$@>. Убедитесь, что
+локализовали C<$@> с помощью C<local> прежде чем попытаться поймать исключение;
+помните, что C<$@> E<mdash> глобальная переменная:
 
 =begin programlisting
 
     B<local $@;>
 
-    # log file may not open
+    # лог-файл может не открыться
     my $fh = eval { open_log_file( 'monkeytown.log' ) };
 
-    # caught exception
+    # поймано исключение
     B<if (my $exception = $@) { ... }>
 
 =end programlisting
 
 X<exceptions; rethrowing>
 
-Copy C<$@> to a lexical variable immediately to avoid the possibility of
-subsequent code clobbering the global variable C<$@>. You never know what else
-has used an C<eval> block elsewhere and reset C<$@>.
+Сразу же скопируйте C<$@> в лексическую переменную, чтобы избежать возможности
+того, что последующий код перезапишет глобальную переменную C<$@>. Вы никогда не
+знаете, что ещё могло использовать блок C<eval> в каком-нибудь другом месте и
+сбросить C<$@>.
 
-C<$@> usually contains a string describing the exception. Inspect its contents
-to see whether you can handle the exception:
+C<$@> обычно содержит строку, описывающую исключение. Проверьте её содержимое,
+чтобы увидеть, можете ли вы обработать исключение:
 
 =begin programlisting
 
@@ -116,24 +122,25 @@ to see whether you can handle the exception:
 
 =end programlisting
 
-Rethrow an exception by calling C<die()> again. Pass the existing exception or
-a new one as necessary.
+Пробросьте исключение, снова вызвав C<die()>. Передайте существующее исключение
+или новое в зависимости от необходимости.
 
 X<exceptions; throwing objects>
 
-Applying regular expressions to string exceptions can be fragile, because error
-messages may change over time. This includes the core exceptions that Perl
-itself throws. Fortunately, you may also provide a reference--even a blessed
-reference--to C<die>. This allows you to provide much more information in your
-exception: line numbers, files, and other debugging information. Retrieving
-this information from something structured is much easier than parsing it out
-of a string. Catch these exceptions as you would any other exception.
+Применение к строковым исключениям регулярных выражений может быть ненадёжным,
+потому что сообщения об ошибках могут со временем меняться. Это относится и к
+внутренним исключениям, которые выбрасывает сам Perl. К счастью, вы можете
+также передавать в C<die> ссылку E<mdash> даже благословлённую ссылку. Это
+позволяет вам предоставлять в вашем исключении гораздо больше информации: номера
+строк, файлы и другую отладочную информацию. Получение этой информации из
+чего-то структурированного намного легче, чем разбор строки. Ловите эти
+исключения так же, как любые другие.
 
 X<exceptions; custom classes with C<Exception::Class>>
 X<C<Exception::Class>>
 
-The CPAN distribution C<Exception::Class> makes creating and using exception
-objects easy:
+CPAN-дистрибутив C<Exception::Class> упрощает создание и использование
+объектов-исключений:
 
 =begin programlisting
 
@@ -162,38 +169,39 @@ objects easy:
 
 =end programlisting
 
-=head2 Exception Caveats
+=head2 Предостережения об исключениях
 
 Z<exception_caveats>
 
 X<exceptions; caveats>
 
-Though throwing exceptions is relatively simple, catching them is less so.
-Using C<$@> correctly requires you to navigate several subtle risks:
+Хотя выбрасывание исключений относительно просто, ловить их сложнее. Корректное
+использование C<$@> требует от вас обходить некоторые коварные риски:
 
 =over 4
 
-=item * UnC<local>ized uses further down the dynamic scope may modify C<$@>
+=item * Нелокализованное с помощью C<local> использование дальше в динамической
+области видимости может модифицировать C<$@>
 
-=item * It may contain an object which overrides its boolean value to return
-false
+=item * Она может содержать объкт, перегружающий своё булево значение для
+возврата ложного значения
 
-=item * A signal handler (especially the C<DIE> signal handler) may change
+=item * Обработчик сигнала (особенно обработчик сигнала C<DIE>) может изменять
 C<$@>
 
-=item * The destruction of an object during scope exit may call C<eval> and
-change C<$@>
+=item * Уничтожение объекта при выходе из области видимости может вызывать
+C<eval> и изменять C<$@>
 
 =back
 
 X<exceptions; handling safely with C<Try::Tiny>>
 X<C<Try::Tiny>>
 
-Perl 5.14 fixed some of these issues. Granted, they occur very rarely, but
-they're often difficult to diagnose and to fix. The C<Try::Tiny> CPAN
-distribution improves the safety of exception handling I<and> the syntaxN<In
-fact, C<Try::Tiny> helped inspire improvements to Perl 5.14's exception
-handling.>.
+Perl 5.14 исправил некоторые из этих проблем. Признаем, они встречаются очень
+редко, но зачастую сложны для диагностики и исправления. CPAN-дистрибутив
+C<Try::Tiny> улучшает безопасность обработки исключений I<и> синтаксисN<На самом
+деле, C<Try::Tiny> помог вдохновить на улучшения в обработке исключений в
+Perl 5.14.>.
 
 C<Try::Tiny> is easy to use:
 
@@ -206,40 +214,49 @@ C<Try::Tiny> is easy to use:
 
 =end programlisting
 
-C<try> replaces C<eval>. The optional C<catch> block executes only when C<try>
-catches an exception. C<catch> receives the caught exception as the topic
-variable C<$_>.
+C<try> заменяет C<eval>. Необязательный блок C<catch> выполняется только если
+C<try> поймал исключение. C<catch> получает пойманное исключение как
+переменную-топик C<$_>.
 
-=head2 Built-in Exceptions
+=head2 Встроенные исключения
 
 Z<builtin_exceptions>
 
 X<exceptions; core>
 
-Perl 5 itself throws several exceptional conditions. C<perldoc perldiag> lists
-several "trappable fatal errors". While some are syntax errors thrown during
-the compilation process, you can catch the others during runtime. The most
-interesting are:
+Сам Perl 5 выбрасывает несколько исключительных условий. C<perldoc perldiag>
+перечисляет несколько E<laquo>отлавливаемых фатальных ошибокE<raquo>. Тогда как
+часть из них E<mdash> синтаксические ошибки, выбрасываемые в процессе
+компиляции, другие вы можете поймать во время выполнения. Наиболее интересны
+следующие:
 
 =over 4
 
-=item * Using a disallowed key in a locked hash (L<locked_hashes>)
+=item * Using a disallowed key in a locked hash (использование недопустимого
+ключа в заблокированном хеше) (L<locked_hashes>)
 
-=item * Blessing a non-reference (L<blessed_references>)
+=item * Blessing a non-reference (Благословление не-ссылки)
+(L<blessed_references>)
 
-=item * Calling a method on an invalid invocant (L<moose>)
+=item * Calling a method on an invalid invocant (вызов метода на некорректной
+вызывающей сущности) (L<moose>)
 
-=item * Failing to find a method of the given name on the invocant
+=item * Failing to find a method of the given name on the invocant (не удалось
+обнаружить метод с заданным именем в вызывающией сущности)
 
-=item * Using a tainted value in an unsafe fashion (L<taint>)
+=item * Using a tainted value in an unsafe fashion (небезопасное использование
+испорченного значения) (L<taint>)
 
-=item * Modifying a read-only value
+=item * Modifying a read-only value (модификация значения, доступного только для
+чтения)
 
-=item * Performing an invalid operation on a reference (L<references>)
+=item * Performing an invalid operation on a reference (выполнение недопустимой
+операции над ссылкой) (L<references>)
 
 =back
 
 X<C<autodie>>
 
-Of course you can also catch exceptions produced by C<autodie> (L<autodie>) and
-any lexical warnings promoted to exceptions (L<registering_warnings>).
+Конечно, вы также можете ловить исключения, производимые C<autodie> (L<autodie>)
+и любые лексические предупреждения, повышенные до исключений
+(L<registering_warnings>).
