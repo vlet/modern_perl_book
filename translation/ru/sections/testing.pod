@@ -1,16 +1,19 @@
-=head1 Testing
+=head1 Тестирование
 
 Z<testing>
 
 X<testing>
 
-I<Testing> is the process of writing and running small pieces of code to verify
-that your software behaves as intended. Effective testing automates a process
-you've already done countless times already: write some code, run it, and see
-that it works. This I<automation> is essential. Rather than relying on humans
-to perform repeated manual checks perfectly, let the computer do it.
+I<Тестирование> E<mdash> это процесс написания и запуска маленьких кусочков код,
+помогающих удостовериться, что ваше программное обеспечение ведёт себя так, как
+задумано. Эффективное тестирование автоматизирует процесс, который вы уже
+выполняли бесчисленное количество раз: написать какое-то количество кода,
+запустить его, и посмотреть, как он работает. Эта I<автоматизация> чрезвычайно
+важна. Вместо того, чтобы доверять людям в том, что они буду идеально выполнять
+повторяющиеся ручные проверки, позвольте делать это компьютеру.
 
-Perl 5 provides great tools to help you write the right tests.
+Perl 5 предоставляет отличные инструменты, помогающие вам писать правильные
+тесты.
 
 =head2 Test::More
 
@@ -18,9 +21,9 @@ X<C<Test::More>>
 X<C<ok()>>
 X<testing; C<ok()>>
 
-Perl testing begins with the core module C<Test::More> and its C<ok()>
-function. C<ok()> takes two parameters, a boolean value and a string which
-describes the test's purpose:
+Тестирование в Perl начинается со встроенного модуля C<Test::More> и его функции
+C<ok()>. C<ok()> принимает два параметра, булево значение и строку, описывающую
+назначение теста:
 
 =begin programlisting
 
@@ -35,29 +38,30 @@ describes the test's purpose:
 
 X<testing; assertion>
 
-Any condition you can test in your program can eventually become a binary
-value. Every test I<assertion> is a simple question with a yes or no answer:
-does this tiny piece of code work as I intended?  A complex program may have
-thousands of individual conditions, and, in general, the smaller the
-granularity the better. Isolating specific behaviors into individual assertions
-lets you narrow down bugs and misunderstandings, especially as you modify the
-code in the future.
+Любое условие в вашей программе, которое вы можете протестировать, так или иначе
+становится двоичным значением. Каждое тестовое I<утверждение> E<mdash> это
+простой вопрос, на который можно ответить да или нет: работает ли этот маленький
+кусочек кода так, как я ожидаю? Сложные программы могут иметь тысячи отдельных
+условий, и, в общем, чем мельче разбиение, тем лучше. Изолирование конкретных
+поведений в отдельные утверждения позволяет вам свести к минимуму баги и
+недопонимания, особенно когда вы будете модифицировать код в будущем.
 
-The function C<done_testing()> tells C<Test::More> that the program has
-successfully executed all of the expected testing assertions. If the program
-encountered a runtime exception or otherwise exited unexpectedly before the
-call to C<done_testing()>, the test framework will notify you that something
-went wrong. Without a mechanism like C<done_testing()>, how would you I<know>?
-Admittedly this example code is too simple to fail, but code that's too simple
-to fail fails far more often than anyone would expect.
+Функция C<done_testing()> сообщает C<Test::More>, что программа успешно
+выполнила все ожидаемые тестовые утверждения. Если программа столкнулась с
+исключением времени выполнения, или по другим причинам неожиданно завершилась
+прежде чем произошёл вызов C<done_testing()>, тестовый фреймворк уведомит вас,
+что что-то пошло не так. Без механизмы, подобного C<done_testing()>, как бы вы
+I<узнали>? Правда, этот пример кода слишком прост, чтобы провалиться, но код,
+который слишком прост, чтобы провалиться, проваливается гораздо чаще, чем можно
+ожидать.
 
 =begin sidebar
 
 X<testing; plan>
 X<C<plan()>>
 
-C<Test::More> also allows the use of a I<test plan> to represent the number of
-individual assertions you plan to run:
+C<Test::More> также позволяет использовать I<план тестов> для представления
+числа отдельных утверждений, которые вы планируете выполнить:
 
 =begin programlisting
 
@@ -70,18 +74,19 @@ individual assertions you plan to run:
 
 =end programlisting
 
-The C<tests> argument to C<Test::More> sets the test plan for the program. This
-is a safety net. If fewer than four tests ran, something went wrong.  If more
-than four tests ran, something went wrong.
+Аргумент C<test>, указываемый для C<Test::More>, устанавливает план тестов для
+программы. Это предохранительная сетка. Если выполнено меньше, чем четыре теста,
+что-то пошло не так. Если выполнено больше, чем четыре теста, что-то пошло не
+так.
 
 =end sidebar
 
-=head2 Running Tests
+=head2 Запуск тестов
 
 Z<running_tests>
 
-The resulting program is now a full-fledged Perl 5 program which produces the
-output:
+Результирующая программа теперь E<mdash> полноценная программа на Perl 5,
+которая генерирует следующий вывод:
 
 =begin screen
 
@@ -101,20 +106,22 @@ output:
 X<TAP (Test Anything Protocol)>
 X<testing; TAP>
 
-This format adheres to a standard of test output called I<TAP>, the I<Test
-Anything Protocol> (U<http://testanything.org/>). Failed TAP tests produce
-diagnostic messages as a debugging aid.
+Этот формат соответствует стандартному выводу тестов, называемому I<TAP>,
+I<Test Anything Protocol>, I<Протокол тестирования чего угодно>
+(U<http://testanything.org/>). Проваленные TAP-тесты выдают диагностические
+сообщения для помощи отладке.
 
 X<C<Test::Harness>>
 X<C<prove>>
 X<testing; C<prove>>
 X<testing; running tests>
 
-The output of a test file containing multiple assertions (especially multiple
-I<failed> assertions) can be verbose. In most cases, you want to know either
-that everything passed or the specifics of any failures. The core module
-C<Test::Harness> interprets TAP, and its related program C<prove> runs tests
-and displays only the most pertinent information:
+Вывод тестового файла, содержащего множество утверждений (особенно множество
+I<проваленных> утверждений) может быть очень многословным. В большинстве случаев
+вам достаточно знать либо что всё прошло, либо конкретику имеющихся провалов.
+Встроенный модуль C<Test::Harness> интерпретирует TAP, и связанная с ним
+программа C<prove> запускает тесты и отображает только наиболее релевантную
+информацию:
 
 =begin screen
 
@@ -137,10 +144,10 @@ and displays only the most pertinent information:
 
 =end screen
 
-That's a lot of output to display what is already obvious: the second and third
-tests fail because zero and the empty string evaluate to false.  It's easy to
-fix that failure by inverting the sense of the condition with the use of
-boolean coercion (L<boolean_coercion>):
+Тут много вывода, отображающего то, что уже очевидно: второй и третий тесты
+проваливаются, потому что ноль и пустая строка являются ложными значениями. Эти
+провалы легко исправить, инвертировав смысл условий с помощью булева приведения
+типов (L<boolean_coercion>):
 
 =begin programlisting
 
@@ -149,7 +156,7 @@ boolean coercion (L<boolean_coercion>):
 
 =end programlisting
 
-With those two changes, C<prove> now displays:
+После этих двух изменений C<prove> выводит следующее:
 
 =begin screen
 
@@ -161,33 +168,34 @@ With those two changes, C<prove> now displays:
 
 =begin sidebar
 
-See C<perldoc prove> for valuable test options, such as running tests in
-parallel (C<-j>), automatically adding F<lib/> to Perl's include path (C<-l>),
-recursively running all test files found under F<t/> (C<-r t>), and running
-slow tests first (C<--state=slow,save>).
+Смотрите в C<perldoc prove> полезные опции тестов, такие как параллельный запуск
+тестов (C<-j>), автоматическое добавление F<lib/> во включаемые пути Perl
+(C<-l>), рекурсивный запуск всех файлов тестов, найденных в F<t/> (C<-r t>) и
+запуск медленных тестов сначала (C<--state=slow,save>).
 
 X<C<proveall>>
 X<testing; C<proveall> alias>
-The bash shell alias C<proveall> may prove useful:
+
+Алиас оболочки bash C<proveall> может оказаться полезным:
 
     alias proveall='prove -j9 --state=slow,save -lr t'
 
 =end sidebar
 
-=head2 Better Comparisons
+=head2 Лучшее сравнение
 
-Even though the heart of all automated testing is the boolean condition "is
-this true or false?", reducing everything to that boolean condition is tedious
-and offers few diagnostic possibilities. C<Test::More> provides several other
-convenient assertion functions.
+Хотя сердце всех автоматизированных тестов E<mdash> булево условие
+E<laquo>истинно или ложно?E<raquo>, сведение всего к этому булеву условию
+утомительно даёт небольшие диагностические возможности. C<Test::More>
+предоставляет несколько других удобных функций утверждений.
 
 X<C<is()>>
 X<testing; C<is()>>
 X<operators; C<eq>>
 
-The C<is()> function compares two values using the C<eq> operator. If the
-values are equal, the test passes. Otherwise, the test fails with a diagnostic
-message:
+Функция C<is()> сравнивает два значения, используя оператор C<eq>. Если значения
+равны, тест проходит. В противном случае, тест проваливается с диагностическим
+сообщением:
 
 =begin programlisting
 
@@ -196,7 +204,8 @@ message:
 
 =end programlisting
 
-As you might expect, the first test passes and the second fails:
+Как вы можете предположить, первый тест проходит, а второй E<mdash>
+проваливается.
 
 =begin screen
 
@@ -209,12 +218,12 @@ As you might expect, the first test passes and the second fails:
 
 =end screen
 
-Where C<ok()> only provides the line number of the failing test, C<is()>
-displays the expected and received values.
+Тогда как C<ok()> предоставляет только номер строки провалившегося теста,
+C<is()> отображает ожидаемое полученное значение.
 
-C<is()> applies implicit scalar context to its values (L<prototypes>). This
-means, for example, that you can check the number of elements in an array
-without explicitly evaluating the array in scalar context:
+C<is()> налагает неявный скалярный контекст на свои значения (L<prototypes>).
+Это означает, например, что вы можете проверить количество элементов в массиве
+без необходимости явного вычисления массива в скалярном контексте:
 
 =begin programlisting
 
@@ -224,25 +233,24 @@ without explicitly evaluating the array in scalar context:
 
 =end programlisting
 
-... though some people prefer to write C<scalar @cousins> for the sake of
-clarity.
+E<hellip>хотя некоторые для ясности предпочитают писать C<scalar @cousins>.
 
 X<C<isnt()>>
 X<testing; C<isnt()>>
 X<operators; C<ne>>
 
-C<Test::More>'s corresponding C<isnt()> function compares two values using the
-C<ne> operator, and passes if they are not equal. It also provides scalar
-context to its operands.
+Соответствующая функция C<Test::More> C<isnt()> сравнивает два значения,
+использую оператор C<ne>, и проходит, если они не равны. Она также налагает
+скалярный контекст на свои операнды.
 
 X<C<cmp_ok()>>
 X<testing; C<cmp_ok()>>
 
-Both C<is()> and C<isnt()> apply I<string comparisons> with the Perl 5
-operators C<eq> and C<ne>. This almost always does the right thing, but for
-complex values such as objects with overloading (L<overloading>) or dual vars
-(L<dualvars>), you may prefer explicit comparison testing. The C<cmp_ok()>
-function allows you to specify your own comparison operator:
+И C<is()>, и C<isnt()> используют I<строковое сравнение> с помощью операторов
+Perl 5 C<eq> и C<ne>. Это почти всегда то, что нужно, но для сложных значений,
+таких как объекты с перегрузкой (L<overloading>) или двойные переменные
+(L<dualvars>), вы можете предпочесть явное тестирование сравнения. Функция
+C<cmp_ok()> позволяет вам указать свой собственный оператор сравнения:
 
 =begin programlisting
 
@@ -257,9 +265,9 @@ function allows you to specify your own comparison operator:
 X<C<isa_ok()>>
 X<testing; C<isa_ok()>>
 
-Classes and objects provide their own interesting ways to interact with tests.
-Test that a class or object extends another class (L<inheritance>) with
-C<isa_ok()>:
+Классы и объекты предоставляют свои собственные интересные способы
+взаимодействия с тестами. Протестировать, что класс или объект расширяет другой
+класс (L<inheritance>) с помощью C<isa_ok()>:
 
 =begin programlisting
 
@@ -269,10 +277,11 @@ C<isa_ok()>:
 
 =end programlisting
 
-C<isa_ok()> provides its own diagnostic message on failure.
+C<isa_ok()> предоставляет свои собственные диагностические сообщенния при
+провалах.
 
-C<can_ok()> verifies that a class or object can perform the requested method
-(or methods):
+C<can_ok()> проверяет, что класс или объект может выполнить запрошенный метод
+(или методы):
 
 =begin programlisting
 
@@ -281,8 +290,8 @@ C<can_ok()> verifies that a class or object can perform the requested method
 
 =end programlisting
 
-The C<is_deeply()> function compares two references to ensure that their
-contents are equal:
+Функция C<is_deeply()> сравнивает две ссылки, чтобы убедиться, что их содержимое
+идентичное:
 
 =begin programlisting
 
@@ -299,58 +308,58 @@ contents are equal:
 X<CPAN; C<Test::Differences>>
 X<CPAN; C<Test::Deep>>
 
-If the comparison fails, C<Test::More> will do its best to provide a reasonable
-diagnostic indicating the position of the first inequality between the
-structures. See the CPAN modules C<Test::Differences> and C<Test::Deep> for
-more configurable tests.
+Если сравнение проваливается, C<Test::More> сделает всё, что в его силах, чтобы
+предоставить разумную диагностику, указывающую позицию первого несоответствия
+между структурами. Для более настраиваемых тестов смотрите CPAN-модули
+C<Test::Differences> и C<Test::Deep>.
 
-C<Test::More> has several more test functions, but these are the most useful.
+В C<Test::More> есть ещё несколько тестовых функций, но эти наиболее полезные.
 
-=head2 Organizing Tests
+=head2 Организация тестов
 
 X<testing; F<.t> files>
 X<testing; F<t/> directory>
 X<C<Module::Build>>
 X<C<ExtUtils::MakeMaker>>
 
-CPAN distributions should include a F<t/> directory containing one or more test
-files named with the F<.t> suffix.  By default, when you build a distribution
-with C<Module::Build> or C<ExtUtils::MakeMaker>, the testing step runs all of
-the F<t/*.t> files, summarizes their output, and succeeds or fails on the
-results of the test suite as a whole.  There are no concrete guidelines on how
-to manage the contents of individual F<.t> files, though two strategies are
-popular:
+CPAN-дистрибутивы должны включать директорию F<t/>, содержающую один или более
+файлов тестов, имеющих расширение F<.t>. По умолчанию, когда вы собираете
+дистрибутив с помощью C<Module::Build> или C<ExtUtils::MakeMaker>, этап
+тестирования запускает все файлы F<t/*.t>, суммирует их вывод, и проходит
+успешно или проваливается в зависимости от результатов набора тестов как целого.
+Нет конкретных руководств, как управлять содержимым отдельных файлов F<.t>, хотя
+наиболее популярны две стратегии:
 
 =over 4
 
-=item * Each F<.t> file should correspond to a F<.pm> file
+=item * Каждый файл F<.t> должен соответствовать файлу F<.pm>.
 
-=item * Each F<.t> file should correspond to a feature
+=item * Каждый файл F<.t> должен соответствовать некоторому функционалу.
 
 =back
 
-A hybrid approach is the most flexible; one test can verify that all of your
-modules compile, while other tests verify that each module behaves as intended.
-As distributions grow larger, the utility of managing tests in terms of
-features becomes more compelling; larger test files are more difficult to
-maintain.
+Смешанный подход наиболее гибок; один тест может проверять, что все ваши модули
+компилируются, тогда как другие тесты будут проверять, что каждый модуль ведёт
+себя так, как ожидается. Когда дистрибутив разрастается, полезность управления
+тестами в привязке к функционалу становится более интересной; большие тестовые
+файлы сложнее поддерживать.
 
-Separate test files can also speed up development. If you're adding the ability
-to breathe fire to your C<RobotMonkey>, you may want only to run the
-F<t/breathe_fire.t> test file.  When you have the feature working to your
-satisfaction, run the entire test suite to verify that local changes have no
-unintended global effects.
+Кроме того, раздельные файлы тестов ускоряют разработку. Если вы добавляете
+способность дышать огнём к вашему классу C<RobotMonkey>, вы, вероятно, захотите
+запускать только тестовый файл F<t/breathe_fire.t>. Когда же вы добъётесь
+удовлетворительной работы функционала, запустите весь набор тестов для проверки
+того, что локальные изменения не имеют непреднамеренных глобальных эффектов.
 
-=head2 Other Testing Modules
+=head2 Другие модули для тестирования
 
 X<C<Test::Builder>>
 X<testing; C<Test::Builder>>
 
-C<Test::More> relies on a testing backend known as C<Test::Builder>.  The
-latter module manages the test plan and coordinates the test output into TAP.
-This design allows multiple test modules to share the same C<Test::Builder>
-backend.  Consequently, the CPAN has hundreds of test modules available--and
-they can all work together in the same program.
+C<Test::More> полагается на тестовый бэкенд, известный как C<Test::Builder>.
+Последний модуль управляет планом тестов и приводит вывод тестов в TAP. Этот
+дизайн позволяет множеству тестовых модулей разделять один и тот же бэкенд
+C<Test::Builder>. Вследствие этого, на CPAN доступны сотни тестовых модулей
+E<mdash> и все они могут работать вместе в одной и той же программе.
 
 X<CPAN; C<Test::Exception>>
 X<CPAN; C<Test::Fatal>>
@@ -371,42 +380,44 @@ X<CPAN; C<Devel::Cover>>
 
 =over 4
 
-=item * C<Test::Fatal> helps test that your code throws (and does not throw)
-exceptions appropriately. You may also encounter C<Test::Exception>.
+=item * C<Test::Fatal> помогает протестировать, что ваш код выбрасывает (и не
+выбрасывает) исключения соответствующим образом. Вам также может встретиться
+C<Test::Exception>.
 
-=item * C<Test::MockObject> and C<Test::MockModule> allow you to test difficult
-interfaces by I<mocking> (emulating but producing different results).
+=item * C<Test::MockObject> и C<Test::MockModule> позволяют вам тестировать
+сложные интерфейсы, I<имитируя> их (эмулирую, но производя другие результаты).
 
-=item * C<Test::WWW::Mechanize> helps test web applications, while
-C<Plack::Test>, C<Plack::Test::Agent>, and the subclass
-C<Test::WWW::Mechanize::PSGI> can do so without using an external live web
-server.
+=item * C<Test::WWW::Mechanize> помогает тестировать веб-приложения, тогда как
+C<Plack::Test>, C<Plack::Test::Agent> и подкласс C<Test::WWW::Mechanize::PSGI>
+могут делать это, не используя внешний живой веб-сервер.
 
-=item * C<Test::Database> provides functions to test the use and abuse of
-databases. C<DBICx::TestDatabase> helps test schemas built with C<DBIx::Class>.
+=item * C<Test::Database> предоставляет функции для тестирования использования
+и неправильной эксплуатации баз данных. C<DBICx::TestDatabase> помогает
+тестировать схемы, сгенерированные с помощью C<DBIx::Class>.
 
-=item * C<Test::Class> offers an alternate mechanism for organizing test
-suites.  It allows you to create classes in which specific methods group tests.
-You can inherit from test classes just as your code classes inherit from each
-other.  This is an excellent way to reduce duplication in test suites.  See
-Curtis Poe's excellent C<Test::Class>
-seriesN<U<http://www.modernperlbooks.com/mt/2009/03/organizing-test-suites-with-testclass.html>>.
-The newer C<Test::Routine> distribution offers similar possibilities through
-the use of Moose (L<moose>).
+=item * C<Test::Class> предлагает альтернативный механизм организации наборов
+тестов. Он позволяет вам создавать классы, в которых конкретные методы
+группируют тесты. Вы можете наследовать от этих тестовых классов, так же как
+ваши классы кода наследуют друг от друга. Это превосходный способ уменьшить
+дублирование в тестовых наборах. См. превосходную серию статей по C<Test::Class>
+Кёртиса Пое (Curtis
+Poe)N<U<http://www.modernperlbooks.com/mt/2009/03/organizing-test-suites-with-testclass.html>>.
+Более новый дистрибутив C<Test::Routine> предлагает аналогичные возможности
+посредством использования Moose (L<Moose>).
 
-=item * C<Test::Differences> tests strings and data structures for equality and
-displays any differences in its diagnostics. C<Test::LongString> adds similar
-assertions.
+=item * C<Test::Differences> тестирует строки и структуры данных на идентичность
+и отображает любые найденные различия в своей диагностике. C<Test::LongString>
+добавляет похожие утверждения.
 
-=item * C<Test::Deep> tests the equivalence of nested data structures
+=item * C<Test::Deep> тестирует идентичность вложенных структур данных
 (L<nested_data_structures>).
 
-=item * C<Devel::Cover> analyzes the execution of your test suite to report on
-the amount of your code your tests actually exercises.  In general, the more
-coverage the better--though 100% coverage is not always possible, 95% is far
-better than 80%.
+=item * C<Devel::Cover> анализирует выполнение ваших наборов тестов и даёт отчёт
+о количестве вашего кода, которое тесты действительно выполняют. В общем, чем
+больше покрытие, тем лучше E<mdash> хотя стопроцентное покрытие не всегда
+возможно, 95% гораздо лучше, чем 80%.
 
 =back
 
-See the Perl QA project (U<http://qa.perl.org/>) for more information about
-testing in Perl.
+См. Perl QA project (U<http://qa.perl.org/>) для большей информации о
+тестировании в Perl.
