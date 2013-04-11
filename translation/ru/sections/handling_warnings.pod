@@ -1,19 +1,19 @@
-=head1 Handling Warnings
+=head1 Обработка предупреждений
 
 Z<handling_warnings>
 
-While there's more than one way to write a working Perl 5 program, some of
-those ways can be confusing, unclear, and even incorrect in subtle
-circumstances. Perl 5's optional warnings system can help you identify and
-avoid these situations.
+Хотя существует более чем один способ написать работающую программу на Perl 5,
+некоторые из этих способов могут быть вводящими в заблуждение, неясными, и даже
+некорректными в некоторых хитрых ситуациях. Система опциональных предупреждений
+в Perl 5 может помочь вам распознавать и избегать этих ситуаций.
 
-=head2 Producing Warnings
+=head2 Генерация предупреждений
 
 Z<producing_warnings>
 
 X<builtins; C<warn>>
 
-Use the C<warn> builtin to emit a warning:
+Используйте встроенную функцию C<warn> чтобы выдать предупреждение:
 
 =begin programlisting
 
@@ -21,9 +21,9 @@ Use the C<warn> builtin to emit a warning:
 
 =end programlisting
 
-C<warn> prints a list of values to the STDERR filehandle (L<filehandle>).  Perl
-will append the filename and line number on which the C<warn> call occurred
-unless the last element of the list ends in a newline.
+C<warn> выводит список значений в файловый дескриптор STDERR (L<filehandle>).
+Perl будет добавлять имя файла и номер строки, на которой произошёл вызов
+C<warn>, если последний элемент списка не заканчивается переводом строки.
 
 X<C<Carp>>
 X<C<Carp>; C<carp()>>
@@ -31,9 +31,9 @@ X<C<Carp>; C<cluck()>>
 X<C<Carp>; C<croak()>>
 X<C<Carp>; C<confess()>>
 
-The core C<Carp> module offers other mechanisms to produce warnings. Its
-C<carp()> function reports a warning from the perspective of the calling code.
-Given function parameter validation like:
+Встроенный модуль C<Carp> предлагает другие механизмы для генерации
+предупреждений. Его функция C<carp()> выводит предупреждение с точки зрения
+вызывающего кода. Если есть такая валидация параметров функции:
 
 =begin programlisting
 
@@ -48,14 +48,16 @@ Given function parameter validation like:
 
 =end programlisting
 
-... the arity (L<arity>) warning will include the filename and line number of
-the I<calling> code, not C<only_two_arguments()>. C<Carp>'s C<cluck()>
-similarly produces a backtrace of all function calls up to the current
-function.
+E<hellip> предупреждение об арности (L<arity>) будет включать имя файла и номер
+строки I<вызывающего> кода, а не C<only_two_arguments()>. C<cluck()> из того же
+модуля C<Carp> аналогично генерирует обратную трассировку всех вызовов функций
+до текущей функции.
 
 X<C<Carp>; verbose>
 
-C<Carp>'s verbose mode adds backtraces to all warnings produced by C<carp()> and C<croak()> (L<reporting_errors>) throughout the entire program:
+Многословный режим C<Carp> добавляет обратную трассировку ко всем
+предупреждениям, генерируемым C<carp()> и C<croak()> (L<reporting_errors>) по
+всей программе:
 
 =begin screen
 
@@ -63,77 +65,82 @@ C<Carp>'s verbose mode adds backtraces to all warnings produced by C<carp()> and
 
 =end screen
 
-Use C<Carp> when writing modules (L<modules>) instead of C<warn> or C<die>.
+Используйте C<Carp> при написании модулей (L<modules>) вместо C<warn> или
+C<die>.
 
-=head2 Enabling and Disabling Warnings
+=head2 Включение и выключение предупреждений
 
 X<C<-w>; enable warnings command-line argument>
 X<command-line arguments; C<-w>>
 
-You may encounter the C<-w> command-line argument in older code. This enables
-warnings throughout the program, even in external modules written and
-maintained by other people. It's all or nothing, though it can be useful if you
-have the wherewithal to eliminate warnings and potential warnings throughout
-the entire codebase.
+В старом коде вы можете встретить аргумент командной строки C<-w>. Он включает
+предупреждения по всей программе, даже во внешних модулях, написанных и
+поддерживаемых другими людьми. Тут всё или ничего, хотя может быть полезным,
+если у вас есть необходимые средства для устранения и предупреждений и
+потенциальных предупреждений по всей кодовой базе.
 
 X<C<warnings>>
 X<pragmas; C<warnings>>
 
-The modern approach is to use the C<warnings> pragmaN<...or an equivalent such
-as C<use Modern::Perl;>.>. This enables warnings in I<lexical> scopes and
-indicates that the code's authors intended that it should not normally produce
-warnings.
+Современный подход E<mdash> использование прагмы C<warnings>N<E<hellip>или
+эквивалента, такого как C<use Modern::Perl;>.>. Это включает предупреждения в
+I<лексической> области видимости и указывает, что автор кода не подразумевает,
+что в нормальных условиях он будет генерировать предупреждения.
 
-=begin tip Global Warnings Flags
+=begin tip Глобальные флаги предупреждений
 
 X<C<-W>; enable warnings command-line argument>
 X<command-line arguments; C<-W>>
 X<C<-X>; disable warnings command-line argument>
 X<command-line arguments; C<-X>>
 
-The C<-W> flag enables warnings throughout the program unilaterally, regardless
-of lexical enabling or disabling through the C<warnings> pragma. The C<-X> flag
-I<disables> warnings throughout the program unilaterally.  Neither is common.
+Флаг C<-W> включает предупреждения по всей программе односторонне, независимо
+от лексического включения или выключения с помощью прагмы C<warnings>. Флаг
+C<-X> I<отключает> предупреждения по всей программе односторонне. Ни один из
+них не имеет широкого распространения.
 
 =end tip
 
 X<C<$^W>>
 X<global variables; C<$^W>>
 
-All of C<-w>, C<-W>, and C<-X> affect the value of the global variable C<$^W>.
-Code written before the C<warnings> pragma (Perl 5.6.0 in spring 2000) may
-C<local>ize C<$^W> to suppress certain warnings within a given scope.
+Все эти флаги, C<-w>, C<-W> и C<-X>, воздействуют на глобальную переменную
+C<$^W>. Код, написанный до появления прагмы C<warnings> (Perl 5.6.0 весной
+2000 года) может локализовать C<$^W> чтобы подавить некоторые предупреждения
+в пределах заданной области видимости.
 
-=head2 Disabling Warning Categories
+=head2 Отключение категорий предупреждений
 
-To disable selective warnings within a scope, use C<no warnings;> with an
-argument list. Omitting the argument list disables all warnings within that
-scope.
+Чтобы отключить выбранные предупреждения в области видимости, используйте
+C<no warnings;> со списком аргументов. Опускание списка аргументов отключает
+все предупреждения в этой области видимости.
 
-C<perldoc perllexwarn> lists all of the warnings categories your version of
-Perl 5 understands with the C<warnings> pragma.  Most of them represent truly
-interesting conditions, but some may be actively unhelpful in your specific
-circumstances. For example, the C<recursion> warning will occur if Perl detects
-that a function has called itself more than a hundred times. If you are
-confident in your ability to write recursion-ending conditions, you may disable
-this warning within the scope of the recursion (though tail calls may be
-better; L<tail_calls>).
+C<perldoc perllexwarn> приводит список всех категорий предупреждений, которые
+ваша версия Perl 5 воспринимает с прагмой C<warnings>. Большая часть из них
+представляет действительно интересные условия, но некоторые могут быть явно
+бесполезны в ваших конкретных обстоятельствах. Например, предупреждение
+C<recursion> будет происходить, если Perl обнаружил, что функция вызвала себя
+более чем сто раз. Если вы уверены в своей способности написать условия
+завершения рекурсии, вы можете отключить это предупреждение в области видимости
+рекурсии (хотя хвостовые вызовы, возможно, подойдут лучше; L<tail_calls>).
 
-If you're generating code (L<code_generation>) or locally redefining symbols,
-you may wish to disable the C<redefine> warnings.
+Если вы генерируете код (L<code_generation>) или локально переопределяете
+символы, вам может понадобиться отключить предупреждение C<redefine>.
 
-Some experienced Perl hackers disable the C<uninitialized> value warnings in
-string-processing code which concatenates values from many sources. Careful
-initialization of variables can avoid the need to disable the warning, but
-local style and concision may render this warning moot.
+Некоторые опытные Perl-хакеры отключают предупреждение об неинициализированных
+значениях (C<uninitialized>) в коде обработки строк, которых конкатенирует
+значения из множества источников. Предупредительная инициализация переменных
+помогает избежать необходимости отключения предупреждения, но локальный стиль
+и лаконичность могут сделать использование этого предупреждения спорным.
 
-=head2 Making Warnings Fatal
+=head2 Сделать предупреждения фатальными
 
 Z<fatal_warnings>
 X<warnings; fatal>
 
-If your project considers warnings as onerous as errors, you can make them
-lexically fatal. To promote I<all> warnings into exceptions:
+Если ваш проект считает предупреждения такими же обременительными, как ошибки,
+вы можете сделать их лексически фатальными. Так можно повысить I<все>
+предупреждения до исключений:
 
 =begin programlisting
 
@@ -141,8 +148,8 @@ lexically fatal. To promote I<all> warnings into exceptions:
 
 =end programlisting
 
-You may also make specific categories of warnings fatal, such as the use of
-deprecated constructs:
+Также вы можете сделать фатальными конкретные категории предупреждений, как,
+например, использование нерекомендуемых конструкций:
 
 =begin programlisting
 
@@ -150,20 +157,21 @@ deprecated constructs:
 
 =end programlisting
 
-With proper discipline, this can produce very robust code--but be cautious.
-Many warnings come from runtime conditions. If your test suite fails to
-identify all of the warnings you might encounter, your program may exit as it
-runs due to an uncaught exception.
+С надлежащей дисциплиной, вы можете производить очень надёжный код E<mdash> но
+будьте осторожны. Многие предупреждения вызываются условиями времени выполнения.
+Если ваш набор тестов не сможет распознать все предупреждения, с которыми вы
+можете столкнуться, ваша программа может завершиться при выполнении из-за
+непойманного исключения.
 
 =head2 Catching Warnings
 
 X<C<$SIG{__WARN__}>>
 X<warnings; catching>
 
-Just as you can catch exceptions, so you can catch warnings. The C<%SIG>
-variableN<See C<perldoc perlvar>.> contains handlers for out-of-band signals
-raised by Perl or your operating system. To catch a warning, assign a function
-reference to C<$SIG{__WARN__}>:
+Так же как вы ловите исключения, так же вы можете ловить и предупрежедния.
+Переменная C<%SIG>N<См. C<perldoc perlvar>.> содержит обработчики внеполосных
+сигналов, генерируемых Perl или вашей операционной системой. Чтобы поймать
+предупреждение, присвойте ссылку на функцию в C<$SIG{__WARN__}>:
 
 =begin programlisting
 
@@ -171,7 +179,7 @@ reference to C<$SIG{__WARN__}>:
         my $warning;
         local $SIG{__WARN__} = sub { $warning .= shift };
 
-        # do something risky
+        # сделать что-нибудь рискованное
         ...
 
         say "Caught warning:\n$warning" if $warning;
@@ -179,25 +187,27 @@ reference to C<$SIG{__WARN__}>:
 
 =end programlisting
 
-Within the warning handler, the first argument is the warning's message.
-Admittedly, this technique is less useful than disabling warnings
-lexically--but it can come to good use in test modules such as
-C<Test::Warnings> from the CPAN, where the actual text of the warning is
-important.
+Внутри обработчика предупреждений первым аргументом будет сообщение
+предупреждения. Очевидно, эта техника менее удобна, чем отключение
+предупреждений лексически E<mdash> но это может оказаться полезным в тестовых
+модулях, таких как C<Test::Warnings> из CPAN, где важен фактически текст
+предупреждения.
 
-Beware that C<%SIG> is global. C<local>ize it in the smallest possible scope,
-but understand that it's still a global variable.
+Имейте ввиду, что переменная C<%SIG> глобальна. Локализуйте её в наименьшей
+возможной области видимости, но понимайте, что это всё ещё глобальная
+переменная.
 
-=head2 Registering Your Own Warnings
+=head2 Регистрация своих собственных предупреждений
 
 Z<registering_warnings>
 
 X<warnings; registering>
 X<lexical warnings>
 
-The C<warnings::register> pragma allows you to create your own lexical warnings
-so that users of your code can enable and disable lexical warnings. From a
-module, C<use> the C<warnings::register> pragma:
+Прагма C<warnings::register> позволяет вам создавать свои собственные
+лексические предупреждения, чтобы пользователи вашего кода могли включать и
+отключать лексические предупреждения. Используйте (C<use>) прагму
+C<warnings::register> в модуле:
 
 =begin programlisting
 
@@ -207,14 +217,15 @@ module, C<use> the C<warnings::register> pragma:
 
 =end programlisting
 
-This will create a new warnings category named after the package
-C<Scary::Monkey>. Enable these warnings with C<use warnings 'Scary::Monkey'>
-and disable them with C<no warnings 'Scary::Monkey'>.
+Это создаст новую категорию предупреждений, названную по имени пакета
+C<Scary::Monkey>. Включите эти предупреждения с помощью
+C<use warnings 'Scary::Monkey'> и отключите с помощью
+C<no warnings 'Scary::Monkey'>.
 
-Use C<warnings::enabled()> to test if the calling lexical scope has the given
-warning category enabled. Use C<warnings::warnif()> to produce a warning only
-if warnings are in effect. For example, to produce a warning in the
-C<deprecated> category:
+Используйте C<warnings::enabled()> чтобы проверить, что категория предупреждения
+включена в вызывающей лексической области. Используйте C<warnings::warnif()>
+для генерации предупреждений только если предупреждения действуют. Например,
+чтобы выдать предупреждение в категории C<deprecated>:
 
 =begin programlisting
 
@@ -232,4 +243,4 @@ C<deprecated> category:
 
 =end programlisting
 
-See C<perldoc perllexwarn> for more details.
+См. C<perldoc perllexwarn> для больших подробностей.
