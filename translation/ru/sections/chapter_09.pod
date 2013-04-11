@@ -1,14 +1,16 @@
-=head0 Managing Real Programs
+=head0 Управление реальными программами
 
 Z<writing_real_programs>
 
-A book can teach you to write small programs to solve small example problems.
-You can learn a lot of syntax that way. To write real programs to solve real
-problems, you must learn to I<manage> code written in your language. How do you
-organize code? How do you know that it works? How can you make it robust in the
-face of errors? What makes code concise, clear, and maintainable?
+Книга может научить вас писать маленькие программы, решающие маленькие
+проблемы-упражнения. Этим способом вы можете научиться синтаксису. Чтобы писать
+реальные программы, выполняющие реальные задачи, вам нужно научиться
+I<управлять> кодом, написанным на вашем языке. Как вам организовать код? Как
+убедиться, что он работает? Как сделать его надёжным перед лицом ошибок? Что
+делает код кратким, ясным и поддерживаемым?
 
-Modern Perl provides many tools and techniques to write real programs.
+Современные Perl предоставляет множество инструментов и техник для написания
+реальных программ.
 
 L<testing>
 
