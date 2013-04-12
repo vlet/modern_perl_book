@@ -1,50 +1,50 @@
-=head1 Modules
+=head1 Модули
 
 Z<modules>
 
 X<modules>
 
-Many people consider the CPAN (L<cpan>) to be Perl 5's most compelling feature.
-The CPAN is, at its core, a system for finding and installing modules. A
-I<module> is a package contained in its own file and loadable with C<use> or
-C<require>. A module must be valid Perl 5 code. It must end with an expression
-which evaluates to a true value so that the Perl 5 parser knows it has loaded
-and compiled the module successfully. There are no other requirements, only
-strong conventions.
+Многие считают CPAN (L<cpan>) самой мощной возможностью Perl 5. CPAN, по сути,
+представляет собой систему поиска и установки модулей. I<Модуль> E<mdash> это
+пакет, содержащийся в своём собственном файле, который можно загружать с помощью
+C<use> или C<require>. Модуль должен быть валидным кодом на Perl 5. Он должен
+завершаться выражением, возвращающим истинное значение, чтобы парсер Perl 5 мог
+понять, что он успешно загрузил и скомпилировал модуль. Других строгих
+требований нет, только твёрдые соглашения.
 
 X<C<::>; package name separator>
 
-When you load a module, Perl splits the package name on double-colons (C<::>)
-and turns the components of the package name into a file path. In practice,
-C<use StrangeMonkey;> causes Perl to search for a file named
-F<StrangeMonkey.pm> in every directory in C<@INC>, in order, until it finds one
-or exhausts the list.
+Когда вы загружаете модуль, Perl разбивает имя пакета по двойным двоеточиям
+(C<::>) и превращает компоненты имени пакета в имя файла. На практике,
+C<use StrangeMonkey;> заставляет Perl искать файл с именем F<StrangeMonkey.pm>
+во всех директориях, входящих в C<@INC>, по порядку, пока он его не найдёт или
+не израсходует список.
 
-Similarly, C<use StrangeMonkey::Persistence;> causes Perl to search for a file
-named C<Persistence.pm> in every directory named F<StrangeMonkey/> present in
-every directory in C<@INC>, and so on. C<use StrangeMonkey::UI::Mobile;> causes
-Perl to search for a relative file path of F<StrangeMonkey/UI/Mobile.pm> in
-every directory in C<@INC>.
+Аналогично, C<use StrangeMonkey::Persistence;> заставляет Perl искать файл с
+именем F<Persistence.pm> в каждой директории с именем F<StrangeMonkey/>,
+находящейся в любой из директорий, входящих в C<@INC>, и т. д.
+C<use StrangeMonkey::UI::Mobile;> заставляет Perl искать относительный файловый
+путь F<StrangeMonkey/UI/Mobile.pm> в каждой директории в C<@INC>.
 
-The resulting file may or may not contain a package declaration matching its
-filename--there is no such technical I<requirement>--but maintenance concerns
-recommend that convention.
+Результирующий файл может содержать или не содержать объявление пакета,
+совпадающее с именем файла E<mdash> такого технического I<требования> нет
+E<mdash> но вопросы поддержки рекомендуют это соглашение.
 
-=begin tip C<perldoc> Tricks
+=begin tip Трюки C<perldoc>
 
 X<C<perldoc>; C<-l>>
 X<C<perldoc>; C<-m>>
 X<C<perldoc>; C<-lm>>
 
-C<perldoc -l Module::Name> will print the full path to the relevant F<.pm>
-file, provided that the I<documentation> for that module exists in the F<.pm>
-file. C<perldoc -lm Module::Name> will print the full path to the F<.pm> file
-regardless of the existence of any parallel F<.pod> file. C<perldoc -m
-Module::Name> will display the contents of the F<.pm> file.
+C<perldoc -l Module::Name> выведет полный путь к соответствующему файлу F<.pm>,
+в случае, если I<документация> к этому модулю существует в файле F<.pm>.
+C<perldoc -lm Module::Name> выведет полный путь к файлу F<.pm>, независимо от
+существования параллельного файла F<.pod>. C<perldoc -m Module::Name> отобразит
+содержимое файла F<.pm>.
 
 =end tip
 
-=head2 Using and Importing
+=head2 Использование и импортирование
 
 Z<import>
 
@@ -54,49 +54,50 @@ X<C<CGI>>
 X<C<feature> pragma>
 X<pragmas; C<feature>>
 
-When you load a module with C<use>, Perl loads it from disk, then calls its
-C<import()> method, passing any arguments you provided. By convention, a
-module's C<import()> method takes a list of names and exports functions and
-other symbols into the calling namespace. This is merely convention; a module
-may decline to provide an C<import()>, or its C<import()> may perform other
-behaviors. Pragmas (L<pragmas>) such as C<strict> use arguments to change the
-behavior of the calling lexical scope instead of exporting symbols:
+Когда вы загружаете модуль с помощью C<use>, Perl загружает его с диска, а затем
+вызывает его метод C<import()>, передавая все указанные вами аргументы. По
+соглашению метод C<import()> модуля принимает список имён и экспортирует функции
+и другие символы в вызывающее пространство имён. Это всего лишь соглашение;
+модуль может отказаться предоставлять C<import()>, или его C<import()> может
+выполнять другие действия. Прагмы (L<pragmas>), такие как C<strict>, используют
+аргументы для изменения поведения вызывающей лексической области видимости
+вместо экспорта символов:
 
 =begin programlisting
 
     use strict;
-    # ... calls strict->import()
+    # E<hellip>вызывает strict->import()
 
     use CGI ':standard';
-    # ... calls CGI->import( ':standard' )
+    # E<hellip>вызывает CGI->import( ':standard' )
 
     use feature qw( say switch );
-    # ... calls feature->import( qw( say switch ) )
+    # E<hellip>вызывает feature->import( qw( say switch ) )
 
 =end programlisting
 
 X<builtins; C<no>>
 X<unimporting>
 
-The C<no> builtin calls a module's C<unimport()> method, if it exists, passing
-any arguments. This is most common with pragmas which introduce modify behavior
-through C<import()>:
+Встроенная директива C<no> вызывает метод C<unimport()> модуля, если он
+существует, передавая любые аргументы. Это наиболее распространено с прагмами,
+использование которых модифицирует поведение через C<import()>:
 
 =begin programlisting
 
     use strict;
-    # no symbolic references or barewords
-    # variable declaration required
+    # запрещены символьные ссылки или голые слова
+    # требуется объявление переменных
 
     {
         no strict 'refs';
-        # symbolic references allowed
-        # strict 'subs' and 'vars' still in effect
+        # символьные ссылки разрешены
+        # ограничения 'subs' и 'vars' всё ещё активны
     }
 
 =end programlisting
 
-Both C<use> and C<no> take effect during compilation, such that:
+И C<use>, и C<no> действуют во время компиляции, так что:
 
 =begin programlisting
 
@@ -104,7 +105,7 @@ Both C<use> and C<no> take effect during compilation, such that:
 
 =end programlisting
 
-... is the same as:
+E<hellip>это то же самое, что:
 
 =begin programlisting
 
@@ -116,7 +117,7 @@ Both C<use> and C<no> take effect during compilation, such that:
 
 =end programlisting
 
-Similarly:
+Аналогично:
 
 =begin programlisting
 
@@ -124,7 +125,7 @@ Similarly:
 
 =end programlisting
 
-... is the same as:
+E<hellip>это то же самое, что:
 
 =begin programlisting
 
@@ -136,52 +137,53 @@ Similarly:
 
 =end programlisting
 
-... including the C<require> of the module.
+E<hellip>включая C<require> модуля.
 
-=begin tip Missing Methods Never Missed
+=begin tip По отсутствующим методам никто не скучает
 
-If C<import()> or C<unimport()> does not exist in the module, Perl will not
-give an error message. They are truly optional.
+Если C<import()> или C<unimport()> не существует в модуле, Perl не будет
+выдавать сообщение об ошибке. Они совершенно опциональны.
 
 =end tip
 
-You I<may> call C<import()> and C<unimport()> directly, though outside of a
-C<BEGIN> block it makes little sense to do so; after compilation has completed,
-the effects of C<import()> or C<unimport()> may have little effect.
+Вы I<можете> вызвать C<import()> и C<unimport()> напрямую, хотя за пределами
+блока C<BEGIN> делать это мало смысла; после завершения компиляции действие
+C<import()> или C<unimport()> не имеет особого эффекта.
 
 X<modules; case-sensitivity>
 X<case-sensitivity>
 
-Perl 5's C<use> and C<require> are case-sensitive, though while Perl knows the
-difference between C<strict> and C<Strict>, your combination of operating
-system and file system may not. If you were to write C<use Strict;>, Perl would
-not find F<strict.pm> on a case-sensitive filesystem.  With a case-insensitive
-filesystem, Perl would happily load F<Strict.pm>, but nothing would happen when
-it tried to call C<< Strict->import() >>. (F<strict.pm> declares a package
-named C<strict>.)
+В Perl 5 C<use> и C<require> регистрозависимы, хотя, в то время как Perl
+понимает разницу между C<strict> и C<Strict>, ваше сочетание операционной
+системы и файловой системы может не знать. Если бы вы написали C<use Strict;>,
+Perl не нашёл бы F<strict.pm> в регистрозависимых файловых системах. В
+регистронезависимых файловых системах Perl охотно загрузит F<Strict.pm>, но
+когда он попытается вызвать  C<< Strict->import() >>, ничего не случится.
+(F<strict.pm> объявляет пакет с именем C<strict>.)
 
-Portable programs are strict about case even if they don't have to be.
+Переносимые программы придерживаются строгих правил относительно этого случая,
+даже если и не обязаны.
 
-=head2 Exporting
+=head2 Экспорт
 
 Z<exporting>
 X<exporting>
 
-A module can make certain global symbols available to other packages through a
-process known as I<exporting>--a process initiated by calling C<import()>
-whether implicitly or directly.
+Модуль может сделать определённые глобальные символы доступными другим пакетам
+посредством процесса, известного как I<экспорт> E<mdash> процесс, инициируемый
+вызовом C<import()>, явным или неявным.
 
 X<C<Exporter>>
 X<C<Exporter>; C<@EXPORT_OK>>
 X<C<Exporter>; C<@EXPORT>>
 
-The core module C<Exporter> provides a standard mechanism to export symbols
-from a module. C<Exporter> relies on the presence of package global
-variables--C<@EXPORT_OK> and C<@EXPORT> in particular--which contain a list of
-symbols to export when requested.
+Встроенный модуль C<Exporter> предоставляет стандартный механизм экспорта
+символов из модуля. C<Exporter> полагается на присутствие глобальных переменных
+пакета E<mdash> в особенности C<@EXPORT_OK> и C<@EXPORT> E<mdash> которые
+содержат список символов, экспортируемых по запросу.
 
-Consider a C<StrangeMonkey::Utilities> module which provides several standalone
-functions usable throughout the system:
+Рассмотрим модуль C<StrangeMonkey::Utilities>, предоставляющий несколько
+автономных функций, применимых по всей системе:
 
 =begin programlisting
 
@@ -195,8 +197,9 @@ functions usable throughout the system:
 
 =end programlisting
 
-Any other code now can use this module and, optionally, import any or all of
-the three exported functions. You may also export variables:
+Любой другой код теперь может использовать этот модуль и, опционально,
+импортировать любую или все три экспортируемые функции. Также вы можете
+экспортировать переменные:
 
 =begin programlisting
 
@@ -204,7 +207,7 @@ the three exported functions. You may also export variables:
 
 =end programlisting
 
-Export symbols by default by listing them in C<@EXPORT> instead of
+Экспортируйте символы по умолчанию, перечислив их в C<@EXPORT> вместо
 C<@EXPORT_OK>:
 
 =begin programlisting
@@ -213,20 +216,21 @@ C<@EXPORT_OK>:
 
 =end programlisting
 
-... so that any C<use StrangeMonkey::Utilities;> will import both functions.
-Be aware that specifying symbols to import will I<not> import default symbols;
-you only get what you request. To load a module without importing any symbols,
-providing an explicit empty list:
+E<hellip>так что любая конструкция C<use StrangeMonkey::Utilities;> будет
+импортировать обе функции. Имейте ввиду, что указание символов для импорта
+I<не> импортирует символы по умолчанию, вы получите только то, что запросили.
+Чтобы загрузить модуль, не импортируя никаких символов, явно укажите пустой
+список:
 
 =begin programlisting
 
-    # make the module available, but import() nothing
+    # сделать модуль доступным, но ничего не импортировать
     use StrangeMonkey::Utilities ();
 
 =end programlisting
 
-Regardless of any import lists, you can always call functions in another
-package with their fully-qualified names:
+Независимо от любых списков импорта, вы всегда можете вызвать функцию из другого
+пакета с помощью её полностью определённого имени:
 
 =begin programlisting
 
@@ -234,45 +238,45 @@ package with their fully-qualified names:
 
 =end programlisting
 
-=begin tip Simplified Exporting
+=begin tip Упрощённый экспорт
 
 X<CPAN; C<Sub::Exporter>>
 
-The CPAN module C<Sub::Exporter> provides a nicer interface to export functions
-without using package globals. It also offers more powerful options.  However,
-C<Exporter> can export variables, while C<Sub::Exporter> only exports
-functions.
+CPAN-модуль C<Sub::Exporter> предоставляет более приятный интерфейс для экспорта
+функций без использования глобальных переменных пакета. Он также предлагает
+более мощные настройки. Однако, C<Exporter> может экспортировать переменные,
+тогда как C<Sub::Exporter> экспортирует только функции.
 
 =end tip
 
-=head2 Organizing Code with Modules
+=head2 Организация кода с помощью модулей
 
-Perl 5 does not require you to use modules, nor packages, nor namespaces.  You
-may put all of your code in a single F<.pl> file, or in multiple F<.pl> files
-you C<require> as necessary.  You have the flexibility to manage your
-code in the most appropriate way, given your development style, the formality
-and risk and reward of the project, your experience, and your comfort with Perl
-5 deployment.
+Perl 5 не заставляет вас использовать ни модули, ни пакеты, ни пространства
+имён. Вы можете разместить весь свой код в единственном файле F<.pl>, или в
+нескольких файлах F<.pl>, подключаемых с помощью C<require> по необходимости.
+Вам предоставлена гибкость в управлении вашим кодом наиболее соответствующим
+способом, в зависимости от вашего стиля разработки, формальностей, рисков и
+вознаграждений проекта, вашего опыта и вашего комфорта в развёртывании Perl 5.
 
-Even so, a project with more than a couple of hundred lines of code receives
-multiple benefits from module organization:
+Несмотря на это, проект с более чем несколькими сотнями строк кода получает
+множество преимуществ от модульной организации:
 
 =over 4
 
-=item * Modules help to enforce a logical separation between distinct entities
-in the system.
+=item * Модули помогают обеспечить логическое разделение между отдельными
+сущностями в системе.
 
-=item * Modules provide an API boundary, whether procedural or OO.
+=item * Модули предоставляют границы API, процедурного или ОО.
 
-=item * Modules suggest a natural organization of source code.
+=item * Модули предлагают естественную организацию исходного кода.
 
-=item * The Perl 5 ecosystem has many tools devoted to creating, maintaining,
-organizing, and deploying modules and distributions.
+=item * Экосистема Perl 5 имеет множество инструментов, посвящённых созданию,
+поддержке, организации и развёртыванию модулей и дистрибутивов.
 
-=item * Modules provide a mechanism of code reuse.
+=item * Модули предоставляют механизм повторного использования кода.
 
 =back
 
-Even if you do not use an object-oriented approach, modeling every distinct
-entity or responsibility in your system with its own module keeps related code
-together and separate code separate.
+Даже если вы не используете объектно-ориентированный подход, моделирование
+каждой отдельной сущности или ответственности в вашей системе в виде её
+собственного модуля сохраняет связанный код вместе и отдельный код отдельно.
