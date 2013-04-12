@@ -1,11 +1,13 @@
-=head1 Files
+=head1 Р¤Р°Р№Р»С‹
 
 Z<files>
 
-Most programs must interact with the real world somehow. Most programs must
-read, write, and otherwise manipulate files. Perl's origin as a tool for system administrators have produced a language well suited for text processing.
+Большинству программ нужно как-то взаимодействовать с реальным миром.
+Большинству программ нужно писать, читать или другими способами манипулировать с
+файлами. Происхождение Perl как инструмента для системных администраторов
+создало язык, отлично подходящий для обработки текста.
 
-=head2 Input and Output
+=head2 Ввод и вывод
 
 Z<filehandle>
 X<filehandles>
@@ -16,18 +18,19 @@ X<C<STDIN>>
 X<C<STDERR>>
 X<C<STDOUT>>
 
-A I<filehandle> represents the current state of one specific channel of input
-or output. Every Perl 5 program has three standard filehandles available,
-C<STDIN> (the input to the program), C<STDOUT> (the output from the program),
-and C<STDERR> (the error output from the program). By default, everything you
-C<print> or C<say> goes to C<STDOUT>, while errors and warnings and everything
-you C<warn()> goes to C<STDERR>. This separation of output allows you to
-redirect useful output and errors to two different places--an output file and
-error logs, for example.
+I<Дескриптор файла> представляет текущее состояние конкретного канала ввода или
+вывода. В каждой программе на Perl доступны три стандартных дескриптора файлов,
+C<STDIN> (ввод программы), C<STDOUT> (вывод программы) и C<STDERR> (вывод ошибок
+программы). По умолчанию всё, что вы выводите с помощью C<print> или C<say>,
+отправляется на C<STDOUT>, тогда как предупреждения и всё, что вы выводите с
+помощью C<warn()>, отправляется на C<STDERR>. Такое разделение вывода позволяет
+вам перенаправить полезный вывод и ошибки в два разных места E<mdash> например,
+выходной файл и лог ошибок.
 
 X<builtins; C<open>>
 
-Use the C<open> builtin to get a filehandle. To open a file for reading:
+Используйте встроенную функцию C<open> для получения дескриптора файла. Так
+файл открывается для чтения:
 
 =begin programlisting
 
@@ -36,16 +39,16 @@ Use the C<open> builtin to get a filehandle. To open a file for reading:
 
 =end programlisting
 
-The first operand is a lexical which will contain the resulting filehandle. The
-second operand is the I<file mode>, which determines the type of the filehandle
-operation. The final operand is the name of the file. If the C<open> fails, the
-C<die> clause will throw an exception, with the contents of C<$!> giving the
-reason why the open failed.
+Первый операнд E<mdash> это лексическая переменная, содержащая результирующий
+дескриптор файла. Второй оператор E<mdash> I<режим файла>, определяющий тип
+операций с дескриптором файла. Последний операнд E<mdash> это имя файла. Если
+C<open> проваливается, оператор C<die> выбросит исключение, а содержимое C<$!>
+будет описывать причину, по которой открытие файла не удалось.
 
-You may also open files for writing, appending, reading and writing, and more.
-Some of the most important file modes are:
+Кроме этого, вы можете открывать файлы для записи, добавления, чтения и записи
+и т. д. Здесь перечислены наиболее важные режимы файлов:
 
-=begin table File Modes
+=begin table Режимы файлов
 
 Z<file_modes_table>
 
@@ -61,43 +64,44 @@ Z<file_modes_table>
 
 =cell C<< < >>
 
-=cell Open for reading
+=cell Открыть для чтения
 
 =row
 
 =cell C<< > >>
 
-=cell Open for writing, clobbering existing contents if the file exists and
-creating a new file otherwise.
+=cell Открыть для записи, перезаписывая существующее содержимое, если файл
+существует, и создавая новый файл в противном случае.
 
 =row
 
 =cell C<<< >> >>>
 
-=cell Open for writing, appending to any existing contents and creating a new
-file otherwise.
+=cell Открыть для записи, добавляя к существующему контенту или создавая новый
+файл.
 
 =row
 
 =cell C<< +< >>
 
-=cell Open for both reading and writing.
+=cell Открыть для чтения и записи.
 
 =row
 
 =cell C<< -| >>
 
-=cell Open a pipe to an external process for reading.
+=cell Открыть канал к внешнему процессу для чтения.
 
 =row
 
 =cell C<< |- >>
 
-=cell Open a pipe to an external process for writing.
+=cell Открыть канал к внешнему процессу для записи.
 
 =end table
 
-You can even create filehandles which read from or write to plain Perl scalars, using any existing file mode:
+Вы даже можете создавать дескрипторы файлов, который могут читать или писать в
+простые Perl-скаляры, используя любой существующий режим файла:
 
 =begin programlisting
 
@@ -108,26 +112,26 @@ You can even create filehandles which read from or write to plain Perl scalars, 
 
 =end programlisting
 
-=begin tip Remember C<autodie>?
+=begin tip Помните C<autodie>?
 
-All examples in this section have C<use autodie;> enabled, and so can safely
-elide error handling. If you choose not to use C<autodie>, that's fine--but
-remember to check the return values of all system calls to handle errors
-appropriately.
+Все примеры в этом разделе имеют включенный режим C<use autodie;>, а потому
+могут безопасно игнорировать обработку ошибок. Если вы выбрали не использовать
+C<autodie>, хорошо E<mdash> но не забудьте проверить возвращаемые значения всех
+системных вызовов, чтобы соответствующим образом обработать ошибки.
 
 =end tip
 
 X<builtins; C<sysopen>>
 
-C<perldoc perlopentut> offers far more details about more exotic uses of
-C<open>, including its ability to launch and control other processes, as well
-as the use of C<sysopen> for finer-grained control over input and output.
-C<perldoc perlfaq5> includes working code for many common IO tasks.
+C<perldoc perlopentut> предлагает гораздо больше деталей о более экзотических
+применениях C<open>, включая её способность запускать и контролировать другие
+процессы, а также использование C<sysopen> для более точного контроля ввода и
+вывода. C<perldoc perlfaq5> приводит рабочий код для многих задач ввода/вывода.
 
-=head3 Two-argument C<open>
+=head3 Двухаргументный вызов C<open>
 
-Older code often uses the two-argument form of C<open()>, which jams the file
-mode with the name of the file to open:
+Старый код часто использует двухаргументную форму C<open()>, которая объединяет
+режим файла с именем открываемого файла:
 
 =begin programlisting
 
@@ -136,38 +140,39 @@ mode with the name of the file to open:
 
 =end programlisting
 
-Thus Perl must extract the file mode from the filename, and therein lies
-potential problems. Anytime Perl has to guess at what you mean, you run the
-risk that it may guess incorrectly. Worse, if C<$some_file> came from untrusted
-user input, you have a potential security problem, as any unexpected characters
-could change how your program behaves.
+Соответственно, Perl должен извлечь режим файла из имени файла, и здесь лежат
+потенциальные проблемы. Каждый раз, когда Perl приходится догадываться, что вы
+имеете ввиду, вы получаете риск того, что он может догадаться неверно. Хуже
+того, если C<$some_file> приходит из недоверенного пользовательского ввода, у
+вас возникает потенциальная проблема безопасности, так как любые неожиданные
+символы могут изменить поведение вашей программы.
 
-The three-argument C<open()> is a safer replacement for this code.
+Трёхаргументный вызов C<open()> E<mdash> более безопасная замена для этого кода.
 
-=begin tip The Many Names of C<DATA>
+=begin tip Многие имена C<DATA>
 
 X<C<DATA>>
 X<C<__DATA__>>
 X<C<__END__>>
 
-The special package global C<DATA> filehandle represents the current file. When
-Perl finishes compiling the file, it leaves C<DATA> open at the end of the
-compilation unit I<if> the file has a C<__DATA__> or C<__END__> section. Any
-text which occurs after that token is available for reading from C<DATA>. This
-is useful for short, self-contained programs. See C<perldoc perldata> for more
-details.
+C<DATA>, специальный глобальный в пакете дескриптор файла, представляет текущий
+файл. Когда Perl заканчивает компиляцию файла, он оставляет C<DATA> открытым на
+конце компилируемой части, I<если> файл содержит секцию C<__DATA__> или
+C<__END__>. Любой текст, находящийся за пределами этого токена, доступен для
+чтения через C<DATA>. Это полезно для коротких, самодостаточных программ. См.
+C<perldoc perldata> для дальнейших подробностей.
 
 =end tip
 
-=head3 Reading from Files
+=head3 Чтение из файлов
 
 X<builtins; C<readline>>
 X<<< C<< <> >>; circumfix readline operator >>>
 X<<< operators; C<< <> >> >>>
 
-Given a filehandle opened for input, read from it with the C<readline> builtin,
-also written as C<< <> >>. A common idiom reads a line at a time in a
-C<while()> loop:
+Имея открытый для ввода дескриптор файла, прочитать из него можно с помощью
+встроенной функции C<readline>, также записываемой как C<< <> >>.
+Распространённая идиома читает по строке за раз в цикле C<while()>:
 
 =begin programlisting
 
@@ -183,12 +188,12 @@ C<while()> loop:
 
 X<builtins; C<eof>>
 
-In scalar context, C<readline> iterates through the lines of the file until it
-reaches the end of the file (C<eof()>). Each iteration returns the next line.
-After reaching the end of the file, each iteration returns C<undef>. This
-C<while> idiom explicitly checks the definedness of the variable used for
-iteration, such that only the end of file condition ends the loop. In other
-words, this is shorthand for:
+В скалярном контексте C<readline> итерирует по строкам файла, пока не достигнет
+его окнца (C<eof()>). Каждая итерация возвращает следующую строку. После
+достижения конца файла, каждая итерация возвращает C<undef>. Эта идиома с
+C<while> явно проверяет определённость переменной, используемой для итерации,
+так что только достижение конца файла завершит цикл. Другими словами, это
+сокращение для следующего:
 
 =begin programlisting
 
@@ -203,23 +208,23 @@ words, this is shorthand for:
 
 =end programlisting
 
-=begin tip Why use C<while> and not C<for>?
+=begin tip Почему использовать C<while>, а не C<for>?
 
-C<for> imposes list context on its operand. In the case of C<readline>, Perl
-will read the I<entire> file before processing I<any> of it. C<while> performs
-iteration and reads a line at a time. When memory use is a concern, use
-C<while>.
+C<for> налагает списочный контекст на свой операнд. В случае C<readline> Perl
+прочитает I<весь> файл, прежде чем обработать I<какую-либо> его часть. C<while>
+выполняет итерацию и читает по строке за раз. Когда использование памяти имеет
+значение, используйте C<while>.
 
 =end tip
 
 X<builtins; C<chomp>>
 
-Every line read from C<readline> includes the character or characters which
-mark the end of a line. In most cases, this is a platform-specific sequence
-consisting of a newline (C<\n>), a carriage return (C<\r>), or a combination of
-the two (C<\r\n>). Use C<chomp> to remove it.
+Каждая строка, прочитанная с помощью C<readline>, содержит символ или символы,
+отмечающие конец строки. В большинстве случаев это платформозависимая
+последовательность, состоящая из перевода строки (C<\n>), перевода каретки
+(C<\r>), или сочетания их обоих (C<\r\n>). Используйте C<chomp> для их удаления.
 
-The cleanest way to read a file line-by-line in Perl 5 is:
+Наиболее ясный способ прочитать файл строка за строкой в Perl 5 такой:
 
 =begin programlisting
 
@@ -235,19 +240,22 @@ The cleanest way to read a file line-by-line in Perl 5 is:
 
 X<builtins; C<binmode>>
 
-Perl accesses files in text mode by default. If you're reading I<binary> data,
-such as a media file or a compressed file--use C<binmode> before performing any
-IO. This will force Perl to treat the file data as pure data, without modifying
-it in any wayN<Modifications include translating C<\n> into the
-platform-specific newline sequence.>. While Unix-like platforms may not always
-I<need> C<binmode>, portable programs play it safe (L<unicode>).
+Perl по умолчанию работает с файлами в текстовом режиме. Если вы читатете
+I<двоичные> данные, такие как медиафайл или сжатый файл E<mdash> используйте
+C<binmode> прежде чем выполнять какой-либо ввод/вывод. Это укажет Perl
+обрабатывать данные файла как чистые данные, никаким образом их не
+модифицируяN<Модификации включают перевод C<\n> в платформозависимую
+последовательность новой строки.>. Хотя на Unix-подобных платформах C<binmode>
+может быть не всегда I<обязателен>, переносимые программы играют наверняка
+(L<unicode>).
 
-=head3 Writing to Files
+=head3 Запись в файлы
 
 X<builtins; C<print>>
 X<builtins; C<say>>
 
-Given a filehandle open for output, C<print> or C<say> to it:
+Имея открытый для вывода дескриптор файла, осуществляйте вывод в него с помощью
+C<print> или C<say>:
 
 =begin programlisting
 
@@ -258,16 +266,17 @@ Given a filehandle open for output, C<print> or C<say> to it:
 
 =end programlisting
 
-Note the lack of comma between the filehandle and the subsequent operand.
+Обратите внимание на отсутствие запятой между дескриптором файла и следующим
+операндом.
 
-=begin tip Filehandle Disambiguation
+=begin tip Неоднозначность дескрипторов файлов
 
 X<Conway, Damian>
 
-Damian Conway's I<Perl Best Practices> recommends enclosing the filehandle in
-curly braces as a habit.  This is necessary to disambiguate parsing of a
-filehandle contained in an aggregate variable, and it won't hurt anything in
-the simpler cases.
+I<Perl Best Practices> Демьена Конвея (Damian Conway) рекомендует придерживаться
+привычки заключать дескриптор файла в фигурные скобки. Это необходимо для
+устранения неоднозначности парсинга дескриптора файла, содержащегося в
+агрегатной переменной, и ничему не повредит в более простых случаях.
 
 =end tip
 
@@ -276,10 +285,10 @@ X<global variables; C<$,>>
 X<C<$\>>
 X<global variables; C<$\>>
 
-Both C<print> and C<say> take a list of operands. Perl 5 uses the magic global
-C<$,> as the separator between list values. Perl also uses any value of C<$\>
-as the final argument to C<print> or C<say>. Thus these two lines of code
-produce the same result:
+И C<print>, и C<say> принимают список операндов. Perl 5 использует магическую
+глобальную переменную C<$,> как разделитель значений списка. Perl также
+использует любое значение C<$\> как последний аргумент C<print> или C<say>.
+Так что эти две строки кода дают один и тот же результат:
 
 =begin programlisting
 
@@ -290,17 +299,17 @@ produce the same result:
 
 =end programlisting
 
-=head3 Closing Files
+=head3 Закрытие файлов
 
 X<builtins; C<close>>
 
-When you've finished working with a file, C<close> its filehandle explicitly or
-allow it to go out of scope. Perl will close it for you. The benefit of calling
-C<close> explicitly is that you can check for--and recover from--specific
-errors, such as running out of space on a storage device or a broken network
-connection.
+Когда вы закончили работать с файлов, закройте его дескриптор явно с помощью
+C<close>, или дайте ему выйти из области видимости. Perl закроет его для вас.
+Преимущество явного вызова C<close> в том, что вы можете проверить E<mdash> и
+восстановиться после них E<mdash> специфические ошибки, такие как недостаток
+места на устройстве хранения или разорванное сетевое соединение.
 
-As usual, C<autodie> handles these checks for you:
+Как обычно, C<autodie> выполнит эти ошибки за вас:
 
 =begin programlisting
 
@@ -314,58 +323,61 @@ As usual, C<autodie> handles these checks for you:
 
 =end programlisting
 
-=head3 Special File Handling Variables
+=head3 Специальные переменные обработки файлов
 
 Z<file_handling_variables>
 X<C<$.>>
 X<global variables; C<$.>>
 
-For every line read, Perl 5 increments the value of the variable C<$.>, which
-serves as a line counter.
+Для каждой прочитанной строки Perl 5 инкрементирует значение переменной C<$.>,
+которая служит счётчиком строк.
 
 X<C<$/>>
 X<global variables; C<$/>>
 
-C<readline> uses the current contents of C<$/> as the line-ending sequence.
-The value of this variable defaults to the most appropriate line-ending
-character sequence for text files on your current platform.  In truth, the word
-I<line> is a misnomer.  You can set C<$/> to contain any sequence of
-charactersN<... but, sadly, never a regular expression. Perl 5 does not support
-that.>. This is useful for highly-structured data in which you want to read a
-I<record> at a time. Given a file with records separated by two blank lines,
-set C<$/> to C<\n\n> to read a record at a time. C<chomp> on a record read from
-the file will remove the double-newline sequence.
+C<readline> использует текущее содержимое C<$/> как последовательность
+завершения строки. По умолчанию значение этой переменной содержит
+последовательность символов, наиболее подходяющую для текстовых файлов на
+текущей платформе. По правде говоря, слово I<строка> E<mdash> неправильное
+название. Вы можете установить в C<$/> любую последовательность
+символовN<E<hellip>но, к сожалению, не регулярное выражение. Perl 5 этого не
+поддерживает.>. Это полезно для сильно структурированных данных, в которых вы
+хотите считывать I<запись> за раз. Имея файл с записями, разделёнными двумя
+пустыми строками, установите C<$/> в C<\n\n> для чтения по записи за раз.
+Применение C<chomp> к прочитанной из файла записи удалит последовательность
+двойной новой строки.
 
 X<C<$|>>
 X<global variables; C<$|>>
 X<buffering>
 
-Perl I<buffers> its output by default, performing IO only when its pending
-output exceeds a size threshold. This allows Perl to batch up expensive IO
-operations instead of always writing very small amounts of data.  Yet sometimes
-you want to send data as soon as you have it without waiting for that
-buffering--especially if you're writing a command-line filter connected to
-other programs or a line-oriented network service.
+Perl по умолчанию I<буферизует> свой вывод, выполняя ввод/вывод только когда
+ожидающий вывод превышает порог размера. Это позволяет Perl группировать дорогие
+операции ввода/вывода вместо того, чтобы всегда записывать очень малые
+количества данных. Однако иногда вам нужно отправить данные как только вы их
+получаете, не ожидая буферизации E<mdash> особенно если вы пишете фильтр для
+командной строки, соединённый с другими программами, или строко-ориентированный
+сетевой сервис.
 
-The C<$|> variable controls buffering on the currently active output
-filehandle.  When set to a non-zero value, Perl will flush the output after
-each write to the filehandle.  When set to a zero value, Perl will use its
-default buffering strategy.
+Переменная C<$|> контролирует буферизацию на текущем активном файловом
+дескрипторе вывода. При установке ненулевого значения Perl будет сбрасывать
+вывод после каждой записи в дескриптор файла. При установке нулевого значения
+Perl будет использовать свою стратегию буферизации по умолчанию.
 
-=begin tip Automatic Flushing
+=begin tip Автоматический сброс
 
-Files default to a fully-buffered strategy. C<STDOUT> when connected to an
-active terminal--but I<not> another program--uses a line-buffered strategy,
-where Perl will flush C<STDOUT> every time it encounters a newline in the
-output.
+Для файлов по умолчанию действует стратегия полной буферизации. C<STDOUT>,
+присоединённый к активному терминалу E<mdasy> но I<не> к другой программе
+E<mdash> использует стратегию построчной буферизации, при которой Perl будет
+сбрасывать C<STDOUT> каждый раз, как встретит в выводе новую строку.
 
 =end tip
 
 X<C<autoflush()>>
 X<C<IO::File>; C<autoflush()>>
 
-In lieu of the global variable, use the C<autoflush()> method on a lexical
-filehandle:
+Вместо глобальной переменной используйте на лексическом дескрипторе файла
+метод C<autoflush()>:
 
 =begin programlisting
 
@@ -379,28 +391,29 @@ filehandle:
 X<C<IO::File>>
 X<C<FileHandle>>
 
-As of Perl 5.14, you can use any method provided by C<IO::File> on a
-filehandle. You do not need to load C<IO::File> explicitly. In Perl 5.12, you
-must load C<IO::File> yourself. In Perl 5.10 and earlier, you must load
-C<FileHandle> instead.
+Начиная с Perl 5.14 вы можете использовать на дескрипторе файла любые методы,
+предоставляемые C<IO::File>. Вам не требуется явно загружать C<IO::File>. В
+Perl 5.12 вы должны сами загрузить C<IO::File>. В Perl 5.10 и раньше вы должны
+вместо этого загрузить C<FileHandle>.
 
 X<C<IO::File>; C<input_line_number()>>
 X<C<IO::File>; C<input_record_separator()>>
 X<C<IO::Handle>>
 X<C<IO::Seekable>; C<seek()>>
 
-C<IO::File>'s C<input_line_number()> and C<input_record_separator()> methods
-allow per-filehandle access to that for which you'd normally have to use the
-superglobals C<$.> and C<$/>. See the documentation for C<IO::File>,
-C<IO::Handle>, and C<IO::Seekable> for more information.
+Методы C<IO::File> C<input_line_number()> и C<input_record_separator()>
+обеспечивают пофайловый доступ к тому, для чего обычно вам пришлось бы
+использовать глобальные C<$.> и C<$/>. Смотрите документацию по C<IO::File>,
+C<IO::Handle> и C<IO::Seekable> для большей информации.
 
-=head2 Directories and Paths
+=head2 Директории и пути
 
 X<builtins; C<opendir>>
 
-Working with directories is similar to working with files, except that you
-cannot I<write> to directoriesN<Instead, you save and move and rename and
-remove files.>. Open a directory handle with the C<opendir> builtin:
+Работа с директориями похожа на работу с файлами, за исключением того, что вы
+не можете I<писать> в директорииN<Вместо этого вы сохраняете, перемещаете,
+переименовываете и удаляете файлы.>. Открыть дескриптор директории можно с
+помощью встроенной функции C<opendir>:
 
 =begin programlisting
 
@@ -410,24 +423,25 @@ remove files.>. Open a directory handle with the C<opendir> builtin:
 
 X<builtins; C<readdir>>
 
-The C<readdir> builtin reads from a directory. As with C<readline>, you may
-iterate over the contents of directories one at a time or you may assign them
-to a list in one swoop:
+Встроенная функция C<readdir> читает из директории. Как и с C<readline>, вы
+должны выполнить итерацию по содержимому директории по одному элементу за раз,
+или вы можете присвоить их списку сразу:
 
 =begin programlisting
 
-    # iteration
+    # итерация
     while (my $file = readdir $dirh)
     {
         ...
     }
 
-    # flattening into a list
+    # выравнивание в список
     my @files = readdir $otherdirh;
 
 =end programlisting
 
-Perl 5.12 added a feature where C<readdir> in a C<while> sets C<$_>:
+Perl 5.12 добавил возможность, благодаря которой C<readdir> в C<while>
+устанавливает C<$_>:
 
 =begin programlisting
 
@@ -446,48 +460,49 @@ Perl 5.12 added a feature where C<readdir> in a C<while> sets C<$_>:
 X<Unix>
 X<files; hidden>
 
-The curious regular expression in this example skips so-called I<hidden files>
-on Unix and Unix-like systems, where a leading dot prevents them from appearing
-in directory listings by default. It also skips the two special files C<.> and
-C<..>, which represent the current directory and the parent directory
-respectively.
+Любопытное регулярное выражение в этом примере пропускает так называемые
+I<скрыте файлы> в Unix и Unix-подобных системах, где ведущая точка предотвращает
+появление их в листинге директории по умолчанию. Оно также пропускает два
+специальных файла C<.> и C<..>, которые представляют текущую директорию и
+родительскую директорию соответственно.
 
 X<files; relative paths>
 X<files; absolute paths>
 
-The names returned from C<readdir> are I<relative> to the directory itself.  In
-other words, if the F<tasks/> directory contains three files named F<eat>,
-F<drink>, and F<be_monkey>, C<readdir> will return C<eat>, C<drink>, and
-C<be_monkey> and I<not> F<tasks/eat>, F<tasks/drink>, and F<task/be_monkey>.
-In contrast, an I<absolute> path is a path fully qualified to its filesystem.
+Имена, возвращаемые из C<readdir>, I<относительны> к самой директории. Другими
+словами, если директория F<tasks/> содержит три файла, F<eat>, F<drink> и
+F<be_monkey>, C<readdir> вернёт C<eat>, C<drink> и C<be_monkey>, а I<не>
+F<tasks/eat>, F<tasks/drink> и F<task/be_monkey>. С другой стороны,
+I<абсолютный> путь E<mdash> это путь, полностью определённый в файловой системе.
 
 X<builtins; C<closedir>>
 
-Close a directory handle by letting it go out of scope or with the C<closedir>
-builtin.
+Закройте дескриптор директории, позволив ему выйти за пределы области видимости,
+или с помощью встроенной функции C<closedir>.
 
-=head3 Manipulating Paths
+=head3 Манипулирование путями
 
-Perl 5 offers a Unixy view of your filesystem and will interpret
-Unix-style paths appropriately for your operating system and filesystem.  In
-other words, if you're using Microsoft Windows, you can use the path F<C:/My
-Documents/Robots/Bender/> just as easily as you can use the path F<C:\My
-Documents\Robots\Caprica Six\>.
+Perl 5 предлагает Unix-взгляд на вашу файловую систему и будет интерпретировать
+пути в стиле Unix соответствующим образом для вашей операционной системы и
+файловой системы. Другими словами, если вы используете Microsoft Windows, вы
+можете использовать путь F<C:/My Documents/Robots/Bender/> так же легко, как
+F<C:\My Documents\Robots\Caprica Six\>.
 
 X<C<File::Spec>>
 
-Even though Unix file semantics govern Perl's operations, cross-platform file
-manipulation is much easier with a module. The core C<File::Spec> module family
-provides abstractions to allow you to manipulate file paths in safe and
-portable fashions. It's venerable and well understood, but it's also clunky.
+Хотя операциями Perl и управляет семантика файлов Unix, кросс-платформенные
+манипуляции файлами намного легче осуществлять с помощью модуля. Семейство
+встроенных модулей C<File::Spec> предоставляет абстракции, позволяющие вам
+манипулировать путями к файлам безопасным и переносимым образом. Эти модули
+уважаемы и легко понимаемы, хотя и громоздки.
 
 X<CPAN; C<Path::Class>>
 X<CPAN; C<Path::Class::Dir>>
 X<CPAN; C<Path::Class::File>>
 
-The C<Path::Class> distribution on the CPAN provides a nicer interface. Use the
-C<dir()> function to create an object representing a directory and the
-C<file()> function to create an object representing a file:
+Дистрибутив C<Path::Class> из CPAN предоставляет более приятный интерфейс.
+Используйте фукнцию C<dir()> для создания объекта, представляющего директорию,
+и функцию C<file()> для создания объекта, представляющего файл:
 
 =begin programlisting
 
@@ -498,7 +513,7 @@ C<file()> function to create an object representing a file:
 
 =end programlisting
 
-You can get File objects from directories and vice versa:
+Вы можете получить объекты файлов из директорий и т. д.:
 
 =begin programlisting
 
@@ -507,7 +522,7 @@ You can get File objects from directories and vice versa:
 
 =end programlisting
 
-You can even open filehandles to directories and files:
+Вы даже можете отрыть дескрипторы файлов для директорий и файлов:
 
 =begin programlisting
 
@@ -517,11 +532,11 @@ You can even open filehandles to directories and files:
 
 =end programlisting
 
-Both C<Path::Class::Dir> and C<Path::Class::File> offer further useful
-behaviors--though beware that if you use a C<Path::Class> object of some kind
-with other Perl 5 code such as an operator or function which expects a string
-containing a file path, you need to stringify the object yourself. This is a
-persistent but minor annoyance.
+И C<Path::Class::Dir>, и C<Path::Class::File> предлагают и другие полезные
+поведений E<mdash> хотя имейте ввиду, что если вы используете какой-нибудь
+объект C<Path::Class> с другим кодом на Perl 5, таким как оператор или функция,
+ожидающая строку, содержащую путь к файлу, вам придётся самостоятельно
+преобразовать объект в строку. Это постоянное, но небольшое раздражение.
 
 =begin programlisting
 
@@ -529,16 +544,16 @@ persistent but minor annoyance.
 
 =end programlisting
 
-=head2 File Manipulation
+=head2 Манипуляции с файлами
 
 X<C<-X>; file test operators>
 X<operators; C<-X>>
 
-Besides reading and writing files, you can also manipulate them as you would
-directly from a command line or a file manager.  The file test operators,
-collectively called the C<-X> operators because they are a hyphen and a single
-letter, examine file and directory attributes. For example, to test that a file
-exists:
+Помимо чтения и записи файлов, вы также можете манипулировать ими, как делали бы
+это напрямую из командной строки или файлового менеджера. Операторы проверки
+файлов, все вместе называемые операторы C<-X>, из-за того, что все они
+представляют собой дефис и одну букву, проверяют атрибуты файла и директории.
+Например, так можно проверить, что файл существует:
 
 X<C<-e>; file exists operator>
 X<operators; C<-e>>
@@ -549,9 +564,10 @@ X<operators; C<-e>>
 
 =end programlisting
 
-The C<-e> operator has a single operand, the name of a file or a file or
-directory handle. If the file exists, the expression will evaluate to a true
-value. C<perldoc -f -X> lists all other file tests; the most popular are:
+Оператор C<-e> имеет один операнд, имя файла или дескриптор файла или
+директории. Если файл существует, выражение вернёт истинное значение.
+C<perldoc -f -X> содержит список всех остальных проверок файлов; наиболее
+популярны следующие:
 
 X<C<-d>; directory test operator>
 X<C<-f>; file test operator>
@@ -564,30 +580,33 @@ X<operators; C<-s>>
 
 =over 4
 
-=item C<-f>, which returns a true value if its operand is a plain file
+=item C<-f>, возвращающий истинное значение, если его операнд E<mdash> простой
+файл;
 
-=item C<-d>, which returns a true value if its operand is a directory
+=item C<-d>, возвращающий истинное значение, если его операнд E<mdash>
+директория;
 
-=item C<-r>, which returns a true value if the file permissions of its operand
-permit reading by the current user
+=item C<-r>, возвращающий истинное значение, если настройка доступа к файлу,
+указанному как его операнд, позволяет чтение текущим пользователем;
 
-=item C<-s>, which returns a true value if its operand is a non-empty file
+=item C<-s>, возвращающий истинное значение, если его операнд E<mdash> непустой
+файл.
 
 =back
 
-As of Perl 5.10.1, you may look up the documentation for any of these operators
-with C<perldoc -f -r>, for example.
+Начиная с Perl 5.10.1 вы можете искать документацию по любому из этих операторов
+например, с помощью C<perldoc -f -r>.
 
 X<builtins; C<rename>>
 
-The C<rename> builtin can rename a file or move it between directories.  It
-takes two operands, the old name of the file and the new name:
+Встроенная функция C<rename> может переименовать файл или переместить его между
+директориями. Они принимает два операнда, старое и новое имя файла:
 
 =begin programlisting
 
     rename 'death_star.txt', 'carbon_sink.txt';
 
-    # or if you're stylish:
+    # или если вы стильный:
     rename 'death_star.txt' => 'carbon_sink.txt';
 
 =end programlisting
@@ -600,16 +619,17 @@ X<files; moving>
 X<files; removing>
 X<files; deleting>
 
-There's no core builtin to copy a file, but the core C<File::Copy> module
-provides both C<copy()> and C<move()> functions. Use the C<unlink> builtin to
-remove one or more files. (The C<delete> builtin deletes an element from a
-hash, not a file from the filesystem.) These functions and builtins all return
-true values on success and set C<$!> on error.
+Встроенной фукнции для копирования файла нет, но встроенный модуль C<File::Copy>
+предоставляет обе функции C<copy()> и C<move()>. Используйте встроенную функцию
+C<unlink> для удаления одного или нескольких файлов. (Встроенная функция
+C<delete> удаляет элемент из хеша, а не файл из файловой системы.) Все эти
+функции возвращают истинные значения в случае успеха и устанавливают C<$!> при
+ошибке.
 
-=begin tip Better than C<File::Spec>
+=begin tip Лучше чем C<File::Spec>
 
-C<Path::Class> provides convenience methods to check certain file attributes as
-well as to remove files completely, in a cross-platform fashion.
+C<Path::Class> предоставляет удобные методы для проверки некоторых атрибутов
+файла, а также для полного удаления файла, в кросс-платформенной манере.
 
 =end tip
 
@@ -617,8 +637,8 @@ X<builtins; C<chdir>>
 X<C<Cwd>>
 X<C<Cwd>; C<cwd()>>
 
-Perl tracks its current working directory. By default, this is the active
-directory from where you launched the program. The core C<Cwd> module's
-C<cwd()> function returns the name of the current working directory. The
-builtin C<chdir> attempts to change the current working directory. Working from
-the correct directory is essential to working with files with relative paths.
+Perl отслеживает свою текущую рабочую директорию. По умолчанию это активная
+директория, из которой запущена программа. Функция C<cwd()> встроенного модуля
+C<Cwd> возвращает имя текущей рабочей директории. Встроенная функция C<chdir>
+пытается сменить текущую рабочую директорию. Работа из корректной директории
+важна для работы с файлами с относительными путями.
