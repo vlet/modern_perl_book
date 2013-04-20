@@ -1,43 +1,46 @@
-=head1 Tie
+=head1 Связывание
 
 Z<tie>
 
-Where overloading (L<overloading>) allows you to customize the behavior of
-classes and objects for specific types of coercion, a mechanism called I<tying>
-allows you to customize the behavior of primitive variables (scalars, arrays,
-hashes, and filehandles). Any operation you might perform on a tied variable
-translates to a specific method call.
+Тогда как перегрузка (L<overloading>) позволяет вам настраивать поведение
+классов и объектов для конкретных случаев приведения типа, механизм, называемый
+I<связывание>, позволяет вам настраивать поведение простых переменных (скаляров,
+массивов, хешей и дескрипторов файлов). Любая операция, которую вы можете
+выполнить на связанной переменной, транслируется в определённый вызов метода.
 
 X<builtins; C<tie>>
 X<C<Tie::File>>
 
-The C<tie> builtin originally allowed you to use disk space as the backing
-memory for hashes, so that Perl could access files larger than could easily fit
-in memory. The core module C<Tie::File> provides a similar system, and allows
-you to treat files as if they were arrays.
+Встроенная директива C<tie> изначально позволяла вам использовать место на диске
+как резервную память для хешей, так что Perl мог осуществлять доступ к файлам,
+которые больше, чем можно поместить в память. Встроенный модуль C<Tie::File>
+предоставляет похожую систему и позволяет вам обращаться с файлами как если бы
+они были массивами.
 
 X<C<Tie::StdScalar>>
 X<C<Tie::StdArray>>
 X<C<Tie::StdHash>>
 
-The class to which you C<tie> a variable must conform to a defined interface
-for a specific data type. See C<perldoc perltie> for an overview, then consult
-the core modules C<Tie::StdScalar>, C<Tie::StdArray>, and C<Tie::StdHash> for
-specific details. Start by inheriting from one of those classes, then override
-any specific methods you need to modify.
+Класс, с которым вы связываете переменную с помощью C<tie()>, должен
+соотвествовать определённому интерфейсу для конкретных типов данных. Смотрите
+C<perldoc perltie> для получения общего представления, затем обратитесь к
+встроенным модулям C<Tie::StdScalar>, C<Tie::StdArray> и C<Tie::StdHash> за
+более конкретными деталями. Начните с наследования от одного из этих классов,
+затем переопределите любые конкретные методы, которые вам нужно модифицировать.
 
-=begin tip When Class and Package Names Collide
+=begin tip Когда имена класса и пакета вступают в конфликт
 
+Как если бы C<tie> не был уже достаточно сбивающим с толку, C<Tie::Scalar>,
+C<Tie::Array> и C<Tie::Hash> определяют необходимые интерфейсы для связывания
+скаляров, массивов и хешей, но реализацию по умолчанию предоставляют 
 If C<tie> weren't confusing enough, C<Tie::Scalar>, C<Tie::Array>, and
-C<Tie::Hash> define the necessary interfaces to tie scalars, arrays, and
-hashes, but C<Tie::StdScalar>, C<Tie::StdArray>, and C<Tie::StdHash> provide
-the default implementations.
+C<Tie::StdScalar>, C<Tie::StdArray> и C<Tie::StdHash>.
 
 =end tip
 
-=head2 Tying Variables
+=head2 Связывание переменных
 
-To tie a variable:
+Так можно связать переменную:
 
 =begin programlisting
 
@@ -46,30 +49,31 @@ To tie a variable:
 
 =end programlisting
 
-The first argument is the variable to tie, the second is the name of the class
-into which to tie it, and C<@args> is an optional list of arguments required
-for the tying function. In the case of C<Tie::File>, this is a valid filename.
+Первый аргумент E<mdash> это переменная для связывания, второй E<mdash> имя
+класса, с которым её нужно связать, а C<@args> E<mdash> необязательный список
+аргументов, требуемый для связывающей функции. В случае C<Tie::File> это
+допустимое имя файла.
 
 X<builtins; C<tie>>
 X<builtins; C<tied>>
 
-Tying functions resemble constructors: C<TIESCALAR>, C<TIEARRAY()>,
-C<TIEHASH()>, or C<TIEHANDLE()> for scalars, arrays, hashes, and filehandles
-respectively. Each function returns a new object which represents the tied
-variable. Both the C<tie> and C<tied> builtins return this object. Most people
-use C<tied> in a boolean context, however.
+Связывающие функции напоминают конструкторы: C<TIESCALAR>, C<TIEARRAY()>,
+C<TIEHASH()> или C<TIEHANDLE()> для скаляров, массивов, хешей и дескрипторов
+файлов соответственно. Каждая функция возвращает новый объект, представляющий
+связанную переменную. Обе встроенные директивы, C<tie> и C<tied>, возвращают
+этот объект. Однако, большинство использует C<tied> в булевом контексте.
 
-=head2 Implementing Tied Variables
+=head2 Реализация связанных переменных
 
-To implement the class of a tied variable, inherit from a core module such as
-C<Tie::StdScalar>N<C<Tie::StdScalar> lacks its own F<.pm> file, so use
-C<Tie::Scalar> to make it available.>, then override the specific methods for
-the operations you want to change.  In the case of a tied scalar, these are
-likely C<FETCH> and C<STORE>, possibly C<TIESCALAR()>, and probably not
-C<DESTROY()>.
+Чтобы реализовать класс связанных переменных, унаследуйте от встроенного модуля,
+такого как C<Tie::StdScalar>N<У C<Tie::StdScalar> отсутствует собственный файл
+F<.pm>, так что используйте C<Tie::Scalar> чтобы сделать его доступным.>, затем
+переопределите конкретные методы для операций, которые вы хотите изменить. В
+случае связанного скаляра это ожидаемо будут C<FETCH> и C<STORE>, возможно,
+C<TIESCALAR()>, и вероятно не C<DESTROY()>.
 
-You can create a class which logs all reads from and writes to a scalar with
-very little code:
+Вы можете создать класс, который логирует все операции чтения и записи скаляра с
+помощью очень небольшого количества кода:
 
 =begin programlisting
 
@@ -99,41 +103,45 @@ very little code:
 
 =end programlisting
 
-Assume that the C<Logger> class method C<log()> takes a string and the number
-of frames up the call stack of which to report the location.
+Допустим метод C<log()> класса C<Logger> принимает строку и количество фреймов
+вверх по стеку вызовов, которые нужно вывести.
 
-Within the C<STORE()> and C<FETCH()> methods, C<$self> works as a blessed
-scalar.  Assigning to that scalar reference changes the value of the scalar and
-reading from it returns its value.
+Внутри методов C<STORE()> и C<FETCH()> C<$self> работает как благословлённый
+скаляр. Присваивание этому скаляру ссылки изменяет значение скаляра, а чтение из
+него возвращает его значение.
 
-Similarly, the methods of C<Tie::StdArray> and C<Tie::StdHash> act on blessed
-array and hash references, respectively.  The C<perldoc perltie> documentation
-explains the copious methods they support, as you can read or write multiple
-values from them, among other operations.
+Аналогично, методы C<Tie::StdArray> и C<Tie::StdHash> воздействуют на
+благословлённые ссылки на массив и хеш сооветственно. Документация в C<perldoc
+perltie> объясняет обширное количество методов, которые они поддерживают, как
+например вы можете читать или записывать множественные значения из них, среди
+других операций.
 
-=begin tip Isn't C<tie> Fun?
+=begin tip Разве C<tie> не веселье?
 
-The C<-norequire> option prevents the C<parent> pragma from attempting to load
-a file for C<Tie::StdScalar>, as that module is part of the file
+Опция C<-norequire> предотвращает прагму C<parent> от попытки загрузить файл
+для C<Tie::StdScalar>, поскольку этот модуль является частью файла
 F<Tie/Scalar.pm>.
 
 =end tip
 
-=head2 When to use Tied Variables
+=head2 Когда использовать связанные переменные?
 
-Tied variables seem like fun opportunities for cleverness, but they can produce
-confusing interfaces. Unless you have a very good reason for making objects
-behave as if they were builtin data types, avoid creating your own ties.
-C<tie> is also much slower than using the builtin types due to various reasons
-of implementation.
+Связанные переменные выглядять как весёлые возможности для проявления ума, но
+они могут приводить к сбивающим с толку интерфейсам. Если у вас нет очень
+хорошей причины для того, чтобы заставлять объект вести себя так, как если бы он
+был встроенным типом данных, избегайте создания собственных связываний. К тому
+же, C<tie> намного медленнее, чем использование встроенных типов данных ввиду
+различных причин реализации.
 
-Good reasons include to ease debugging (use the logged scalar to help you
-understand where a value changes) and to make certain impossible operations
-possible (accessing large files in a memory-efficient way). Tied variables are
-less useful as the primary interfaces to objects; it's often too difficult and
-constraining to try to fit your whole interface to that supported by C<tie()>.
+Хорошие причины включают облегчение отладки (используйте логгируемый скаляр
+чтобы помочь вам понять, где изменяется значение) и необходимость сделать
+некоторые невозможные операции возможными (доступ к большим файлам способом с
+эффективным использованием памяти). Связанные переменнные менее полезны как
+первичные интерфейсы к объектам; зачастую слишком трудно и ограничивающе
+пытаться вместить весь ваш интерфейс в тот, что поддерживается C<tie()>.
 
-The final word of warning is both sad and convincing; too much code goes out of
-its way to I<prevent> use of tied variables, often by accident. This is
-unfortunate, but violating the expectations of library code tends to reveal
-bugs that are often out of your power to fix.
+Последнее слово предупреждения одновременно печально и убедительно; слишком
+много кода сбивается со своего пути чтобы I<предотвратить> использование
+связанных переменных, зачастую по случайности. Это неудачно, но нарушение
+ожиданий библиотечного кода склонно к раскрытию багов, исправить которые
+зачастую не в ваших силах.
