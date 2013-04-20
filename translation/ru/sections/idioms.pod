@@ -1,16 +1,17 @@
-=head1 Idioms
+=head1 Идиомы
 
 Z<idioms>
 
-Every language--programming or natural--has common patterns of expression, or
-I<idioms>. The earth revolves, but we speak of the sun rising or setting. We
-brag about clever hacks and cringe at nasty hacks as we sling code.
+Каждый язык E<mdash> язык программирования или естественный E<mdash> имеет
+распространённые шаблоны выражений, или I<идиомы>. Земля вращается, но мы
+говорим о восходящем и заходящем солнце. Мы хвастаемся умными хаками и
+и испытываем неудовольствие от ужасных хаков в процессе написания кода.
 
-Perl idioms aren't quite language features or design techniques. They're
-mannerisms and mechanisms that, taken together, give your code a Perlish
-accent. You don't have to use them, but they play to Perl's strengths.
+Идиомы Perl E<mdash> не совсем возможности языка или техники дизайна. Это
+манеры и механизмы, которые, сложенные вместе, дают вашему коду перловый акцент.
+Вы не обязаны их использовать, но они придают Perl силу.
 
-=head2 The Object as C<$self>
+=head2 Объект как C<$self>
 
 X<C<$self>>
 X<variables; C<$self>>
@@ -18,30 +19,31 @@ X<objects; invocant>
 X<methods; invocant>
 X<CPAN; C<MooseX::Method::Signatures>>
 
-Perl 5's object system (L<moose>) treats the invocant of a method as a mundane
-parameter. Regardless of whether you invoke a class or an instance method, the
-first element of C<@_> is always a method's invocant. By convention, most Perl
-5 code uses C<$class> as the name of the class method invocant and C<$self> for
-the name of the object invocant. This convention is strong enough that useful
-extensions such as C<MooseX::Method::Signatures> assume you will use C<$self>
-as the name of object invocants.
+Объектная система Perl 5 (L<moose>) работает с инвокантом метода как с обычным
+параметром. Независимо от того, вызываете ли вы метод класса или экземпляра,
+первый элемент C<@_> E<mdash> всегда инвокант метода. По соглашению, большая
+часть кода на Perl 5 использует C<$class> как имя инвоканта метода класса и
+C<$self> как имя инвоканта объекта. Это соглашение достаточно сильно, чтобы
+полезные расширения, такие как C<MooseX::Method::Signatures>, исходили из
+предположения, что бы используете C<$self> как имя объектных инвокантов.
 
-=head2 Named Parameters
+=head2 Именованные параметры
 
 X<parameters; named>
 X<arguments; named>
 X<CPAN; C<signatures>>
 X<CPAN; C<MooseX::MultiMethods>>
 
-List processing is a fundamental component of Perl's expression evaluation.
-The ability for Perl programmers to chain expressions which evaluate to
-variable-length lists provides countless opportunities to manipulate data
-effectively.
+Обработка списков E<mdash> фундаментальная составляющая обработки выражений в
+Perl 5. Способность Perl-программистов объединять в цепочки выражения,
+возвращающие списки переменной длины, предоставляет бесчисленные возможности
+для эффективного манипулирования данными.
 
-While Perl 5's argument passing simplicity (everything flattens into C<@_>) is
-occasionally too simple, assigning from C<@_> in list context allows you to
-unpack named parameters as pairs. The fat comma (L<declaring_hashes>) operator
-turns an ordinary list into an obvious list of pairs of arguments:
+Хотя простота передачи аргументов в Perl 5 (всё выравнивается в C<@_>) иногда
+слишком проста, присваивание из C<@_> в списочном контексте позволяет вам
+распаковывать именованные параметры как пары. Оператор толстой запятой
+(L<declaring_hashes>) превращает простой список в то, что очевидно является
+списком пар аргументов:
 
 =begin programlisting
 
@@ -54,8 +56,8 @@ turns an ordinary list into an obvious list of pairs of arguments:
 
 =end programlisting
 
-The callee side can unpack these parameters into a hash and treat the hash as
-if it were a single argument:
+Вызываемая сторона может распаковать эти параметры в хеш и работать с хешем,
+как если бы он был одним аргументом:
 
 =begin programlisting
 
@@ -69,16 +71,16 @@ if it were a single argument:
 
 =end programlisting
 
-=begin tip Hash or Hash Ref?
+=begin tip Хеши или ссылки на хеши?
 
-I<Perl Best Practices> suggests passing hash references instead. This allows
-Perl to perform caller-side validation of the hash reference.
+I<Perl Best Practices> предлагает вместо хешей передавать ссылки на хеши. Это
+позволяет Perl выполнять валидацию ссылки на хеш на стороне вызова.
 
 =end tip
 
-This technique works well with C<import()> (L<importing>) or other methods;
-process as many parameters as you like before slurping the remainder into a
-hash:
+Эта техника хорошо работает с C<import()> (L<importing>) или другими методами;
+обработайте столько параметров, сколько хотите, прежде чем поглотить оставшуюся
+часть в хеш:
 
 =begin programlisting
 
@@ -92,7 +94,7 @@ hash:
 
 =end programlisting
 
-=head2 The Schwartzian Transform
+=head2 Преобразование Шварца
 
 Z<schwartzian_transform>
 
@@ -102,11 +104,11 @@ X<C<sort>; Schwartzian transform>
 X<builtins; C<map>>
 X<builtins; C<sort>>
 
-The I<Schwartzian transform> is an elegant demonstration of Perl's pervasive
-list handling as an idiom handily borrowed from the Lisp family of languages.
+I<Преобразование Шварца> E<mdash> элегантная демонстрация вездесущей обработки
+списков в Perl в виде идиомы, удачно позаимствованной из семейства языков Lisp..
 
-Suppose you have a Perl hash which associates the names of your co-workers with
-their phone extensions:
+Предположим, у вас есть Perl-хеш, ассоциирующий имена ваших коллег с их
+телефонными номерами:
 
 =begin programlisting
 
@@ -130,16 +132,17 @@ their phone extensions:
 
 =end programlisting
 
-=begin tip Hash Key Quoting Rules
+=begin tip Правила заключения в кавычки ключа хеша
 
-Fat comma hash key quoting only works on things that look like barewords; these
-keys look like numbers--octal numbers, in specific, with the leading zero. Yes,
-almost everyone makes this mistake.
+Заключение в кавычки ключа хеша с помощью толстой запятой работает только с тем,
+что выглядит как голые слова; эти ключи выглядят как числа E<mdash> восьмеричные
+числа, если быть конкретным, с ведущим нулём. Да, почти все делают эту ошибку.
 
 =end tip
 
-To sort this list by name alphabetically, you must sort the hash by its values,
-not its keys. Getting the values sorted correctly is easy:
+Чтобы отсортировать список по имени в алфавитном порядке, вы должны
+отсортировать хеш по его значениям, не ключам. Получить корректно
+отсортированные значения легко:
 
 =begin programlisting
 
@@ -147,10 +150,10 @@ not its keys. Getting the values sorted correctly is easy:
 
 =end programlisting
 
-... but you need an extra step to preserve the association of names and
-extensions, hence the Schwartzian transform. First, convert the hash into a
-list of data structures which is easy to sort--in this case, two-element
-anonymous arrays:
+E<hellip>но вам нужен дополнительный шаг для сохранения связи имён и телефонов,
+тут и вступает в дело преобразование Шварца. Во-первых, сконвертируйте хеш в
+список структур данных, который легко сортировать E<mdash> в данном случае,
+двухэлементных анонимных массивов:
 
 =begin programlisting
 
@@ -159,8 +162,8 @@ anonymous arrays:
 
 =end programlisting
 
-C<sort> takes the list of anonymous arrays and compares their second elements
-(the names) as strings:
+C<sort> принимает список анонимных массивов и сравнивает их вторые элементы
+(имена) как строки:
 
 =begin programlisting
 
@@ -173,30 +176,32 @@ X<C<$a>>
 X<C<$b>>
 X<builtins; C<sort>>
 
-The block provided to C<sort> takes its arguments in two package-scoped
-(L<scope>) variables C<$a> and C<$b>N<See C<perldoc -f sort> for an extensive
-discussion of the implications of this scoping.>. The C<sort> block takes its
-arguments two at a time; the first becomes the contents of C<$a> and the second
-the contents of C<$b>. If C<$a> should come before C<$b> in the results, the
-block must return -1. If both values are sufficiently equal in the sorting
-terms, the block must return 0. Finally, if C<$a> should come after C<$b> in
-the results, the block should return 1. Any other return values are errors.
+Блок, переданный в C<sort>, принимает её аргументы в виде двух переменных C<$a>
+и C<$b>, принадлежащих области видимости пакетаN<См. в C<perldoc -f sort>
+пространное обсуждение применений такой организации области видимости.>.
+Блок C<sort> принимает свои аргументы по два за раз; первый становится
+содержимым C<$a>, а второй E<mdash> содержимым C<$b>. Если значение C<$a> должно
+идти в результатах перед C<$b>, блок должен вернуть -1. Если оба значения
+полностью эквиваленты с точки зрения сортировки, блок должен вернуть 0. Наконец,
+если C<$a> должно идти в результатах после C<$b>, блок должен вернуть 1. Любые
+другие возвращаемые значения являются ошибками.
 
-=begin tip Know Your Data
+=begin tip Знайте свои данные
 
-Reversing the hash I<in place> would work if no one had the same name.  This
-particular data set presents no such problem, but code defensively.
+Переворачивание хеша I<на месте> будет работать, если имена ни у кого не
+повторяются. Этот конкретный набор данных не имеет такой проблемы, но пишите
+код с защитой от этого.
 
 =end tip
 
 X<operators; C<cmp>>
 X<< operators; C<< <=> >> >>
 
-The C<cmp> operator performs string comparisons and the C<< <=> >> performs
-numeric comparisons.
+Оператор C<cmp> выполняет строковое сравнение, а C<< <=> >> выполняет числовое
+сравнение.
 
-Given C<@sorted_pairs>, a second C<map> operation converts the data structure
-to a more usable form:
+Имея C<@sorted_pairs>, вторая операция C<map> преобразует структуру данных в
+более удобную форму:
 
 =begin programlisting
 
@@ -205,7 +210,7 @@ to a more usable form:
 
 =end programlisting
 
-... and now you can print the whole thing:
+E<hellip>и теперь вы можете всё это вывести:
 
 =begin programlisting
 
@@ -213,8 +218,8 @@ to a more usable form:
 
 =end programlisting
 
-The Schwartzian transformation itself uses Perl's pervasive list processing to
-get rid of the temporary variables. The combination is:
+Преобразование Шварца само по себе использует всепроникающую обработку списков
+в Perl чтобы избавиться от временных переменных. Комбинация такая:
 
 =begin programlisting
 
@@ -226,22 +231,22 @@ get rid of the temporary variables. The combination is:
 
 =end programlisting
 
-Read the expression from right to left, in the order of evaluation. For each
-key in the extensions hash, make a two-item anonymous array containing the key
-and the value from the hash. Sort that list of anonymous arrays by their second
-elements, the values from the hash. Format a string of output from those sorted
-arrays.
+Читайте выражение справа налево, в порядке вычисления. Для каждого ключа в
+хеше телефонов создать двухэлементный анонимный массив, содержащий ключ и
+значение из хеша. Отсортировать этот список анонимных массивов по их
+вторым элементам, значениям из хеша. Сформировать строку вывода из этих
+отсортированных массивов.
 
-The Schwartzian transform pipeline of C<map>-C<sort>-C<map> transforms a data
-structure into another form easier for sorting and then transforms it back into
-another form.
+Канал C<map>E<mdash>C<sort>E<mdash>C<map> в преобразовании Шварца трансформирует
+структуру данных в другую, более подходящую для сортировки, а затем
+трансформирует её назад в другую форму.
 
-While this sorting example is simple, consider the case of calculating a
-cryptographic hash for a large file. The Schwartzian transform is especially
-useful because it effectively caches any expensive calculations by performing
-them once in the rightmost C<map>.
+Хотя этот пример сортировки прост, рассмотрите случай вычисления
+криптографического хеша для большого файла. Преобразование Шварца особенно
+полезно, потому что оно эффективно кеширует любые дорогие вычисления, выполняя
+их один раз в правом C<map>.
 
-=head2 Easy File Slurping
+=head2 Лёгкое поглощение файлов
 
 Z<easy_file_slurping>
 
@@ -250,63 +255,66 @@ X<C<$/>>
 X<files; slurping>
 X<global variables; C<$/>>
 
-C<local> is essential to managing Perl 5's magic global variables. You must
-understand scope (L<scope>) to use C<local> effectively--but if you do, you can
-use tight and lightweight scopes in interesting ways. For example, to slurp
-files into a scalar in a single expression:
+C<local> имеет большое значения для управления магическими глобальными
+переменными Perl 5. Вы должны понимать области видимости (L<scope>) чтобы
+эффективно использовать C<local> E<mdash> но если вам это удастся, вы можете
+использовать тесные и легковесные области видимости интересными способами.
+Например, для поглощения файлов в скаляр в одном выражении:
 
 =begin programlisting
 
     my $file = do { local $/ = <$fh> };
 
-    # or
+    # или
     my $file = do { local $/; <$fh> };
 
-    # or
+    # или
     my $file; { local $/; $file = <$fh> };
 
 =end programlisting
 
-C<$/> is the input record separator.  C<local>izing it sets its value to
-C<undef>, pending assignment. That C<local>ization takes place I<before> the
-assignment. As the value of the separator is undefined, Perl happily reads the
-entire contents of the filehandle in one swoop and assigns that value to C<$/>.
-Because a C<do> block evaluates to the value of the last expression evaluated
-within the block, this evaluates to the value of the assignment: the contents
-of the file. Even though C<$/> immediately reverts to its previous state at the
-end of the block, C<$file> now contains the contents of the file.
+C<$/> E<mdash> это разделитель входных записей. Его локализация с помощью
+C<local> устанавливает его значение в C<undef>, ожидая присваивания. Эта
+локализация происходит I<перед> присваиванием. Так как значение разделителя
+неопределено, Perl охотно считает всё содержимое дескриптора файла сразу и
+присвоит это значение C<$/>. Так как блок C<do> возвращает значение последнего
+вычисленного внутри блока выражения, это возвращает значение присваивания:
+содержимое файла. Даже несмотря на то, что в конце блока C<$/> немедленно
+возвращается к своему предыдущему состоянию, C<$file> теперь вмещает содержимое
+файла.
 
-The second example contains no assignment and merely returns the single line
-read from the filehandle.
+Второй пример не содержит присваивания и всего лишь возвращает единственную
+строку, прочитанную из дескриптора файла.
 
-The third example avoids a second copy of the string containing the file's
-contents; it's not as pretty, but it uses the least amount of memory.
+Третий пример избегает повторного копирования строки, вмещающей содержимое
+файла; он не так красив, но использует меньше памяти.
 
 =begin tip C<File::Slurp>
 
 X<CPAN; C<File::Slurp>>
 
-This useful example is admittedly maddening for people who don't understand
-both C<local> and scoping. The C<File::Slurp> module from the CPAN is a worthy
-(and often faster) alternative.
+Общеизвестно, что этот полезный пример сводит с ума людей, не понимающих, как
+работает и C<local>, и области видимости. Модуль C<File::Slurp> из CPAN E<mdash>
+стоящая (и зачастую более быстрая) альтернатива.
 
 =end tip
 
-=head2 Handling Main
+=head2 Обращение с главным
 
-Perl requires no special syntax for creating closures (L<closures>); you can
-close over a lexical variable inadvertently. Many programs commonly set up
-several file-scoped lexical variables before handing off processing to other
-functions. It's tempting to use these variables directly, rather than passing
-values to and returning values from functions, especially as programs grow.
-Unfortunately, these programs may come to rely on subtleties of what happens
-when during Perl 5's compilation process; a variable you I<thought> would be
-initialized to a specific value may not get initialized until much later.
+Perl не требует специального синтаксиса для создания замыканий (L<closures>);
+вы можете непреднамеренно замкнуть лексическую переменную. Многие программы
+обычно выставляют несколько лексичеких переменных области видимости файла прежде
+чем передать обработку другим функциям. Возникает соблазн использовать эти
+переменные напрямую, вместо передачи и возврата значений из функций, особенно с
+ростом программы. К сожалению, эти программы могут начать полагаться на тонкости
+того, что происходит во время процесса компиляции Perl 5; переменная, которая,
+как вы I<думали>, должна быть инициализирована определённым значением, может
+быть инициализирована лишь намного позже.
 
-To avoid this, wrap the main code of your program in a simple function,
-C<main()>. Encapsulate your variables to their proper scopes. Then add a single
-line to the beginning of your program, after you've used all of the modules and
-pragmas you need:
+Чтобы этого избежать, оберните основной код вашей программы в простую функцию,
+C<main()>. Инкапсулируйте ваши переменные в соответствующих областях видимости.
+Затем добавьте единственную строку в начало вашей программы, после подключения
+всех нужных модулей и прагм:
 
 =begin programlisting
 
@@ -320,30 +328,32 @@ pragmas you need:
 
 =end programlisting
 
-Calling C<main()> I<before> anything else in the program forces you to be
-explicit about initialization and order of compilation. Calling C<exit> with
-C<main()>'s return value prevents any other bare code from running, though be
-sure to return C<0> from C<main()> on successful execution.
+Вызов C<main()> I<перед> чем либо ещё в программе заставляет вас быть ясными
+относительно инициализации и порядка компиляции. Вызов C<exit> с возвращаемым
+C<main()> значением предотвращает любой другой голый код от выполнения, хотя
+вы должны удостовериться, что возвращаете C<0> из C<main()> в случае успешного
+выполнения.
 
-=head2 Controlled Execution
+=head2 Контроллируемое выполнение
 
 Z<controlled_execution>
 
-The effective difference between a program and a module is in its intended use.
-Users invoke programs directly, while programs load modules after execution has
-already begun. Yet a module is Perl code, in the same way that a program is.
-Making a module executable is easy.  So is making a program behave as a module
-(useful for testing parts of an existing program without formally making a
-module). All you need to do is to discover I<how> Perl began to execute a piece
-of code.
+Фактическое различие между программой и модулем E<mdash> в их намеренном
+использовании. Пользователи вызывают программы напрямую, а программы загружают
+модули после того, как выполнение уже началось. Тем не менее, модуль E<mdash>
+это Perl-код, точно так же, как и программа. Модуль легко сделать исполняемым.
+Так же как и заставить программу вести себя как модуль (полезно для тестирования
+частей существующей программы без формального преобразования её в модуль). Всё
+что вам нужно сделать E<mdash> открыть для себя, I<как> Perl начинает выполнение
+куска кода.
 
 X<builtins; C<caller>>
 
-C<caller>'s single optional argument is the number of call frames
-(L<recursion>) which to report. C<caller(0)> reports information about the
-current call frame. To allow a module to run correctly as a program I<or> a
-module, put all executable code in functions, add a C<main()> function, and
-write a single line at the start of the module:
+Единственный необязательный аргумент C<caller> E<mdash> это число фреймов
+вызова (L<recursion>), которое нужно выдать. C<caller(0)> выводит информацию о 
+текущем фрейме вызова. Чтобы позволить модулю работать корректно как программа
+I<или> модуль, поместите весь выполняемый код в функции, добавьте функцию 
+C<main()> и допишите одну строку в начало модуля:
 
 =begin programlisting
 
@@ -351,30 +361,30 @@ write a single line at the start of the module:
 
 =end programlisting
 
-If there's I<no> caller for the module, someone invoked it directly as a
-program (with C<perl path/to/Module.pm> instead of C<use Module;>).
+Если у модуля I<нет> вызывающего кода, значит кто-то вызвал его напрямую как
+программу (с помощью C<perl path/to/Module.pm>) вместо C<use Module;>).
 
-=begin tip Improved Caller Inspection
+=begin tip Улучшенная инспекция вызывающего кода
 
-The eighth element of the list returned from C<caller> in list context is a
-true value if the call frame represents C<use> or C<require> and C<undef>
-otherwise. While that's more accurate, few people use it.
+Восьмой элемент списка, возвращаемого из C<caller> в списочном контексте будет
+истинным значением, если фрейм вызова представляет C<use> или C<require> и
+C<undef> в противном случае. Хотя это более точно, немногие этим пользуются.
 
 =end tip
 
-=head2 Postfix Parameter Validation
+=head2 Постфиксная валидация параметров
 
 Z<postfix_parameter_validation>
 
 X<CPAN; C<Params::Validate>>
 X<CPAN; C<MooseX::Params::Validate>>
 
-The CPAN has several modules which help verify the parameters of your
-functions; C<Params::Validate> and C<MooseX::Params::Validate> are two good
-options. Simple validation is easy even without those modules.
+В CPAN есть несколько модулей, помогающих проверить параметры ваших функций; два
+хороших варианта E<mdash> C<Params::Validate> и C<MooseX::Params::Validate>.
+Выполнить простую валидацию легко даже без этих модулей.
 
-Suppose your function takes two arguments, no more and no less. You I<could>
-write:
+Предположим, ваша функция принимает два аргумента, не больше и не меньше. Вы
+I<можете> написать:
 
 =begin programlisting
 
@@ -391,8 +401,8 @@ write:
 
 =end programlisting
 
-... but from a linguistic perspective, the consequences are more important than
-the check and deserve to be at the I<start> of the expression:
+E<hellip>но с лингвистической точки зрения последствия более важны, чем
+проверка, и заслуживают быть в I<начале> выражения:
 
 =begin programlisting
 
@@ -400,7 +410,7 @@ the check and deserve to be at the I<start> of the expression:
 
 =end programlisting
 
-... which may read more simply as:
+E<hellip>что может читаться проще в следующем виде:
 
 =begin programlisting
 
@@ -409,18 +419,18 @@ the check and deserve to be at the I<start> of the expression:
 
 =end programlisting
 
-This early return technique--especially with postfix conditionals--can simplify
-the rest of the code. Each such assertion is effectively a single row in a
-truth table.
+Эта техника раннего возврата E<mdash> особенно с постфиксными условиями E<mdash>
+может упростить оставшуюся часть кода. Каждое такое утверждение E<mdash> это
+фактически одна строка в таблице истинности.
 
-=head2 Regex En Passant
+=head2 Регулярные выражения En Passant
 
 Z<regex_en_passant>
 
 X<regex; modification>
 X<regex; substitution>
 
-Many Perl 5 idioms rely on the fact that expressions evaluate to values:
+Многие идиомы Perl 5 полагаются на тот факт, что выражения возвращают значения:
 
 =begin programlisting
 
@@ -428,15 +438,15 @@ Many Perl 5 idioms rely on the fact that expressions evaluate to values:
 
 =end programlisting
 
-While that code is obviously clunky, it demonstrates how to use the value of
-one expression in another expression.  This isn't a new idea; you've likely
-used the return value of a function in a list or as an argument to another
-function before.  You may not have realized its implications.
+Хотя этот код очевидно неуклюж, он демонстрирует, как использовать значение
+одного выражения в другом выражении. Эта идея не нова; вы с большой вероятностью
+и раньше использовали возвращаемое значение функции в списке или как аргумент
+другой функции. Вы, возможно, не осознавали последствий этого.
 
 X<regex; capture>
 
-Suppose you want to extract a first name from a first name plus surname
-combination with a precompiled regular expression in C<$first_name_rx>:
+Предположим, вы хотите извлечь имя из сочетания имени и фамилии с помощью
+прекомпилированного регулярного выражения в C<$first_name_rx>:
 
 =begin programlisting
 
@@ -444,11 +454,12 @@ combination with a precompiled regular expression in C<$first_name_rx>:
 
 =end programlisting
 
-In list context, a successful regex match returns a list of all captures
-(L<regex_captures>, and Perl assigns the first one to C<$first_name>.
+В списочном контексте успешное совпадение регулярного выражение возвращает
+список всех захватов (L<regex_captures>), и Perl присваивает первый из них
+C<$first_name>.
 
-To modify the name, perhaps removing all non-word characters to create a useful
-user name for a system account, you could write:
+Чтобы изменить имя, возможно удалив все символы не-слов для создания пригодного
+имени пользователя для системного аккаунта, вы можете написать:
 
 =begin programlisting
 
@@ -456,19 +467,19 @@ user name for a system account, you could write:
 
 =end programlisting
 
-=begin tip /r in Perl 5.14
+=begin tip /r в Perl 5.14
 
-Perl 5.14 added the non-destructive substitution modifier C</r>, so that you
-can write C<my $normalized_name = $name =~ tr/A-Za-z//dcB<r>;>.
+В Perl 5.14 был добавлен недеструктивный модификатор замены C</r>, так что вы
+можете написать C<my $normalized_name = $name =~ tr/A-Za-z//dcB<r>;>.
 
 =end tip
 
-First, assign the value of C<$name> to C<$normalized_name>, as the parentheses
-affect the precedence so that assignment happens first.  The assignment
-expression evaluates to the I<variable> C<$normalized_name>, so that that
-variable becomes the first operand to the transliteration operator.
+Сперва присвойте значение C<$name> C<$normalized_name>, так как скобки влияют на
+приоритет, это присваивание произойдёт первым. Выражение присваивания возвращает
+I<переменную> C<$normalized_name>, так что эта переменная становится первым
+операндом оператора транслитерации.
 
-This technique works on other in-place modification operators:
+Эта техника работает и с другими операциями модификации на месте:
 
 =begin programlisting
 
@@ -479,24 +490,25 @@ This technique works on other in-place modification operators:
 
 =end programlisting
 
-=head2 Unary Coercions
+=head2 Унарное приведение типа
 
 Z<unary_coercions>
 
 X<coercion>
 X<types>
 
-Perl 5's type system almost always does the right thing when you choose the
-correct operators. Use the string concatenation operator, and Perl will treat
-both operands as strings. Use the addition operator and Perl will treat both
-operands as numeric.
+Система типов Perl 5 почти всегда делает то, что нужно, если вы выбираете
+правильные операторы. Используйте оператор строковой конкатенации, и Perl будет
+обращаться с обоими операндами как со строками. Используйте оператор сложения,
+и Perl будет обращаться с обоими операндами как с числовыми.
 
-Occasionally you have to give Perl a hint about what you mean with a I<unary
-coercion> to force the evaluation of a value a specific way.
+Иногда вам придётся дать Perl подсказку о том, что вы имеете ввиду, с помощью
+I<унарного приведения типа>, чтобы заставить вычисление значения выполняться
+конкретным образом.
 
 X<unary conversions; numeric>
 
-To ensure that Perl treats a value as numeric, add zero:
+Чтобы убедиться, что Perl обрабатывает значение как числовое, добавьте ноль:
 
 =begin programlisting
 
@@ -506,7 +518,8 @@ To ensure that Perl treats a value as numeric, add zero:
 
 X<unary conversions; boolean>
 
-To ensure that Perl treats a value as boolean, double negate it:
+Чтобы убедиться, что Perl обрабатывает значение как булево, используйте двойное
+отрицание:
 
 =begin programlisting
 
@@ -516,8 +529,8 @@ To ensure that Perl treats a value as boolean, double negate it:
 
 X<unary conversions; string>
 
-To ensure that Perl treats a value as a string, concatenate it with the empty
-string:
+Чтобы убедиться, что Perl обрабатывает значение как строку, конкатенируйте его с
+пустой строкой:
 
 =begin programlisting
 
@@ -525,7 +538,7 @@ string:
 
 =end programlisting
 
-Though the need for these coercions is vanishingly rare, you should understand
-these idioms if you encounter them.
-While it may look like it would be safe to remove a "useless"
-C<+ 0> from an expression, doing so may well break the code.
+Хотя потребность в этих приведениях типа исчезающе мала, вы должны понимать эти
+идиомы, если они вам встретятся.
+Хотя удаление E<laquo>бесполезногоE<raquo> C<+ 0> из выражения может выглядеть
+безопасным, это может сломать код.
