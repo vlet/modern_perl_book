@@ -1,19 +1,20 @@
-=head1 Indirect Objects
+=head1 Непрямые объекты
 
 Z<indirect_objects>
 
-Perl 5 has no operator C<new>; a constructor in Perl 5 is anything which
-returns an object. By convention, constructors are class methods named
-C<new()>, but you can choose anything you like. Several old Perl 5 object
-tutorials promote the use of C++ and Java-style constructor calls:
+В Perl 5 нет оператора C<new>; конструктором в Perl 5 является всё, что
+возвращает объект. По соглашению конструкторы E<mdash> методы классов,
+называемые C<new()>, но вы можете выбрать всё, что захотите. Некоторые старые
+руководства по объектам Perl 5 поощряют использование вызовов конструкторов в
+стиле C++ и Java:
 
 =begin programlisting
 
-    my $q = B<new> CGI; # DO NOT USE
+    my $q = B<new> CGI; # НЕ ИСПОЛЬЗОВАТЬ
 
 =end programlisting
 
-... instead of the obvious method call:
+E<hellip>вместо очевидного вызова метода:
 
 =begin programlisting
 
@@ -21,69 +22,71 @@ tutorials promote the use of C++ and Java-style constructor calls:
 
 =end programlisting
 
-These syntaxes produce equivalent behavior, except when they don't.
+Эти варианты синтаксиса дают одинаковое поведение, за исключением случаев, когда
+это не так.
 
-=head2 Bareword Indirect Invocations
+=head2 Непрямые вызовы с голыми словами
 
 X<indirect object notation>
 X<dative notation>
 
-In the indirect object form (more precisely, the I<dative> case) of the first
-example, the verb (the method) precedes the noun to which it refers (the
-object). This is fine in spoken languages, but it introduces parsing
-ambiguities in Perl 5.
+В непрямой объектной форме (более точно, в I<дательном> случае) первого примера
+глагол (метод) предшествует существительному, к которому относится (объект).
+Это нормально в разговорных языках, но в Perl 5 создаёт неоднозначности
+парсинга.
 
-As the method name is a bareword (L<barewords>), the parser must divine the
-proper interpretation of the code through the use of several heuristics. While
-these heuristics are well-tested and I<almost> always correct, their failure
-modes are confusing. Worse yet, they depend on the order of compilation of code
-and modules.
+Так как имя метода E<mdash> голое слово (L<barewords>), парсер должен
+предсказать правильную интерпретацию кода с помощью использования нескольких
+эвристик. Хотя эти эвристики хорошо протестированы и I<почти> всегда корректны,
+их режимы сбоя сбивают с толку. Хуже того, они зависят от порядка компиляции
+кода и модулей.
 
-Parsing difficulty increases when the constructor takes arguments. The indirect
-style may resemble:
+Трудность парсинга увеличивается, если конструктор принимает аргументы. Непрямой
+стиль может выглядеть так:
 
 =begin programlisting
 
-    # DO NOT USE
+    # НЕ ИСПОЛЬЗОВАТЬ
     my $obj = new Class( arg => $value );
 
 =end programlisting
 
-... thus making the name of the class look like a function call. Perl 5 I<can>
-disambiguate many of these cases, but its heuristics depend on which package
-names the parser has seen, which barewords it has already resolved (and how it
-resolved them), and the I<names> of functions already declared in the current
-package.
+E<hellip>таким образом заставляя имя класса выглядеть как вызов функции. Perl 5
+I<может> устранить неоднозначность во многих подобных случаях, но его эвристики
+зависят от того, какие имена пакетов видит парсер, какие голые слова он уже
+разрешил (и как он разрешил их) и от I<имён> фукнций, уже объявленных в текущем
+пакете.
 
-Imagine running afoul of a prototyped function (L<prototypes>) with a name
-which just happens to conflict somehow with the name of a class or a method
-called indirectly. This is rare, but so unpleasant to debug that it's worth
-avoiding indirect invocations.
+Представьте возникновение противоречия прототипированной функции (L<prototypes>)
+с именем, которому случилось каким-то образом вступить в конфликт с именем
+класса или метода, вызываемого непрямо. Это случается редко, но так неприятно
+для отладки, что стоит того, чтобы избегать непрямых вызовов.
 
-=head2 Indirect Notation Scalar Limitations
+=head2 Скалярные ограничения непрямой нотации
 
-Another danger of the syntax is that the parser expects a single scalar
-expression as the object. Printing to a filehandle stored in an aggregate
-variable I<seems> obvious, but it is not:
+Другая опасность такого синтаксиса в том, что парсер ожидает объект как одно
+скалярное выражение. Вывод в дескриптор файла, сохранённого в агрегатной
+переменной, I<выглядит> очевидной, но таковой не является:
 
 =begin programlisting
 
-    # DOES NOT WORK AS WRITTEN
+    # НЕ РАБОТАЕТ КАК НАПИСАНО
     say $config->{output} 'Fun diagnostic message!';
 
 =end programlisting
 
-Perl will attempt to call C<say> on the C<$config> object.
+Perl попытается вызвать C<say> на объекте C<$config>.
 
 X<builtins; C<print>>
 X<builtins; C<close>>
 X<builtins; C<say>>
 
-C<print>, C<close>, and C<say>--all builtins which operate on
-filehandles--operate in an indirect fashion.  This was fine when filehandles
-were package globals, but lexical filehandles (L<lexical_filehandles>) make the
-indirect object syntax problems obvious. To solve this, disambiguate the
-subexpression which produces the intended invocant:
+C<print>, C<close> и C<say> E<mdash> все встроенные функции, оперирующие с
+дескрипторами файлов E<mdash> оперируют в непрямой манере. Это было нормально,
+когда дескрипторы файлов были глобальными переменными пакета, но лексические
+дескрипторы файлов (L<lexical_filehandles>) делают очевидными проблемы непрямого
+объектного синтаксиса. Чтобы устранить это, избавьтесь от неоднозначности
+подвыражения, выдающего подразумеваемый инвокант:
 
 =begin programlisting
 
@@ -91,10 +94,10 @@ subexpression which produces the intended invocant:
 
 =end programlisting
 
-=head2 Alternatives to Indirect Notation
+=head2 Альтернативы непрямой нотации
 
-Direct invocation notation does not suffer this ambiguity problem.  To
-construct an object, call the constructor method on the class name directly:
+Нотация прямого вызова не страдает этой проблемой неоднозначности. Чтобы
+сконструировать объект, вызовите метод-конструктор напрямую на имени класса:
 
 =begin programlisting
 
@@ -103,58 +106,59 @@ construct an object, call the constructor method on the class name directly:
 
 =end programlisting
 
-This syntax I<still> has a bareword problem in that if you have a function
-named C<CGI>, Perl will interpret the bareword class name as a call to the
-function, as:
+Этот синтаксис I<всё ещё> имеет проблему голого слова, в том смысле, что если
+у вас есть фукнция с именем C<CGI>, Perl будет интерпретировать голое имя класса
+как вызов функции:
 
 =begin programlisting
 
     sub CGI;
 
-    # you wrote CGI->new(), but Perl saw
+    # вы написали CGI->new(), но Perl увидел
     my $q = CGI()->new();
 
 =end programlisting
 
-While this happens rarely, you can disambiguate classnames by appending the
-package separator (C<::>) or by explicitly marking class names as string
-literals:
+Хотя это случается редко, вы можете устранить неоднозначность имён классов,
+добавив разделитель пакетов (C<::>) или явно пометив имена классов как строковые
+литералы:
 
 =begin programlisting
 
-    # package separator
+    # разделитель пакетов
     my $q = CGI::->new();
 
-    # unambiguously a string literal
+    # не имеющий неоднозначности строковый литерал
     my $q = 'CGI'->new();
 
 =end programlisting
 
-Yet almost no one ever does this.
+Однако почти никто этого не делает.
 
 X<C<IO::File>>
 
-For the limited case of filehandle operations, the dative use is so prevalent
-that you can use the indirect invocation approach if you surround your intended
-invocant with curly brackets. If you're using Perl 5.14 (or if you load
-C<IO::File> or C<IO::Handle>), you can use methods on lexical
-filehandlesN<Almost no one does this for C<print> and C<say> though.>.
+Для ограниченного случая операций с дескрипторами файлов дательное использование
+настолько общепринято, что вы можете использовать подход непрямого вызова, если
+окружите свой подразумеваемый инвокант фигурными скобками. Если вы используете
+Perl 5.14 (или если вы загрузили C<IO::File> или C<IO::Handle), вы можете
+использовать методы на лексических дескрипторах файловN<Хотя почти никто не
+делает этого для C<print> и C<say>.>.
 
 X<CPAN; C<Perl::Critic>>
 X<CPAN; C<Perl::Critic::Policy::Dynamic::NoIndirect>>
 X<CPAN; C<indirect>>
 
-The CPAN module C<Perl::Critic::Policy::Dynamic::NoIndirect> (a plugin for
-C<Perl::Critic>) can identify indirect invocations during code reviews.  The
-CPAN module C<indirect> can identify and prohibit their use in running
-programs:
+CPAN-модуль C<Perl::Critic::Policy::Dynamic::NoIndirect> (плагин для
+C<Perl::Critic>) может обнаружить непрямые вызовы во время проверки кода.
+CPAN-модуль C<indirect> может обнаружить и запретить их использование в
+запущенных программах:
 
 =begin programlisting
 
-    # warn on indirect use
+    # предупреждение при использовании непрямых вызовов
     no indirect;
 
-    # throw exceptions on their use
+    # выбросить исключение при их использовании
     no indirect ':fatal';
 
 =end programlisting
