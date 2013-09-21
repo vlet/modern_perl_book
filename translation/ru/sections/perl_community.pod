@@ -9,11 +9,10 @@ X<websites; perl.org>
 документацию Perl, исходные коды, обучающие материалы, списки рассылок и
 некоторые важные проекты сообщества. Если вы новичок в Perl, список рассылки для
 начинающих E<mdash> дружественное место, в котором новичок может задать вопросы
-и получить точные и полезные ответы.
-См. U<http://learn.perl.org/faq/beginners.html>.
+и получить точные и полезные ответы. См. U<http://learn.perl.org/faq/beginners.html>.
 
 Дом разработки Perl E<mdash> U<http://dev.perl.org/>, содержащий ссылки на
-важные ресурсы по разработке Perl 5 и Perl 6N<Хотя так же смотрите
+важные ресурсы по разработке ядра Perl 5 и Perl 6N<Хотя так же смотрите
 U<http://www.perl6.org/>.>.
 
 X<perl.com>
@@ -37,7 +36,7 @@ X<PerlMonks>
 X<websites; PerlMonks>
 
 PerlMonks, на U<http://perlmonks.org/>, это сайт сообщества, посвящённый
-дискуссиям о Perl-программировании. Его одиннадцатилетняя история делает его
+дискуссиям о программировании на Perl. Его одиннадцатилетняя история делает его
 одним из самых почтенных сайтов вопросов и ответов по языкам программирования.
 
 X<blogs.perl.org>
@@ -56,7 +55,7 @@ X<websites; Planet Perl Iron Man>
 Другие сайты объединяют размышления Perl-хакеров, включая
 U<http://perlsphere.net/>, U<http://planet.perl.org/>, и
 U<http://ironman.enlightenedperl.org/>. Последний E<mdash> часть инициативы
-организации Enlightened Perl (Просвещённый Perl)
+Enlightened Perl Organization (Организация Просвещённый Perl)
 (U<http://enlightenedperl.org/>) по увеличению количества и качества публикаций
 о Perl в вебе.
 
@@ -65,7 +64,7 @@ X<websites; Perl Buzz>
 X<Perl Weekly>
 X<websites; Perl Weekly>
 
-Perl Buzz (U<http://perlbuzz.com/>) на регулярной основе собирает и републикует
+Perl Buzz (U<http://perlbuzz.com/>) на регулярной основе собирает и публикует
 некоторые из наиболее интересных и полезных новостей о Perl. Perl Weekly
 (U<http://perlweekly.com/>) предлагает еженедельную подборку новостей из мира
 Perl.
@@ -85,8 +84,8 @@ U<http://rt.perl.org/>.
 X<Perl 5 Porters>
 X<p5p>
 
-Список рассылки E<laquo>Perl 5 PortersE<raquo> E<mdash> центральная точка
-разработки самого Perl 5. См.
+Список рассылки E<laquo>Perl 5 PortersE<raquo> (или I<p5p>) E<mdash> центральная
+точка разработки самого Perl 5. См.
 U<http://lists.cpan.org/showlist.cgi?name=perl5-porters>.
 
 X<TPF>
@@ -101,7 +100,7 @@ X<Github>
 X<gitpan>
 X<websites; gitpan>
 
-Многие Perl-хакеры используют Github (U<http://github.com/>) для размещения их
+Многие Perl-хакеры используют Github (U<http://github.com/>) для размещения своих
 проектовN<E<hellip>включая исходники этой книги по адресу
 U<http://github.com/chromatic/modern_perl_book/>.>. Обратите особенное внимание
 на GitPAN (U<http://github.com/gitpan/>), где размещены репозитории, отражающие
