@@ -1,0 +1,58 @@
+Modern Perl: (концепция) Современный Perl
+Comprehensive Perl Archive Network: Всеобъемлющая архивная сеть Perl
+coercion: приведение типа
+dereferencing: разыменование (!разыменовывание)
+core module базовый модуль
+core documentation: базовая документация
+core library: базовая библиотека
+core development: разработка ядра
+warning: предупреждение
+warning message: предупреждающее сообщение
+builtin: встроенная функция (команда, директива)
+Plain Old Documentation: Старая добрая документация
+void context: пустой контекст
+scalar context: скалярный контекст
+list context: списочный контекст
+assignment: присваивание (!присвоение)
+numeric context: числовой контекст
+string context: строковый контекст
+boolean context: булев контекст
+type coercion: приведение типа
+coerce: приводить (тип)
+coercion: приведение (типа)
+default scalar (array) variable: подразумеваемая переменная-скаляр (массив)
+topic variable: переменная-топик
+match: сопоставление
+substitution: замена
+transliteration: транслитерация
+operator: оператор
+expression: выражение
+statement: инструкция
+Perl Mongers: Perl-монгеры
+word characters: словарные символы
+sybmolic lookups: символьный поиск
+sigils: сигилы, разыменовывающие префиксы
+lvalue: lvalue, левое значение
+rvalue: rvalue, правое значение
+slicing: получение среза
+fully-qualified name: полностью определённое имя
+quote: заключать в кавычки
+quoting characters: символы заключения в кавычки
+quoting operator: оператор заключения в кавычки
+escape: экранировать
+escape sequence: экранированная последовательность
+heredoc: встроенный документ
+control flow directives: директивы потока управления
+branching directives: директивы ветвления
+short circuiting: короткое замыкание
+range operator: оператор диапазона
+smart match: умное сопоставление
+flattent (array): разглаживать (массив)
+fat comma operator: оператор толстая запятая
+bareword: голое слово
+dualvars: двойные переменные
+autovivification: автовивификация
+fixity: фиксность (?)
+arity: арность
+listary: списочной арности
+flip-flop: оператор триггера
