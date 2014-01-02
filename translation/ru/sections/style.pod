@@ -1,3 +1,5 @@
+=encoding utf-8
+
 Z<style>
 
 =head1 Написание поддерживаемого кода на Perl

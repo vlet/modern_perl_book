@@ -1,3 +1,5 @@
+=encoding utf-8
+
 =head0 Управление реальными программами
 
 Z<writing_real_programs>
