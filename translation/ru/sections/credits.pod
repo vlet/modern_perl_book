@@ -1,3 +1,5 @@
+=encoding utf-8
+
 Z<credits>
 Джон С. Дж. Андерсон (John SJ Anderson),
 Питер Аронофф (Peter Aronoff),
