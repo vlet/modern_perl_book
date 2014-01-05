@@ -407,7 +407,7 @@ C<Plack::Test>, C<Plack::Test::Agent> и подкласс C<Test::WWW::Mechanize
 Кёртиса Пое (Curtis
 Poe)N<U<http://www.modernperlbooks.com/mt/2009/03/organizing-test-suites-with-testclass.html>>.
 Более новый дистрибутив C<Test::Routine> предлагает аналогичные возможности
-посредством использования Moose (L<Moose>).
+посредством использования Moose (L<moose>).
 
 =item * C<Test::Differences> тестирует строки и структуры данных на идентичность
 и отображает любые найденные различия в своей диагностике. C<Test::LongString>
