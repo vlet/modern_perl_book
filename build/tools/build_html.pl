@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Pod::PseudoPod::HTML;
+use open qw( :encoding(UTF-8) :std );
 use File::Spec::Functions qw( catfile catdir splitpath );
 
 # P::PP::H uses Text::Wrap which breaks HTML tags
@@ -32,16 +33,18 @@ for my $chapter (@chapters)
 
     $parser->output_fh($out_fh);
 
-    # output a complete html document
-    $parser->add_body_tags(1);
+    print $out_fh '<!DOCTYPE html><html><head>',
+        '<meta charset="utf-8">',
+        '<link rel="stylesheet" href="style.css" type="text/css">',
+        '</head><body>';
 
-    # add css tags for cleaner display
-    $parser->add_css_tags(1);
+    $parser->add_body_tags(0);
 
     $parser->no_errata_section(1);
     $parser->complain_stderr(1);
 
     $parser->parse_file($chapter);
+    print $out_fh '</body></html>';
 }
 
 exit;
