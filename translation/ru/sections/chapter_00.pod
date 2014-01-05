@@ -84,7 +84,7 @@ X<CPAN; C<App::perlbrew>>
 U<http://www.activestate.com/activeperl>. Пользователям других операционных
 систем, где уже установлен Perl 5 (а также компилятор C и другие инструменты
 разработчика), стоит начать с установки CPAN-модуля C<App::perlbrew>N<См.
-инструкции по установке на U<http://search.cpan.org/perldoc?App::perlbrew.>.
+инструкции по установке на U<http://search.cpan.org/perldoc?App::perlbrew.>>.
 
 C<perlbrew> даёт возможность устанавливать и управлять несколькими версиями
 Perl 5. Это позволяет вам переключаться между разными версиями Perl 5, а также
